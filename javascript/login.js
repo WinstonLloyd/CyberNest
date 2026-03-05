@@ -38,15 +38,64 @@ setInterval(drawMatrix, 35);
 
 // Form handling
 function showLogin() {
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('terminalAccess').classList.add('hidden');
+    console.log('showLogin called');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const terminalAccess = document.getElementById('terminalAccess');
+    
+    if (loginForm) {
+        loginForm.classList.remove('d-none');
+        loginForm.classList.remove('hidden');
+        loginForm.style.display = 'block';
+        loginForm.style.visibility = 'visible';
+        loginForm.style.opacity = '1';
+    }
+    if (registerForm) {
+        registerForm.classList.add('d-none');
+        registerForm.classList.add('hidden');
+    }
+    if (terminalAccess) terminalAccess.classList.add('hidden');
 }
 
 function showRegister() {
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.remove('hidden');
-    document.getElementById('terminalAccess').classList.add('hidden');
+    console.log('showRegister called - ONLY showing registration form');
+    
+    // Hide ALL forms first
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const terminalAccess = document.getElementById('terminalAccess');
+    
+    // Force hide login and terminal access
+    if (loginForm) {
+        loginForm.classList.add('d-none');
+        loginForm.classList.add('hidden');
+        loginForm.style.display = 'none';
+        loginForm.style.visibility = 'hidden';
+        loginForm.style.opacity = '0';
+        console.log('Login form forcefully hidden');
+    }
+    
+    if (terminalAccess) {
+        terminalAccess.classList.add('d-none');
+        terminalAccess.classList.add('hidden');
+        terminalAccess.style.display = 'none';
+        terminalAccess.style.visibility = 'hidden';
+        terminalAccess.style.opacity = '0';
+        console.log('Terminal access forcefully hidden');
+    }
+    
+    // Show ONLY registration form
+    if (registerForm) {
+        registerForm.classList.remove('d-none');
+        registerForm.classList.remove('hidden');
+        registerForm.style.display = 'block';
+        registerForm.style.visibility = 'visible';
+        registerForm.style.opacity = '1';
+        registerForm.style.zIndex = '1000';
+        console.log('Registration form forcefully shown');
+        console.log('Register form final classes:', registerForm.className);
+        console.log('Register form final display:', registerForm.style.display);
+    }
 }
 
 function showForgotPassword() {

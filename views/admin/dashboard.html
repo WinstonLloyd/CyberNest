@@ -3,256 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CyberTerminal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>CyberNest Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/admin/dashboard.css">
 </head>
-<body class="min-h-screen text-gray-100">
-    <!-- Navigation -->
-    <nav class="bg-gray-900 border-b border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <h1 class="hacker-font text-2xl font-bold text-green-400 glow">
-                            <i class="fas fa-shield-alt mr-2"></i>ADMIN DASHBOARD
-                        </h1>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="leaderboard.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                        <i class="fas fa-trophy mr-2"></i>Leaderboard
+<body>
+    <!-- Toggle Sidebar Button -->
+    <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-shield-alt me-2"></i>CYBERNEST</h3>
+            <small class="text-muted">Admin Panel</small>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
                     </a>
-                    <a href="challenges.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                        <i class="fas fa-flag mr-2"></i>Challenges
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#users">
+                        <i class="fas fa-users"></i>
+                        Users
                     </a>
-                    <a href="../../index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="terminal.html">
+                        <i class="fas fa-terminal"></i>
+                        Terminal
                     </a>
-                </div>
-            </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="challenges.html">
+                        <i class="fas fa-trophy"></i>
+                        Challenges
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="leaderboard.html">
+                        <i class="fas fa-chart-line"></i>
+                        Leaderboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <a class="nav-link" href="#logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <!-- Header Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="stat-card p-6 rounded-lg">
-                <div class="flex items-center">
-                    <div class="p-3 bg-green-600 rounded-full">
-                        <i class="fas fa-users text-white"></i>
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0">Admin Dashboard</h1>
+                    <small class="text-muted">System Overview & Management</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <span class="badge bg-success pulse">System Online</span>
                     </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total Users</p>
-                        <p class="text-2xl font-semibold text-gray-900" id="totalUsers">1,247</p>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-2"></i>Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="#settings">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#logout">Logout</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            
-            <div class="stat-card p-6 rounded-lg">
-                <div class="flex items-center">
-                    <div class="p-3 bg-blue-600 rounded-full">
-                        <i class="fas fa-terminal text-white"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Commands Today</p>
-                        <p class="text-2xl font-semibold text-gray-900" id="commandsToday">45,892</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stat-card p-6 rounded-lg">
-                <div class="flex items-center">
-                    <div class="p-3 bg-yellow-600 rounded-full">
-                        <i class="fas fa-server text-white"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Server Status</p>
-                        <p class="text-lg font-semibold text-green-400 pulse">ONLINE</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stat-card p-6 rounded-lg">
-                <div class="flex items-center">
-                    <div class="p-3 bg-red-600 rounded-full">
-                        <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Security Alerts</p>
-                        <p class="text-2xl font-semibold text-gray-900" id="securityAlerts">3</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </header>
 
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Command Usage Chart -->
-            <div class="cyber-border p-6 rounded-lg">
-                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
-                    <i class="fas fa-chart-line mr-2"></i>Command Usage Analytics
-                </h2>
-                <div class="relative h-64">
-                    <canvas id="commandChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- User Activity Chart -->
-            <div class="cyber-border p-6 rounded-lg">
-                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
-                    <i class="fas fa-chart-area mr-2"></i>User Activity
-                </h2>
-                <div class="relative h-64">
-                    <canvas id="userActivityChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- System Status -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div class="cyber-border p-6 rounded-lg">
-                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
-                    <i class="fas fa-microchip mr-2"></i>System Resources
-                </h2>
-                <div class="space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">CPU Usage:</span>
-                        <div class="flex items-center">
-                            <div class="w-32 bg-gray-700 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: 35%"></div>
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-number">1,234</div>
+                                <div class="stat-label">Total Users</div>
                             </div>
-                            <span class="ml-2 text-sm">35%</span>
+                            <div class="text-success">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">Memory:</span>
-                        <div class="flex items-center">
-                            <div class="w-32 bg-gray-700 rounded-full h-2">
-                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 68%"></div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-number">892</div>
+                                <div class="stat-label">Active Sessions</div>
                             </div>
-                            <span class="ml-2 text-sm">68%</span>
+                            <div class="text-success">
+                                <i class="fas fa-signal fa-2x"></i>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">Disk Space:</span>
-                        <div class="flex items-center">
-                            <div class="w-32 bg-gray-700 rounded-full h-2">
-                                <div class="bg-red-500 h-2 rounded-full" style="width: 82%"></div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">Security Events</div>
                             </div>
-                            <span class="ml-2 text-sm">82%</span>
+                            <div class="text-success">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="stat-number">99.9%</div>
+                                <div class="stat-label">Uptime</div>
+                            </div>
+                            <div class="text-success">
+                                <i class="fas fa-server fa-2x"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Recent Commands -->
-            <div class="cyber-border p-6 rounded-lg">
-                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
-                    <i class="fas fa-history mr-2"></i>Recent Commands
-                </h2>
-                <div class="space-y-2 max-h-64 overflow-y-auto">
-                    <div class="terminal-text text-xs">
-                        <div class="text-green-400">$ ls -la</div>
-                        <div class="text-gray-300">drwxr-xr-x 12 user user 4096 Dec 15 10:45 documents/</div>
-                        <div class="text-green-400">$ cd downloads</div>
-                        <div class="text-gray-300">total 24</div>
-                        <div class="text-green-400">$ wget https://example.com/file.zip</div>
-                        <div class="text-gray-300">--2025-03-04 17:23:45-- https://example.com/file.zip</div>
-                        <div class="text-gray-300">Resolving example.com... 17:23:45</div>
-                        <div class="text-gray-300">Connecting to example.com|192.168.1.1|:443... connected.</div>
-                        <div class="text-gray-300">HTTP request sent, awaiting response... 200 OK</div>
-                        <div class="text-gray-300">Length: 1,048,576 [application/zip]</div>
-                        <div class="text-gray-300">Saving to: 'file.zip'</div>
-                        <div class="text-green-400">$ cat readme.txt</div>
-                        <div class="text-gray-300">Welcome to CyberTerminal v2.0</div>
-                        <div class="text-gray-300">This is a secure Linux command simulator.</div>
-                        <div class="text-gray-300">Type 'help' for available commands.</div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-lg-8">
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <div>User Activity Chart</div>
+                            <small class="text-muted">Real-time user activity monitoring</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-pie fa-3x mb-3"></i>
+                            <div>System Resources</div>
+                            <small class="text-muted">CPU, Memory, Disk usage</small>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- User Management -->
-        <div class="cyber-border p-6 rounded-lg">
-            <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
-                <i class="fas fa-user-cog mr-2"></i>User Management
-            </h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-700">
-                    <thead class="bg-gray-800">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Username</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last Active</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-gray-900 divide-y divide-gray-700">
-                        <tr class="hover:bg-gray-800">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">admin</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-red-600">Administrator</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-600">Active</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2 mins ago</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button class="text-blue-400 hover:text-blue-300">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-red-400 hover:text-red-300 ml-2">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-800">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">user123</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600">User</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-600">Active</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">15 mins ago</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button class="text-blue-400 hover:text-blue-300">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-red-400 hover:text-red-300 ml-2">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-800">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">guest_user</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-gray-600">Guest</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600">Idle</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">1 hour ago</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button class="text-blue-400 hover:text-blue-300">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="text-red-400 hover:text-red-300 ml-2">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Recent Users Table -->
+            <div class="row mb-4">
+                <div class="col-lg-8">
+                    <div class="user-table">
+                        <div class="p-3 border-bottom border-success">
+                            <h5 class="mb-0"><i class="fas fa-users me-2"></i>Recent Users</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Last Activity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success rounded-circle me-2" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-user fa-sm"></i>
+                                                </div>
+                                                John Doe
+                                            </div>
+                                        </td>
+                                        <td>john@example.com</td>
+                                        <td><span class="status-badge status-online">Online</span></td>
+                                        <td>2 mins ago</td>
+                                        <td>
+                                            <button class="action-btn me-1">View</button>
+                                            <button class="action-btn">Edit</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success rounded-circle me-2" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-user fa-sm"></i>
+                                                </div>
+                                                Jane Smith
+                                            </div>
+                                        </td>
+                                        <td>jane@example.com</td>
+                                        <td><span class="status-badge status-online">Online</span></td>
+                                        <td>5 mins ago</td>
+                                        <td>
+                                            <button class="action-btn me-1">View</button>
+                                            <button class="action-btn">Edit</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-secondary rounded-circle me-2" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-user fa-sm"></i>
+                                                </div>
+                                                Bob Johnson
+                                            </div>
+                                        </td>
+                                        <td>bob@example.com</td>
+                                        <td><span class="status-badge status-offline">Offline</span></td>
+                                        <td>1 hour ago</td>
+                                        <td>
+                                            <button class="action-btn me-1">View</button>
+                                            <button class="action-btn">Edit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-container" style="height: auto;">
+                        <div class="p-3 border-bottom border-success">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                        </div>
+                        <div class="p-3">
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>New user registration</strong>
+                                        <div class="activity-time">10 minutes ago</div>
+                                    </div>
+                                    <i class="fas fa-user-plus text-success"></i>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>Security alert triggered</strong>
+                                        <div class="activity-time">25 minutes ago</div>
+                                    </div>
+                                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>System backup completed</strong>
+                                        <div class="activity-time">1 hour ago</div>
+                                    </div>
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>Database optimization</strong>
+                                        <div class="activity-time">2 hours ago</div>
+                                    </div>
+                                    <i class="fas fa-database text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <script src="../../javascript/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../javascript/admin-dashboard.js"></script>
 </body>
 </html>
