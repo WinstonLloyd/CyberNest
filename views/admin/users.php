@@ -453,7 +453,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-3">
-                    <a class="nav-link" href="#logout">
+                    <a class="nav-link" href="#" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
@@ -502,19 +502,19 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">1,247</div>
+                    <div class="stat-number" id="totalUsersCount">0</div>
                     <div class="stat-label">Total Users</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">892</div>
+                    <div class="stat-number" id="activeUsersCount">0</div>
                     <div class="stat-label">Active</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">234</div>
+                    <div class="stat-number" id="onlineUsersCount">0</div>
                     <div class="stat-label">Online Now</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">45</div>
+                    <div class="stat-number" id="newUsersCount">0</div>
                     <div class="stat-label">New Today</div>
                 </div>
             </div>
@@ -554,263 +554,11 @@
 
             <!-- Users List -->
             <div class="users-container">
-                <div class="users-grid">
-                    <!-- User 1 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">JD</div>
-                            <div class="user-info">
-                                <div class="user-name">John Doe</div>
-                                <div class="user-email">john.doe@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">1,234</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">45</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">12</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-online">Online</span>
-                            <span class="user-role">User</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('john-doe')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('john-doe')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="banUser('john-doe')">
-                                <i class="fas fa-ban me-2"></i>Ban
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User 2 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">AS</div>
-                            <div class="user-info">
-                                <div class="user-name">Alice Smith</div>
-                                <div class="user-email">alice.smith@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">2,567</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">67</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">5</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-online">Online</span>
-                            <span class="user-role">User</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('alice-smith')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('alice-smith')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="banUser('alice-smith')">
-                                <i class="fas fa-ban me-2"></i>Ban
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User 3 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">BJ</div>
-                            <div class="user-info">
-                                <div class="user-name">Bob Johnson</div>
-                                <div class="user-email">bob.johnson@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">987</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">34</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">18</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-offline">Offline</span>
-                            <span class="user-role">User</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('bob-johnson')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('bob-johnson')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="banUser('bob-johnson')">
-                                <i class="fas fa-ban me-2"></i>Ban
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User 4 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">EM</div>
-                            <div class="user-info">
-                                <div class="user-name">Emma Martinez</div>
-                                <div class="user-email">emma.martinez@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">3,456</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">89</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">3</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-online">Online</span>
-                            <span class="user-role">Moderator</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('emma-martinez')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('emma-martinez')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="banUser('emma-martinez')">
-                                <i class="fas fa-ban me-2"></i>Ban
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User 5 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">MW</div>
-                            <div class="user-info">
-                                <div class="user-name">Michael Wilson</div>
-                                <div class="user-email">michael.wilson@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">567</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">23</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">25</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-banned">Banned</span>
-                            <span class="user-role">User</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('michael-wilson')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('michael-wilson')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action" onclick="unbanUser('michael-wilson')">
-                                <i class="fas fa-check me-2"></i>Unban
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User 6 -->
-                    <div class="user-card">
-                        <div class="user-header">
-                            <div class="user-avatar">SA</div>
-                            <div class="user-info">
-                                <div class="user-name">Sarah Anderson</div>
-                                <div class="user-email">sarah.anderson@cybernest.com</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-stats">
-                            <div class="stat-box">
-                                <div class="stat-value">4,123</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">102</div>
-                                <div class="stat-label">Challenges</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-value">2</div>
-                                <div class="stat-label">Rank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="user-status">
-                            <span class="status-badge status-online">Online</span>
-                            <span class="user-role">Admin</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewUser('sarah-anderson')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editUser('sarah-anderson')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action" onclick="changeRole('sarah-anderson')">
-                                <i class="fas fa-user-shield me-2"></i>Role
-                            </a>
-                        </div>
+                <div class="users-grid" id="usersGrid">
+                    <!-- Users will be loaded dynamically from backend -->
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                        <p>Loading users...</p>
                     </div>
                 </div>
             </div>
@@ -832,52 +580,21 @@
                 </div>
                 <div class="modal-body">
                     <form id="addUserForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" required>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">CallSign</label>
+                            <input type="text" class="form-control" id="username" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" required>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Role</label>
-                                <select class="form-select" id="role" required>
-                                    <option value="">Select role</option>
-                                    <option value="user">User</option>
-                                    <option value="moderator">Moderator</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Initial Points</label>
-                                <input type="number" class="form-control" id="points" value="0">
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" id="status" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="banned">Banned</option>
-                            </select>
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
                         </div>
                     </form>
                 </div>
@@ -891,26 +608,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Users specific functionality
+        let allUsers = [];
+        let filteredUsers = [];
+
         document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            loadUserStats();
+            
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const users = document.querySelectorAll('.user-card');
-                    
-                    users.forEach(user => {
-                        const name = user.querySelector('.user-name').textContent.toLowerCase();
-                        const email = user.querySelector('.user-email').textContent.toLowerCase();
-                        
-                        if (name.includes(searchTerm) || email.includes(searchTerm)) {
-                            user.style.display = '';
-                        } else {
-                            user.style.display = 'none';
-                        }
-                    });
+                    filterUsers();
                 });
             }
 
@@ -929,104 +641,592 @@
                     filterUsers();
                 });
             }
+        });
 
-            function filterUsers() {
-                const status = statusFilter.value;
-                const role = roleFilter.value;
-                const users = document.querySelectorAll('.user-card');
-                
-                users.forEach(user => {
-                    let show = true;
-                    
-                    if (status !== 'all') {
-                        const statusBadge = user.querySelector('.status-badge');
-                        if (!statusBadge || !statusBadge.textContent.toLowerCase().includes(status)) {
-                            show = false;
-                        }
+        // Load users from backend
+        function loadUsers() {
+            fetch('/backend/api/users.php?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allUsers = data.users;
+                        filteredUsers = [...allUsers];
+                        renderUsers();
+                        updateUserStats();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to load users: ' + data.message,
+                            icon: 'error',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
                     }
-                    
-                    if (role !== 'all') {
-                        const roleBadge = user.querySelector('.user-role');
-                        if (!roleBadge || !roleBadge.textContent.toLowerCase().includes(role)) {
-                            show = false;
-                        }
-                    }
-                    
-                    user.style.display = show ? '' : 'none';
+                })
+                .catch(error => {
+                    console.error('Error loading users:', error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to load users',
+                        icon: 'error',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        border: '1px solid #00ff00'
+                    });
                 });
+        }
+
+        // Load user statistics
+        function loadUserStats() {
+            fetch('/backend/api/users.php?action=stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateUserStatsDisplay(data.stats);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading stats:', error);
+                });
+        }
+
+        // Update statistics display
+        function updateUserStatsDisplay(stats) {
+            document.getElementById('totalUsersCount').textContent = stats.total_users.toLocaleString();
+            document.getElementById('activeUsersCount').textContent = stats.active_users.toLocaleString();
+            document.getElementById('onlineUsersCount').textContent = Math.floor(stats.active_users * 0.3).toLocaleString(); // Estimate online
+            document.getElementById('newUsersCount').textContent = stats.recent_registrations.toLocaleString();
+        }
+
+        // Update statistics display from loaded users
+        function updateUserStats() {
+            const totalUsers = allUsers.length;
+            const activeUsers = allUsers.filter(u => u.status !== 'banned').length;
+            const onlineUsers = allUsers.filter(u => u.status === 'online').length;
+            const newToday = allUsers.filter(u => {
+                const createdDate = new Date(u.created_at);
+                const today = new Date();
+                return createdDate.toDateString() === today.toDateString();
+            }).length;
+
+            document.getElementById('totalUsersCount').textContent = totalUsers.toLocaleString();
+            document.getElementById('activeUsersCount').textContent = activeUsers.toLocaleString();
+            document.getElementById('onlineUsersCount').textContent = onlineUsers.toLocaleString();
+            document.getElementById('newUsersCount').textContent = newToday.toLocaleString();
+        }
+
+        // Render users in the grid
+        function renderUsers() {
+            const usersGrid = document.getElementById('usersGrid');
+            if (!usersGrid) return;
+
+            usersGrid.innerHTML = '';
+
+            if (filteredUsers.length === 0) {
+                usersGrid.innerHTML = `
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-users fa-2x mb-3"></i>
+                        <p>No users found</p>
+                        <small>Try adjusting your search or filters</small>
+                    </div>
+                `;
+                return;
             }
 
-            // Refresh users
-            window.refreshUsers = function() {
-                console.log('Refreshing users...');
-                const refreshBtn = event.target;
-                refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
-                refreshBtn.disabled = true;
+            filteredUsers.forEach(user => {
+                const userCard = createUserCard(user);
+                usersGrid.appendChild(userCard);
+            });
+        }
+
+        // Create user card HTML
+        function createUserCard(user) {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            card.dataset.userId = user.id;
+
+            const statusClass = user.status === 'online' ? 'status-online' : 
+                              user.status === 'offline' ? 'status-offline' : 'status-banned';
+            
+            const roleClass = user.role === 'admin' ? 'admin' : 'user';
+
+            card.innerHTML = `
+                <div class="user-header">
+                    <div class="user-avatar">${user.avatar}</div>
+                    <div class="user-info">
+                        <div class="user-name">${user.display_name}</div>
+                        <div class="user-email">${user.email}</div>
+                    </div>
+                </div>
                 
-                setTimeout(() => {
-                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
-                    refreshBtn.disabled = false;
-                    console.log('Users refreshed');
-                }, 2000);
-            };
-
-            // User actions
-            window.viewUser = function(userId) {
-                console.log('Viewing user:', userId);
-                alert(`Viewing user: ${userId}`);
-            };
-
-            window.editUser = function(userId) {
-                console.log('Editing user:', userId);
-                alert(`Editing user: ${userId}`);
-            };
-
-            window.banUser = function(userId) {
-                if (confirm(`Are you sure you want to ban user "${userId}"?`)) {
-                    console.log('Banning user:', userId);
-                    alert(`User "${userId}" banned successfully!`);
-                }
-            };
-
-            window.unbanUser = function(userId) {
-                if (confirm(`Are you sure you want to unban user "${userId}"?`)) {
-                    console.log('Unbanning user:', userId);
-                    alert(`User "${userId}" unbanned successfully!`);
-                }
-            };
-
-            window.changeRole = function(userId) {
-                console.log('Changing role for:', userId);
-                alert(`Changing role for user: ${userId}`);
-            };
-
-            // Save user
-            window.saveUser = function() {
-                const form = document.getElementById('addUserForm');
-                if (form.checkValidity()) {
-                    console.log('Saving new user...');
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
-                    modal.hide();
-                    form.reset();
-                    alert('User saved successfully!');
-                } else {
-                    form.reportValidity();
-                }
-            };
-
-            // Simulate real-time updates
-            setInterval(() => {
-                const statNumbers = document.querySelectorAll('.stat-number');
-                statNumbers.forEach(stat => {
-                    if (stat.textContent.includes(',')) {
-                        const currentValue = parseInt(stat.textContent.replace(',', ''));
-                        const change = Math.floor(Math.random() * 5) - 2;
-                        const newValue = Math.max(0, currentValue + change);
-                        stat.textContent = newValue.toLocaleString();
+                <div class="user-stats">
+                    <div class="stat-box">
+                        <div class="stat-value">${Math.floor(Math.random() * 5000)}</div>
+                        <div class="stat-label">Points</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${Math.floor(Math.random() * 100)}</div>
+                        <div class="stat-label">Challenges</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${Math.floor(Math.random() * 50) + 1}</div>
+                        <div class="stat-label">Rank</div>
+                    </div>
+                </div>
+                
+                <div class="user-status">
+                    <span class="status-badge ${statusClass}">${user.status}</span>
+                    <span class="user-role">${user.role}</span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="#" class="btn-action" onclick="viewUser(${user.id})">
+                        <i class="fas fa-eye me-2"></i>View
+                    </a>
+                    <a href="#" class="btn-action" onclick="editUser(${user.id})">
+                        <i class="fas fa-edit me-2"></i>Edit
+                    </a>
+                    ${user.status === 'banned' ? 
+                        `<a href="#" class="btn-action" onclick="unbanUser(${user.id})">
+                            <i class="fas fa-check me-2"></i>Unban
+                        </a>` :
+                        `<a href="#" class="btn-action danger" onclick="banUser(${user.id})">
+                            <i class="fas fa-ban me-2"></i>Ban
+                        </a>`
                     }
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Filter users based on search and filters
+        function filterUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const roleFilter = document.getElementById('roleFilter').value;
+
+            filteredUsers = allUsers.filter(user => {
+                const matchesSearch = !searchTerm || 
+                    user.display_name.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.username.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+                const matchesRole = roleFilter === 'all' || user.role === roleFilter;
+
+                return matchesSearch && matchesStatus && matchesRole;
+            });
+
+            renderUsers();
+        }
+
+        // Refresh users
+        window.refreshUsers = function() {
+            const refreshBtn = event.target;
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
+            refreshBtn.disabled = true;
+            
+            loadUsers();
+            
+            setTimeout(() => {
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
+                refreshBtn.disabled = false;
+            }, 1000);
+        };
+
+        // User actions
+        window.viewUser = function(userId) {
+            fetch(`/backend/api/users.php?action=getById&id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const user = data.user;
+                        Swal.fire({
+                            title: 'User Details',
+                            html: `
+                                <div style="text-align: left;">
+                                    <p><strong>ID:</strong> ${user.id}</p>
+                                    <p><strong>Username:</strong> ${user.username}</p>
+                                    <p><strong>Display Name:</strong> ${user.display_name}</p>
+                                    <p><strong>Email:</strong> ${user.email}</p>
+                                    <p><strong>Role:</strong> ${user.role}</p>
+                                    <p><strong>Status:</strong> ${user.status}</p>
+                                    <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                                    <p><strong>Last Login:</strong> ${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</p>
+                                </div>
+                            `,
+                            icon: 'info',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to load user details',
+                            icon: 'error',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error viewing user:', error);
                 });
-            }, 20000);
-        });
+        };
+
+        window.editUser = function(userId) {
+            // This would open an edit modal - for now show a simple form
+            Swal.fire({
+                title: 'Edit User',
+                html: `
+                    <input id="swal-display-name" class="swal2-input" placeholder="Display Name">
+                    <input id="swal-email" class="swal2-input" type="email" placeholder="Email">
+                    <select id="swal-role" class="swal2-input">
+                        <option value="user">User</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                `,
+                confirmButtonText: 'Update',
+                confirmButtonColor: '#00ff00',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00',
+                preConfirm: () => {
+                    const displayName = document.getElementById('swal-display-name').value;
+                    const email = document.getElementById('swal-email').value;
+                    const role = document.getElementById('swal-role').value;
+                    
+                    if (!displayName || !email) {
+                        Swal.showValidationMessage('Please fill in all fields');
+                        return false;
+                    }
+                    
+                    return { displayName, email, role };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/users.php?action=update&id=${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(result.value)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'User updated successfully',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                            loadUsers(); // Reload users
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to update user: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating user:', error);
+                    });
+                }
+            });
+        };
+
+        window.banUser = function(userId) {
+            Swal.fire({
+                title: 'Ban User',
+                text: 'Are you sure you want to ban this user?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff0000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, ban',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/users.php?action=ban&id=${userId}`, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'User banned successfully',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                            loadUsers(); // Reload users
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to ban user: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error banning user:', error);
+                    });
+                }
+            });
+        };
+
+        window.unbanUser = function(userId) {
+            Swal.fire({
+                title: 'Unban User',
+                text: 'Are you sure you want to unban this user?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, unban',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/users.php?action=unban&id=${userId}`, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'User unbanned successfully',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                            loadUsers(); // Reload users
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to unban user: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error unbanning user:', error);
+                    });
+                }
+            });
+        };
+
+        // Save user (create new user)
+        window.saveUser = function() {
+            const form = document.getElementById('addUserForm');
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Passwords do not match',
+                    icon: 'error',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    border: '1px solid #00ff00'
+                });
+                return;
+            }
+            
+            const userData = {
+                username: username,
+                email: email,
+                password: password,
+                display_name: username, // Use username as display name
+                role: 'user', // Default role
+                is_active: true // Default active status
+            };
+
+            fetch('/backend/api/users.php?action=create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'User created successfully',
+                        icon: 'success',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        border: '1px solid #00ff00',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                        modal.hide();
+                        form.reset();
+                        loadUsers(); // Reload users
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to create user: ' + data.message,
+                        icon: 'error',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        border: '1px solid #00ff00'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error creating user:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to create user',
+                    icon: 'error',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    border: '1px solid #00ff00'
+                });
+            });
+        };
+
+        // Update statistics display
+        function updateUserStats() {
+            const totalUsers = allUsers.length;
+            const activeUsers = allUsers.filter(u => u.status !== 'banned').length;
+            const onlineUsers = allUsers.filter(u => u.status === 'online').length;
+            const newToday = allUsers.filter(u => {
+                const createdDate = new Date(u.created_at);
+                const today = new Date();
+                return createdDate.toDateString() === today.toDateString();
+            }).length;
+
+            const statNumbers = document.querySelectorAll('.stat-number');
+            if (statNumbers[0]) statNumbers[0].textContent = totalUsers.toLocaleString();
+            if (statNumbers[1]) statNumbers[1].textContent = activeUsers.toLocaleString();
+            if (statNumbers[2]) statNumbers[2].textContent = onlineUsers.toLocaleString();
+            if (statNumbers[3]) statNumbers[3].textContent = newToday.toLocaleString();
+        }
+
+        // Logout function
+        function logout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/backend/logout.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Logout Successful',
+                                text: 'You have been logged out successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Logout Failed',
+                                text: 'Logout failed: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00',
+                                timer: 3000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        // Still redirect on error
+                        Swal.fire({
+                            title: 'Redirecting',
+                            text: 'Logging out...',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        }).then(() => {
+                            window.location.href = '../../index.php';
+                        });
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>
