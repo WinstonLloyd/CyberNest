@@ -29,12 +29,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="users.html">
-                        <i class="fas fa-users"></i>
-                        Users
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="challenges.html">
                         <i class="fas fa-trophy"></i>
                         Challenges
@@ -44,6 +38,12 @@
                     <a class="nav-link" href="leaderboard.html">
                         <i class="fas fa-chart-line"></i>
                         Leaderboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="users.php">
+                        <i class="fas fa-users"></i>
+                        Users
                     </a>
                 </li>
                 <li class="nav-item">
