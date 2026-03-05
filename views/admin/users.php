@@ -447,7 +447,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="settings.html">
+                    <a class="nav-link" href="settings.php">
                         <i class="fas fa-cog"></i>
                         Settings
                     </a>
@@ -872,11 +872,6 @@
                 html: `
                     <input id="swal-display-name" class="swal2-input" placeholder="Display Name">
                     <input id="swal-email" class="swal2-input" type="email" placeholder="Email">
-                    <select id="swal-role" class="swal2-input">
-                        <option value="user">User</option>
-                        <option value="moderator">Moderator</option>
-                        <option value="admin">Admin</option>
-                    </select>
                 `,
                 confirmButtonText: 'Update',
                 confirmButtonColor: '#00ff00',
