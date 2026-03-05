@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Command Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .terminal {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            outline: none;
+        }
+        .terminal-output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .command-history {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto p-6">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-center mb-2">
+                <i class="fas fa-terminal mr-2"></i>CYBERTERMINAL
+            </h1>
+            <p class="text-center text-gray-400">Execute Linux commands from your browser</p>
+        </header>
+
+        <main class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Terminal Section -->
+                <section class="lg:col-span-2">
+                    <div class="bg-gray-800 rounded-lg shadow-2xl">
+                        <div class="bg-gray-700 px-4 py-2 rounded-t-lg flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <span class="text-sm text-gray-300">Terminal</span>
+                        </div>
+                        
+                        <div class="terminal p-4 rounded-b-lg" style="min-height: 400px;">
+                            <div id="output" class="terminal-output mb-4 command-history">
+                                <div class="fade-in">Welcome to Linux Command Console!</div>
+                                <div class="fade-in">Type 'help' for available commands.</div>
+                                <div class="fade-in">----------------------------------------</div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="mr-2" id="prompt">$</span>
+                                <input 
+                                    type="text" 
+                                    id="commandInput" 
+                                    class="terminal-input flex-1"
+                                    placeholder="Enter Linux command..."
+                                    autocomplete="off"
+                                >
+                                <button 
+                                    id="executeBtn"
+                                    class="ml-2 px-4 py-1 bg-green-600 hover:bg-green-700 rounded text-sm transition-colors"
+                                >
+                                    Execute
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sidebar -->
+                <aside class="space-y-6">
+                    <!-- Quick Commands -->
+                    <section class="bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-xl font-semibold mb-4">
+                            <i class="fas fa-bolt mr-2"></i>Quick Commands
+                        </h2>
+                        <div class="space-y-2">
+                            <button class="quick-cmd w-full text-left px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors" data-cmd="ls -la">
+                                <i class="fas fa-list mr-2"></i>ls -la
+                            </button>
+                            <button class="quick-cmd w-full text-left px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors" data-cmd="pwd">
+                                <i class="fas fa-folder mr-2"></i>pwd
+                            </button>
+                            <button class="quick-cmd w-full text-left px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors" data-cmd="whoami">
+                                <i class="fas fa-user mr-2"></i>whoami
+                            </button>
+                            <button class="quick-cmd w-full text-left px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors" data-cmd="date">
+                                <i class="fas fa-clock mr-2"></i>date
+                            </button>
+                            <button class="quick-cmd w-full text-left px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors" data-cmd="uname -a">
+                                <i class="fas fa-info-circle mr-2"></i>uname -a
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Command History -->
+                    <section class="bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-xl font-semibold mb-4">
+                            <i class="fas fa-history mr-2"></i>Command History
+                        </h2>
+                        <div id="history" class="space-y-1 max-h-48 overflow-y-auto">
+                            <div class="text-gray-400 text-sm">No commands yet...</div>
+                        </div>
+                        <button id="clearHistory" class="mt-3 w-full px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors">
+                            Clear History
+                        </button>
+                    </section>
+
+                    <!-- Info Panel -->
+                    <section class="bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-xl font-semibold mb-4">
+                            <i class="fas fa-info-circle mr-2"></i>Info
+                        </h2>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Commands Executed:</span>
+                                <span id="commandCount">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Status:</span>
+                                <span id="status" class="text-green-400">Ready</span>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script src="../javascript/terminal.js"></script>
+</body>
+</html>

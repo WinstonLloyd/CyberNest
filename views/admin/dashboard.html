@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CyberTerminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/admin/dashboard.css">
+</head>
+<body class="min-h-screen text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-900 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="hacker-font text-2xl font-bold text-green-400 glow">
+                            <i class="fas fa-shield-alt mr-2"></i>ADMIN DASHBOARD
+                        </h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="leaderboard.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-trophy mr-2"></i>Leaderboard
+                    </a>
+                    <a href="challenges.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-flag mr-2"></i>Challenges
+                    </a>
+                    <a href="../../index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Header Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-600 rounded-full">
+                        <i class="fas fa-users text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Users</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="totalUsers">1,247</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-600 rounded-full">
+                        <i class="fas fa-terminal text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Commands Today</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="commandsToday">45,892</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-600 rounded-full">
+                        <i class="fas fa-server text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Server Status</p>
+                        <p class="text-lg font-semibold text-green-400 pulse">ONLINE</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-red-600 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Security Alerts</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="securityAlerts">3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Command Usage Chart -->
+            <div class="cyber-border p-6 rounded-lg">
+                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
+                    <i class="fas fa-chart-line mr-2"></i>Command Usage Analytics
+                </h2>
+                <div class="relative h-64">
+                    <canvas id="commandChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- User Activity Chart -->
+            <div class="cyber-border p-6 rounded-lg">
+                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
+                    <i class="fas fa-chart-area mr-2"></i>User Activity
+                </h2>
+                <div class="relative h-64">
+                    <canvas id="userActivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="cyber-border p-6 rounded-lg">
+                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
+                    <i class="fas fa-microchip mr-2"></i>System Resources
+                </h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">CPU Usage:</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 35%"></div>
+                            </div>
+                            <span class="ml-2 text-sm">35%</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Memory:</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 68%"></div>
+                            </div>
+                            <span class="ml-2 text-sm">68%</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Disk Space:</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 82%"></div>
+                            </div>
+                            <span class="ml-2 text-sm">82%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Commands -->
+            <div class="cyber-border p-6 rounded-lg">
+                <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
+                    <i class="fas fa-history mr-2"></i>Recent Commands
+                </h2>
+                <div class="space-y-2 max-h-64 overflow-y-auto">
+                    <div class="terminal-text text-xs">
+                        <div class="text-green-400">$ ls -la</div>
+                        <div class="text-gray-300">drwxr-xr-x 12 user user 4096 Dec 15 10:45 documents/</div>
+                        <div class="text-green-400">$ cd downloads</div>
+                        <div class="text-gray-300">total 24</div>
+                        <div class="text-green-400">$ wget https://example.com/file.zip</div>
+                        <div class="text-gray-300">--2025-03-04 17:23:45-- https://example.com/file.zip</div>
+                        <div class="text-gray-300">Resolving example.com... 17:23:45</div>
+                        <div class="text-gray-300">Connecting to example.com|192.168.1.1|:443... connected.</div>
+                        <div class="text-gray-300">HTTP request sent, awaiting response... 200 OK</div>
+                        <div class="text-gray-300">Length: 1,048,576 [application/zip]</div>
+                        <div class="text-gray-300">Saving to: 'file.zip'</div>
+                        <div class="text-green-400">$ cat readme.txt</div>
+                        <div class="text-gray-300">Welcome to CyberTerminal v2.0</div>
+                        <div class="text-gray-300">This is a secure Linux command simulator.</div>
+                        <div class="text-gray-300">Type 'help' for available commands.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="cyber-border p-6 rounded-lg">
+            <h2 class="hacker-font text-xl font-semibold text-green-400 mb-4">
+                <i class="fas fa-user-cog mr-2"></i>User Management
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-700">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Username</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Last Active</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-gray-900 divide-y divide-gray-700">
+                        <tr class="hover:bg-gray-800">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">admin</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-red-600">Administrator</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-600">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2 mins ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-400 hover:text-blue-300">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-400 hover:text-red-300 ml-2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">user123</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600">User</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-600">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">15 mins ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-400 hover:text-blue-300">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-400 hover:text-red-300 ml-2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">guest_user</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-gray-600">Guest</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600">Idle</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">1 hour ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-400 hover:text-blue-300">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-400 hover:text-red-300 ml-2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../javascript/dashboard.js"></script>
+</body>
+</html>

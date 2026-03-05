@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: #000;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #000 0%, #0a0a0a 50%, #001100 100%);
+    z-index: -2;
+    animation: pulse 4s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, transparent 49.5%, rgba(0, 255, 0, 0.03) 49.5%, rgba(0, 255, 0, 0.03) 50.5%, transparent 50.5%),
+        linear-gradient(0deg, transparent 49.5%, rgba(0, 255, 0, 0.03) 49.5%, rgba(0, 255, 0, 0.03) 50.5%, transparent 50.5%);
+    background-size: 100px 100px;
+    z-index: -3;
+    animation: grid-move 10s linear infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes grid-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+.hacker-font {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.glitch {
+    position: relative;
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% { text-shadow: 0 0 10px #0f0; }
+    25% { text-shadow: -2px 0 10px #f0f; }
+    50% { text-shadow: 2px 0 10px #0ff; }
+    75% { text-shadow: 0 0 20px #ff0; }
+}
+
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+    z-index: -1;
+}
+
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+.terminal-border {
+    border: 2px solid #0f0;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.input-field {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0f0;
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    transition: all 0.3s;
+}
+
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    border-color: #0ff;
+}
+
+.btn-hacker {
+    background: linear-gradient(45deg, #0a0, #0f0);
+    border: 1px solid #0f0;
+    color: #000;
+    font-weight: bold;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-hacker:hover {
+    background: linear-gradient(45deg, #0f0, #0ff);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0f0, transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(400px); }
+}
+
+.cyber-grid {
+    background-image: 
+        linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}

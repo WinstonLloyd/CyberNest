@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    overflow-x: hidden;
+}
+ 
+.hacker-font {
+    font-family: 'Orbitron', sans-serif;
+}
+ 
+.cyber-border {
+    border: 1px solid #0f0;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    background: rgba(0, 0, 0, 0.9);
+}
+ 
+.stat-card {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    transition: all 0.3s;
+}
+ 
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+ 
+.pulse {
+    animation: pulse 2s infinite;
+}
+ 
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+ 
+.rotate {
+    animation: rotate 20s linear infinite;
+}
+ 
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+ 
+.glow {
+    text-shadow: 0 0 5px currentColor;
+}
+ 
+.terminal-text {
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0f0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background: #000000 !important;
+    overflow-x: hidden;
+}
+ 
+.hacker-font {
+    font-family: 'Orbitron', sans-serif;
+}
+ 
+.cyber-border {
+    border: 1px solid #0f0;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    background: rgba(0, 0, 0, 0.9);
+}
+ 
+.stat-card {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    transition: all 0.3s;
+}
+ 
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+ 
+.pulse {
+    animation: pulse 2s infinite;
+}
+ 
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+ 
+.rotate {
+    animation: rotate 20s linear infinite;
+}
+ 
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+ 
+.glow {
+    text-shadow: 0 0 5px currentColor;
+}
+ 
+.terminal-text {
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0f0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}

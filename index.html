@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberTerminal - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center matrix-bg">
+    <canvas id="matrix" class="matrix-rain"></canvas>
+    
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        <!-- Login Form -->
+        <div id="loginForm" class="terminal-border rounded-lg p-8 relative overflow-hidden">
+            <div class="scan-line"></div>
+            
+            <div class="text-center mb-8">
+                <h1 class="hacker-font text-3xl font-bold glitch mb-2">CYBERTERMINAL</h1>
+                <p class="text-green-400 text-sm">ACCESS GRANTED REQUIRED</p>
+            </div>
+            
+            <form id="loginFormElement" class="space-y-6">
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">USERNAME:</label>
+                    <input type="text" id="username" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="root@cyberterminal:~$" required>
+                </div>
+                
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">PASSWORD:</label>
+                    <input type="password" id="password" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="••••••••••" required>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center text-green-400 text-sm">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        REMEMBER SESSION
+                    </label>
+                    <a href="#" onclick="showForgotPassword()" class="text-green-400 text-sm hover:text-green-300">
+                        FORGOT?
+                    </a>
+                </div>
+                
+                <button type="submit" class="btn-hacker w-full py-3 rounded">
+                    INITIALIZE ACCESS
+                </button>
+                
+                <div class="text-center mt-6">
+                    <p class="text-green-400 text-sm">
+                        NO ACCESS? <a href="#" onclick="showRegister()" class="text-green-300 hover:text-green-200 underline">REGISTER NOW</a>
+                    </p>
+                </div>
+            </form>
+            
+            <div id="statusMessage" class="mt-4 text-center text-sm hidden"></div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div id="registerForm" class="terminal-border rounded-lg p-8 relative overflow-hidden hidden">
+            <div class="scan-line"></div>
+            
+            <div class="text-center mb-8">
+                <h1 class="hacker-font text-3xl font-bold glitch mb-2">NEW USER</h1>
+                <p class="text-green-400 text-sm">CREATE NEW IDENTITY</p>
+            </div>
+            
+            <form id="registerFormElement" class="space-y-6">
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">CALLSIGN:</label>
+                    <input type="text" id="regUsername" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="Choose your callsign" required>
+                </div>
+                
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">ENCRYPTION KEY:</label>
+                    <input type="password" id="regPassword" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="Create encryption key" required>
+                </div>
+                
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">VERIFY KEY:</label>
+                    <input type="password" id="regConfirmPassword" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="Confirm encryption key" required>
+                </div>
+                
+                <div>
+                    <label class="block text-green-400 text-sm mb-2">EMAIL MATRIX:</label>
+                    <input type="email" id="regEmail" class="input-field w-full px-4 py-3 rounded" 
+                           placeholder="user@matrix.domain" required>
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="agreeTerms" class="mr-2" required>
+                    <label for="agreeTerms" class="text-green-400 text-sm">
+                        I ACCEPT THE PROTOCOLS
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-hacker w-full py-3 rounded">
+                    GENERATE IDENTITY
+                </button>
+                
+                <div class="text-center mt-6">
+                    <p class="text-green-400 text-sm">
+                        EXISTING USER? <a href="#" onclick="showLogin()" class="text-green-300 hover:text-green-200 underline">LOGIN NOW</a>
+                    </p>
+                </div>
+            </form>
+            
+            <div id="regStatusMessage" class="mt-4 text-center text-sm hidden"></div>
+        </div>
+        
+        <!-- Terminal Access -->
+        <div id="terminalAccess" class="terminal-border rounded-lg p-8 hidden">
+            <div class="text-center mb-6">
+                <h1 class="hacker-font text-2xl font-bold text-green-400 mb-2">ACCESS GRANTED</h1>
+                <p class="text-green-300">Welcome to CyberTerminal</p>
+            </div>
+            
+            <div class="text-center">
+                <button onclick="enterTerminal()" class="btn-hacker px-8 py-3 rounded">
+                    LAUNCH TERMINAL
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="javascript/login.js"></script>
+</html>

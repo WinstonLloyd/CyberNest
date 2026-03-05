@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - CyberTerminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../../css/admin/dashboard.css">
+    <link rel="stylesheet" href="../../css/admin/challenges.css">
+    <script src="../../js/admin/challenges.js"></script>
+</head>
+<body class="min-h-screen text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-900 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="hacker-font text-2xl font-bold text-green-400 glow">
+                            <i class="fas fa-flag mr-2"></i>CHALLENGES
+                        </h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    </a>
+                    <a href="leaderboard.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-trophy mr-2"></i>Leaderboard
+                    </a>
+                    <a href="../../views/terminal.html" target="_blank" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-terminal mr-2"></i>Terminal
+                    </a>
+                    <a href="../../index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Header with Add Button -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">Challenge Management</h2>
+                <p class="text-gray-600 mt-1">Manage and monitor all cybersecurity challenges</p>
+            </div>
+            <button onclick="openAddChallengeModal()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>Add Challenge
+            </button>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-600 rounded-full">
+                        <i class="fas fa-fire text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active</p>
+                        <p class="text-2xl font-semibold text-gray-900">42</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-600 rounded-full">
+                        <i class="fas fa-check-circle text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Completed</p>
+                        <p class="text-2xl font-semibold text-gray-900">156</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-600 rounded-full">
+                        <i class="fas fa-clock text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">In Progress</p>
+                        <p class="text-2xl font-semibold text-gray-900">23</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6 rounded-lg">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-600 rounded-full">
+                        <i class="fas fa-star text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Points</p>
+                        <p class="text-2xl font-semibold text-gray-900">12,450</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="cyber-border p-4 rounded-lg mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <span class="text-green-400 font-medium">Category:</span>
+                    <div class="filter-chips">
+                        <button class="chip active" onclick="filterChallenges('all')">All</button>
+                        <button class="chip" onclick="filterChallenges('web')">Web</button>
+                        <button class="chip" onclick="filterChallenges('crypto')">Crypto</button>
+                        <button class="chip" onclick="filterChallenges('reverse')">Reverse</button>
+                        <button class="chip" onclick="filterChallenges('pwn')">Pwn</button>
+                        <button class="chip" onclick="filterChallenges('forensics')">Forensics</button>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-green-400 font-medium">Difficulty:</span>
+                    <div class="filter-chips">
+                        <button class="chip active" onclick="filterDifficulty('all')">All</button>
+                        <button class="chip" onclick="filterDifficulty('easy')">Easy</button>
+                        <button class="chip" onclick="filterDifficulty('medium')">Medium</button>
+                        <button class="chip" onclick="filterDifficulty('hard')">Hard</button>
+                        <button class="chip" onclick="filterDifficulty('extreme')">Extreme</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Challenges Grid -->
+        <div class="challenge-grid">
+            <!-- Challenge 1 - SQL Injection -->
+            <div class="challenge-card p-6 rounded-lg" data-category="web" data-difficulty="medium">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">SQL Injection</h3>
+                    <span class="difficulty-medium px-2 py-1 text-xs font-semibold rounded">Medium</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Exploit database vulnerabilities to extract sensitive information. Master UNION-based attacks and bypass authentication mechanisms.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-tag mr-1"></i>Web Security</span>
+                        <span><i class="fas fa-database mr-1"></i>Database</span>
+                        <span><i class="fas fa-bug mr-1"></i>Injection</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ sqlmap -u "http://target.com" --dbs</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-medium" style="width: 75%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 75% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>234
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>500
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('sql-injection')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-sql" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-sql">
+                        <button class="submit-flag-btn" onclick="submitFlag('sql-injection')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-sql"></div>
+                </div>
+            </div>
+
+            <!-- Challenge 2 - RSA Cracking -->
+            <div class="challenge-card p-6 rounded-lg" data-category="crypto" data-difficulty="hard">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">RSA Cracking</h3>
+                    <span class="difficulty-hard px-2 py-1 text-xs font-semibold rounded">Hard</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Break RSA encryption with weak key generation. Factor large numbers and recover private keys from public certificates.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-lock mr-1"></i>Cryptography</span>
+                        <span><i class="fas fa-key mr-1"></i>Key Recovery</span>
+                        <span><i class="fas fa-calculator mr-1"></i>Number Theory</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ python3 rsa_crack.py --pubkey key.pem</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-hard" style="width: 30%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 30% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>89
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>1000
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('rsa-cracking')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-rsa" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-rsa">
+                        <button class="submit-flag-btn" onclick="submitFlag('rsa-cracking')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-rsa"></div>
+                </div>
+            </div>
+
+            <!-- Challenge 3 - Buffer Overflow -->
+            <div class="challenge-card p-6 rounded-lg" data-category="pwn" data-difficulty="extreme">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">Buffer Overflow</h3>
+                    <span class="difficulty-extreme px-2 py-1 text-xs font-semibold rounded">Extreme</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Exploit memory corruption vulnerabilities to gain shell access. Control EIP, bypass ASLR, and spawn reverse shells.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-memory mr-1"></i>Memory Safety</span>
+                        <span><i class="fas fa-shield-alt mr-1"></i>ASLR Bypass</span>
+                        <span><i class="fas fa-terminal mr-1"></i>Shellcode</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ gdb -x ./vulnerable_binary</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-extreme" style="width: 10%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 10% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>45
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>2000
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('buffer-overflow')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-buffer" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-buffer">
+                        <button class="submit-flag-btn" onclick="submitFlag('buffer-overflow')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-buffer"></div>
+                </div>
+            </div>
+
+            <!-- Challenge 4 - Network Analysis -->
+            <div class="challenge-card p-6 rounded-lg" data-category="forensics" data-difficulty="easy">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">Network Analysis</h3>
+                    <span class="difficulty-easy px-2 py-1 text-xs font-semibold rounded">Easy</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Analyze packet captures to find hidden communications. Extract files from network traffic and decode protocols.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-network-wired mr-1"></i>Packet Analysis</span>
+                        <span><i class="fas fa-search mr-1"></i>Forensics</span>
+                        <span><i class="fas fa-file-archive mr-1"></i>PCAP Files</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ wireshark -r capture.pcap -Y</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-easy" style="width: 90%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 90% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>567
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>250
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('network-analysis')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-network" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-network">
+                        <button class="submit-flag-btn" onclick="submitFlag('network-analysis')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-network"></div>
+                </div>
+            </div>
+
+            <!-- Challenge 5 - Reverse Engineering -->
+            <div class="challenge-card p-6 rounded-lg" data-category="reverse" data-difficulty="hard">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">Reverse Engineering</h3>
+                    <span class="difficulty-hard px-2 py-1 text-xs font-semibold rounded">Hard</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Decompile and analyze binary executables to understand functionality. Extract algorithms and find vulnerabilities.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-cogs mr-1"></i>Decompilation</span>
+                        <span><i class="fas fa-microchip mr-1"></i>Assembly</span>
+                        <span><i class="fas fa-code mr-1"></i>Static Analysis</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ ghidra binary_file --analyze</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-hard" style="width: 45%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 45% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>123
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>1500
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('reverse-engineering')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-reverse" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-reverse">
+                        <button class="submit-flag-btn" onclick="submitFlag('reverse-engineering')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-reverse"></div>
+                </div>
+            </div>
+
+            <!-- Challenge 6 - Steganography -->
+            <div class="challenge-card p-6 rounded-lg" data-category="forensics" data-difficulty="medium">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="hacker-font text-lg font-semibold text-green-400">Steganography</h3>
+                    <span class="difficulty-medium px-2 py-1 text-xs font-semibold rounded">Medium</span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-gray-300 mb-2">Find hidden messages in images and audio files. Extract data from least significant bits and analyze patterns.</p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span><i class="fas fa-image mr-1"></i>Image Analysis</span>
+                        <span><i class="fas fa-eye-slash mr-1"></i>Hidden Data</span>
+                        <span><i class="fas fa-wave-square mr-1"></i>LSB Technique</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="terminal-code mb-2">$ stegsolve extract --image hidden.png</div>
+                    <div class="challenge-progress">
+                        <div class="progress-fill progress-medium" style="width: 60%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Progress: 60% Complete</p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="participants-count">
+                            <i class="fas fa-users mr-1"></i>178
+                        </span>
+                        <span class="reward-badge">
+                            <i class="fas fa-coins mr-1"></i>750
+                        </span>
+                    </div>
+                    <button class="filter-btn" onclick="startChallenge('steganography')">
+                        <i class="fas fa-play mr-2"></i>Start
+                    </button>
+                </div>
+                
+                <!-- Flag Submission (Hidden by default) -->
+                <div class="mt-4" id="flag-section-stego" style="display: none;">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <input type="text" placeholder="Enter flag..." class="flag-input" id="flag-stego">
+                        <button class="submit-flag-btn" onclick="submitFlag('steganography')">
+                            <i class="fas fa-flag mr-2"></i>Submit
+                        </button>
+                    </div>
+                    <div id="flag-result-stego"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Include Add Challenge Modal -->
+    <div id="modalContainer"></div>
+
+    <script>
+        // Load modal content
+        fetch('modal.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('modalContainer').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading modal:', error));
+
+        // Modal functions
+        function openAddChallengeModal() {
+            const modal = document.getElementById('addChallengeModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeAddChallengeModal() {
+            const modal = document.getElementById('addChallengeModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+                resetForm();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('addChallengeModal');
+            if (modal && event.target === modal) {
+                closeAddChallengeModal();
+            }
+        });
+
+        // Form functionality (same as add_challenges.html)
+        function addHint() {
+            const hintsContainer = document.getElementById('hintsContainer');
+            const hintDiv = document.createElement('div');
+            hintDiv.className = 'hint-item flex gap-3';
+            hintDiv.innerHTML = `
+                <input type="text" class="hint-input flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent"
+                    placeholder="Enter hint...">
+                <button type="button" onclick="removeHint(this)" class="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            hintsContainer.appendChild(hintDiv);
+        }
+
+        function removeHint(button) {
+            button.parentElement.remove();
+        }
+
+        function addFile() {
+            const filesContainer = document.getElementById('filesContainer');
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'file-item flex gap-3';
+            fileDiv.innerHTML = `
+                <input type="text" class="file-name flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent"
+                    placeholder="File name">
+                <input type="file" class="file-upload flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
+                    accept="image/*,.pdf,.txt,.zip,.tar.gz" onchange="handleFileSelect(this)">
+                <button type="button" onclick="removeFile(this)" class="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            filesContainer.appendChild(fileDiv);
+        }
+
+        function removeFile(button) {
+            button.parentElement.remove();
+        }
+
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (file) {
+                const fileNameInput = input.parentElement.querySelector('.file-name');
+                if (!fileNameInput.value) {
+                    fileNameInput.value = file.name;
+                }
+                
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        input.dataset.imagePreview = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        function resetForm() {
+            const form = document.getElementById('addChallengeForm');
+            if (form) {
+                form.reset();
+                document.getElementById('hintsContainer').innerHTML = `
+                    <div class="hint-item flex gap-3">
+                        <input type="text" class="hint-input flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent"
+                            placeholder="Enter hint...">
+                        <button type="button" onclick="removeHint(this)" class="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                document.getElementById('filesContainer').innerHTML = `
+                    <div class="file-item flex gap-3">
+                        <input type="text" class="file-name flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent"
+                            placeholder="File name">
+                        <input type="file" class="file-upload flex-1 px-3 py-2 bg-gray-800 border border-green-400 rounded-md text-green-400 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
+                            accept="image/*,.pdf,.txt,.zip,.tar.gz" onchange="handleFileSelect(this)">
+                        <button type="button" onclick="removeFile(this)" class="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                document.getElementById('previewSection').classList.add('hidden');
+            }
+        }
+
+        function previewChallenge() {
+            const formData = collectFormData();
+            if (!validateForm(formData)) return;
+
+            const previewContent = generatePreview(formData);
+            document.getElementById('previewContent').innerHTML = previewContent;
+            document.getElementById('previewSection').classList.remove('hidden');
+        }
+
+        function collectFormData() {
+            const hints = Array.from(document.querySelectorAll('.hint-input')).map(input => input.value).filter(v => v.trim());
+            const files = Array.from(document.querySelectorAll('.file-item')).map(item => {
+                const fileInput = item.querySelector('.file-upload');
+                const fileName = item.querySelector('.file-name').value;
+                const file = fileInput.files[0];
+                
+                return {
+                    name: fileName || (file ? file.name : ''),
+                    file: file,
+                    size: file ? (file.size / 1024).toFixed(2) + ' KB' : '',
+                    type: file ? file.type : 'Text'
+                };
+            }).filter(f => f.name);
+
+            return {
+                name: document.getElementById('challengeName').value,
+                id: document.getElementById('challengeId').value,
+                category: document.getElementById('category').value,
+                difficulty: document.getElementById('difficulty').value,
+                description: document.getElementById('description').value,
+                tags: document.getElementById('tags').value,
+                terminalCommand: document.getElementById('terminalCommand').value,
+                points: document.getElementById('points').value,
+                flagFormat: document.getElementById('flagFormat').value,
+                flagValue: document.getElementById('flagValue').value,
+                hints: hints,
+                files: files
+            };
+        }
+
+        function validateForm(data) {
+            if (!data.name || !data.id || !data.category || !data.difficulty || !data.description || !data.points) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please fill in all required fields marked with *',
+                    confirmButtonColor: '#10b981'
+                });
+                return false;
+            }
+            return true;
+        }
+
+        function generatePreview(data) {
+            const difficultyColors = {
+                easy: 'bg-green-600',
+                medium: 'bg-yellow-600',
+                hard: 'bg-orange-600',
+                extreme: 'bg-red-600'
+            };
+
+            return `
+                <div class="challenge-card p-6 rounded-lg border border-green-400 bg-gray-900">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="hacker-font text-lg font-semibold text-green-400">${data.name}</h3>
+                        <span class="${difficultyColors[data.difficulty]} px-2 py-1 text-xs font-semibold rounded text-white">${data.difficulty.toUpperCase()}</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-300 mb-2">${data.description}</p>
+                        ${data.tags ? `<div class="flex items-center space-x-4 text-sm text-gray-400">
+                            <span><i class="fas fa-tag mr-1"></i>${data.tags}</span>
+                        </div>` : ''}
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">
+                                <i class="fas fa-coins mr-1"></i>${data.points} points
+                            </span>
+                        </div>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                            <i class="fas fa-play mr-2"></i>Start
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Form submission
+        document.addEventListener('submit', function(e) {
+            if (e.target && e.target.id === 'addChallengeForm') {
+                e.preventDefault();
+                
+                const formData = collectFormData();
+                if (!validateForm(formData)) return;
+
+                Swal.fire({
+                    title: 'Creating Challenge...',
+                    html: 'Please wait while we create your challenge.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Challenge Created!',
+                        text: `Challenge "${formData.name}" has been successfully created.`,
+                        confirmButtonColor: '#10b981'
+                    }).then(() => {
+                        closeAddChallengeModal();
+                        // Refresh challenges list or update UI
+                        location.reload();
+                    });
+                }, 2000);
+            }
+        });
+    </script>
+
+    <script src="../../javascript/challenges.js"></script>
+    
+    <!-- Terminal Toggle Button -->
+    <button id="terminal-toggle" class="fixed bottom-4 right-4 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50" onclick="toggleTerminal()">
+        <i class="fas fa-terminal"></i>
+    </button>
+</body>
+</html>

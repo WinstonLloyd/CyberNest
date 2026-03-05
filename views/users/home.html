@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CyberTerminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/users/home.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap">
+</head>
+<body class="min-h-screen bg-black text-green-400">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="fas fa-terminal mr-3"></i>
+                    Welcome to CyberTerminal
+                </h1>
+                <p class="hero-subtitle">
+                    Master the art of cybersecurity through hands-on challenges and real-world simulations
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Challenges</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">Rank</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class class="stat-info">
+                            <div class="stat-number">12,450</div>
+                            <div class="stat-label">Points</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">89%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="challenges.html" class="btn btn-primary">
+                        <i class="fas fa-play mr-2"></i>
+                        Start Challenges
+                    </a>
+                    <a href="../terminal.html" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-terminal mr-2"></i>
+                        Open Terminal
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="activity-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line mr-2"></i>
+                Recent Activity
+            </h2>
+            <div class="activity-grid">
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <div class="activity-icon completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h3>SQL Injection Mastered</h3>
+                            <p class="activity-time">2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="activity-body">
+                        <p>Successfully completed the SQL Injection challenge with a perfect score!</p>
+                        <div class="activity-reward">
+                            <span class="reward-badge">+500 points</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <div class="activity-icon in-progress">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h3>Buffer Overflow Challenge</h3>
+                            <p class="activity-time">Started 1 day ago</p>
+                        </div>
+                    </div>
+                    <div class="activity-body">
+                        <p>Currently working on memory corruption vulnerabilities and shellcode development.</p>
+                        <div class="activity-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <span class="progress-text">65% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <div class="activity-icon completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h3>Cryptography Basics</h3>
+                            <p class="activity-time">3 days ago</p>
+                        </div>
+                    </div>
+                    <div class="activity-body">
+                        <p>Completed the cryptography fundamentals module and earned the Crypto Novice badge!</p>
+                        <div class="activity-reward">
+                            <span class="reward-badge">+250 points</span>
+                            <span class="badge">Crypto Novice</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Challenges -->
+        <section class="featured-section">
+            <h2 class="section-title">
+                <i class="fas fa-star mr-2"></i>
+                Featured Challenges
+            </h2>
+            <div class="featured-grid">
+                <div class="challenge-card featured">
+                    <div class="challenge-header">
+                        <div class="challenge-difficulty extreme">
+                            <i class="fas fa-fire"></i>
+                            Extreme
+                        </div>
+                        <div class="challenge-info">
+                            <h3>Advanced Reverse Engineering</h3>
+                            <div class="challenge-meta">
+                                <span><i class="fas fa-users"></i> 23 attempts</span>
+                                <span><i class="fas fa-coins"></i> 2000 points</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challenge-body">
+                        <p>Decompile complex binaries and extract hidden algorithms. Only for the elite hackers.</p>
+                        <div class="challenge-tags">
+                            <span class="tag">Reverse Engineering</span>
+                            <span class="tag">Assembly</span>
+                            <span class="tag">Advanced</span>
+                        </div>
+                    </div>
+                    <div class="challenge-footer">
+                        <a href="challenges.html#reverse-engineering" class="btn btn-outline">
+                            <i class="fas fa-play mr-2"></i>
+                            Try Challenge
+                        </a>
+                    </div>
+                </div>
+                <div class="challenge-card featured">
+                    <div class="challenge-header">
+                        <div class="challenge-difficulty hard">
+                            <i class="fas fa-lock"></i>
+                            Hard
+                        </div>
+                        <div class="challenge-info">
+                            <h3>RSA Cryptography</h3>
+                            <div class="challenge-meta">
+                                <span><i class="fas fa-users"></i> 89 attempts</span>
+                                <span><i class="fas fa-coins"></i> 1000 points</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challenge-body">
+                        <p>Break weak RSA encryption and recover private keys from public certificates.</p>
+                        <div class="challenge-tags">
+                            <span class="tag">Cryptography</span>
+                            <span class="tag">Math</span>
+                            <span class="tag">Key Recovery</span>
+                        </div>
+                    </div>
+                    <div class="challenge-footer">
+                        <a href="challenges.html#rsa-cryptography" class="btn btn-outline">
+                            <i class="fas fa-play mr-2"></i>
+                            Try Challenge
+                        </a>
+                    </div>
+                </div>
+                <div class="challenge-card featured">
+                    <div class="challenge-header">
+                        <div class="challenge-difficulty medium">
+                            <i class="fas fa-search"></i>
+                            Medium
+                        </div>
+                        <div class="challenge-info">
+                            <h3>Network Forensics</h3>
+                            <div class="challenge-meta">
+                                <span><i class="fas fa-users"></i> 567 attempts</span>
+                                <span><i class="fas fa-coins"></i> 750 points</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challenge-body">
+                        <p>Analyze packet captures and extract hidden communications from network traffic.</p>
+                        <div class="challenge-tags">
+                            <span class="tag">Forensics</span>
+                            <span class="tag">Networking</span>
+                            <span class="tag">PCAP Analysis</span>
+                        </div>
+                    </div>
+                    <div class="challenge-footer">
+                        <a href="challenges.html#network-forensics" class="btn btn-outline">
+                            <i class="fas fa-play mr-2"></i>
+                            Try Challenge
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Path -->
+        <section class="learning-section">
+            <h2 class="section-title">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                Your Learning Path
+            </h2>
+            <div class="learning-path">
+                <div class="path-node completed">
+                    <div class="node-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="node-content">
+                        <h3>Getting Started</h3>
+                        <p>Basic concepts and terminal commands</p>
+                    </div>
+                </div>
+                <div class="path-connector completed"></div>
+                <div class="path-node completed">
+                    <div class="node-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="node-content">
+                        <h3>Web Security Basics</h3>
+                        <p>Common vulnerabilities and prevention</p>
+                    </div>
+                </div>
+                <div class="path-connector completed"></div>
+                <div class="path-node in-progress">
+                    <div class="node-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="node-content">
+                        <h3>Advanced Cryptography</h3>
+                        <p>Encryption, hashing, and digital signatures</p>
+                    </div>
+                </div>
+                <div class="path-connector"></div>
+                <div class="path-node locked">
+                    <div class="node-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="node-content">
+                        <h3>Expert Level</h3>
+                        <p>Master-level challenges and CTF competitions</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community -->
+        <section class="community-section">
+            <h2 class="section-title">
+                <i class="fas fa-users mr-2"></i>
+                Community
+            </h2>
+            <div class="community-grid">
+                <div class="community-card">
+                    <div class="community-header">
+                        <h3>Top Performers</h3>
+                    </div>
+                    <div class="community-body">
+                        <div class="leaderboard-preview">
+                            <div class="leaderboard-item">
+                                <span class="rank">1</span>
+                                <span class="name">CyberNinja</span>
+                                <span class="points">15,230</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">2</span>
+                                <span class="name">CodeBreaker</span>
+                                <span class="points">14,890</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">3</span>
+                                <span class="name">SecurityPro</span>
+                                <span class="points">13,450</span>
+                            </div>
+                        </div>
+                        <a href="leaderboard.html" class="btn btn-outline">
+                            <i class="fas fa-trophy mr-2"></i>
+                            View Leaderboard
+                        </a>
+                    </div>
+                </div>
+                <div class="community-card">
+                    <div class="community-header">
+                        <h3>Recent Discussions</h3>
+                    </div>
+                    <div class="community-body">
+                        <div class="discussion-item">
+                            <div class="discussion-title">
+                                <h4>Help with RSA Challenge</h4>
+                            </div>
+                            <div class="discussion-meta">
+                                <span class="author">by CryptoNewbie</span>
+                                <span class="time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="discussion-item">
+                            <div class="discussion-title">
+                                <h4>Buffer Overflow Tips</h4>
+                            </div>
+                            <div class="discussion-meta">
+                                <span class="author">by ShellMaster</span>
+                                <span class="time">1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="discussion-item">
+                            <div class="discussion-title">
+                                <h4>Web Security Resources</h4>
+                            </div>
+                            <div class="discussion-meta">
+                                <span class="author">by SecurityGuru</span>
+                                <span class="time">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Load sidebar
+        fetch('../../includes/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                
+                // Set active nav link
+                const homeLink = document.querySelector('.nav-link[href="../index.html"]');
+                if (homeLink) {
+                    homeLink.classList.add('active');
+                }
+                
+                // Add logout functionality
+                const logoutLink = document.querySelector('a[href="#"]');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (confirm('Are you sure you want to logout?')) {
+                            window.location.href = '../../index.html';
+                        }
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading sidebar:', error));
+
+        // Animate stats on page load
+        window.addEventListener('load', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.textContent);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = current.toLocaleString();
+                }, 20);
+            });
+        });
+    </script>
+</body>
+</html>
