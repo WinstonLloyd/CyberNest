@@ -508,12 +508,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="home.html">
+                        <a class="nav-link nav-link-custom active" href="home.php">
                             <i class="fas fa-home me-2"></i>Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="challenges.html">
+                        <a class="nav-link nav-link-custom" href="challenges.php">
                             <i class="fas fa-trophy me-2"></i>Challenges
                         </a>
                     </li>

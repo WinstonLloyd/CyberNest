@@ -421,7 +421,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-3">
-                    <a class="nav-link" href="../../index.html">
+                    <a class="nav-link" href="#" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
@@ -451,7 +451,7 @@
                             <li><a class="dropdown-item" href="#profile">Profile</a></li>
                             <li><a class="dropdown-item" href="#settings">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="#l" onclick="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -605,6 +605,15 @@
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Add modal close event listener to reset editing mode
+            const addChallengeModal = document.getElementById('addChallengeModal');
+            addChallengeModal.addEventListener('hidden.bs.modal', function () {
+                const form = document.getElementById('addChallengeForm');
+                delete form.dataset.editingId;
+                form.reset();
+                document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
             });
         });
 
@@ -846,6 +855,8 @@
                             `,
                             icon: 'info',
                             confirmButtonColor: '#28a745',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
                             confirmButtonText: 'Close'
                         });
                     }
@@ -856,6 +867,50 @@
                         icon: 'error',
                         title: 'Error',
                         text: 'Failed to fetch challenge details',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        confirmButtonColor: '#dc3545'
+                    });
+                });
+        };
+
+        window.editChallenge = function(challengeId) {
+            console.log('Editing challenge:', challengeId);
+            fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const challenge = data.challenge;
+                        const form = document.getElementById('addChallengeForm');
+                        
+                        // Populate form fields
+                        document.getElementById('challengeName').value = challenge.title;
+                        document.getElementById('challengeDifficulty').value = challenge.difficulty;
+                        document.getElementById('challengeDescription').value = challenge.description;
+                        document.getElementById('challengePoints').value = challenge.points;
+                        document.getElementById('challengeCategory').value = challenge.category;
+                        document.getElementById('challengeStatus').value = challenge.status;
+                        document.getElementById('challengeFlag').value = challenge.flag || '';
+                        document.getElementById('challengeTags').value = challenge.tags || '';
+                        
+                        // Set editing mode
+                        form.dataset.editingId = challengeId;
+                        
+                        // Change modal title
+                        document.querySelector('#addChallengeModal .modal-title').textContent = 'Edit Challenge';
+                        
+                        const modal = new bootstrap.Modal(document.getElementById('addChallengeModal'));
+                        modal.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching challenge:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to fetch challenge details for editing',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
                         confirmButtonColor: '#dc3545'
                     });
                 });
@@ -868,6 +923,8 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',
+                background: '#1a1a1a',
+                color: '#00ff00',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel'
@@ -883,7 +940,9 @@
                                 icon: 'success',
                                 title: 'Deleted!',
                                 text: 'Challenge deleted successfully!',
-                                confirmButtonColor: '#28a745'
+                                confirmButtonColor: '#28a745',
+                                background: '#1a1a1a',
+                                color: '#00ff00'
                             });
                             loadChallenges();
                             loadChallengeStats();
@@ -892,6 +951,8 @@
                                 icon: 'error',
                                 title: 'Delete Failed',
                                 text: 'Failed to delete challenge: ' + data.message,
+                                background: '#1a1a1a',
+                                color: '#00ff00',
                                 confirmButtonColor: '#dc3545'
                             });
                         }
@@ -902,6 +963,8 @@
                             icon: 'error',
                             title: 'Error',
                             text: 'Failed to delete challenge. Please try again.',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
                             confirmButtonColor: '#dc3545'
                         });
                     });
@@ -918,6 +981,8 @@
                 confirmButtonColor: '#dc3545',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Publish',
+                background: '#1a1a1a',
+                color: '#00ff00',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -944,6 +1009,8 @@
                                     icon: 'success',
                                     title: 'Published!',
                                     text: 'Challenge published successfully!',
+                                    background: '#1a1a1a',
+                                    color: '#00ff00',
                                     confirmButtonColor: '#28a745'
                                 });
                                 loadChallenges();
@@ -953,6 +1020,8 @@
                                     icon: 'error',
                                     title: 'Publish Failed',
                                     text: 'Failed to publish challenge: ' + data.message,
+                                    background: '#1a1a1a',
+                            color: '#00ff00',
                                     confirmButtonColor: '#dc3545'
                                 });
                             }
@@ -963,6 +1032,8 @@
                                 icon: 'error',
                                 title: 'Error',
                                 text: 'Failed to publish challenge. Please try again.',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
                                 confirmButtonColor: '#dc3545'
                             });
                         });
@@ -979,6 +1050,8 @@
                 confirmButtonColor: '#dc3545',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Activate',
+                background: '#1a1a1a',
+                color: '#00ff00',
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -1005,6 +1078,8 @@
                                     icon: 'success',
                                     title: 'Activated!',
                                     text: 'Challenge activated successfully!',
+                                    background: '#1a1a1a',
+                                    color: '#00ff00',
                                     confirmButtonColor: '#28a745'
                                 });
                                 loadChallenges();
@@ -1014,6 +1089,8 @@
                                     icon: 'error',
                                     title: 'Activate Failed',
                                     text: 'Failed to activate challenge: ' + data.message,
+                                    background: '#1a1a1a',
+                                    color: '#00ff00',
                                     confirmButtonColor: '#dc3545'
                                 });
                             }
@@ -1024,6 +1101,8 @@
                                 icon: 'error',
                                 title: 'Error',
                                 text: 'Failed to activate challenge. Please try again.',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
                                 confirmButtonColor: '#dc3545'
                             });
                         });
@@ -1050,46 +1129,180 @@
                 tags: document.getElementById('challengeTags').value
             };
             
-            fetch('/backend/api/challenges.php?action=create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(challengeData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
-                    modal.hide();
-                    form.reset();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Saved!',
-                        text: 'Challenge saved successfully!',
-                        confirmButtonColor: '#28a745'
-                    });
-                    loadChallenges();
-                    loadChallengeStats();
-                } else {
+            // Check if we're editing (has hidden id field) or creating new
+            const isEditing = form.dataset.editingId;
+            
+            if (isEditing) {
+                // Update existing challenge
+                challengeData.id = parseInt(isEditing);
+                fetch('/backend/api/challenges.php?action=update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(challengeData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
+                        modal.hide();
+                        form.reset();
+                        delete form.dataset.editingId;
+                        
+                        // Update modal title back to "Add New Challenge"
+                        document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated!',
+                            text: 'Challenge updated successfully!',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            confirmButtonColor: '#28a745'
+                        });
+                        loadChallenges();
+                        loadChallengeStats();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Update Failed',
+                            text: 'Failed to update challenge: ' + data.message,
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating challenge:', error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Save Failed',
-                        text: 'Failed to save challenge: ' + data.message,
+                        title: 'Error',
+                        text: 'Failed to update challenge. Please try again.',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
                         confirmButtonColor: '#dc3545'
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error saving challenge:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to save challenge. Please try again.',
-                    confirmButtonColor: '#dc3545'
                 });
-            });
+            } else {
+                // Create new challenge
+                fetch('/backend/api/challenges.php?action=create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(challengeData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
+                        modal.hide();
+                        form.reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'Challenge saved successfully!',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            confirmButtonColor: '#28a745'
+                        });
+                        loadChallenges();
+                        loadChallengeStats();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Save Failed',
+                            text: 'Failed to save challenge: ' + data.message,
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving challenge:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to save challenge. Please try again.',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        confirmButtonColor: '#dc3545'
+                    });
+                });
+            }
         };
+        // Logout function
+        function logout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/backend/logout.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Logout Successful',
+                                text: 'You have been logged out successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Logout Failed',
+                                text: 'Logout failed: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                timer: 3000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        // Still redirect on error
+                        Swal.fire({
+                            title: 'Redirecting',
+                            text: 'Logging out...',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#1a1a1a',
+                            color: '#00ff00'
+                        }).then(() => {
+                            window.location.href = '../../index.php';
+                        });
+                    });
+                }
+            });
+        }
 </script>
 </body>
 </html>

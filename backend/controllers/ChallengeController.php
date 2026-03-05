@@ -54,6 +54,9 @@ class ChallengeController {
             case 'update':
                 $this->updateChallenge();
                 break;
+            case 'submitFlag':
+                $this->submitFlag();
+                break;
             case 'delete':
                 $this->deleteChallenge();
                 break;
@@ -142,6 +145,7 @@ class ChallengeController {
                 'points' => $data['points'],
                 'category' => $data['category'],
                 'status' => $data['status'],
+                'flag' => $data['flag'] ?? '',
                 'tags' => $data['tags'] ?? ''
             ];
 
@@ -183,6 +187,7 @@ class ChallengeController {
                 'points' => $data['points'],
                 'category' => $data['category'],
                 'status' => $data['status'],
+                'flag' => $data['flag'] ?? '',
                 'tags' => $data['tags'] ?? ''
             ];
 
@@ -195,6 +200,57 @@ class ChallengeController {
             }
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to update challenge: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function submitFlag() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->sendResponse(['success' => false, 'message' => 'Method not allowed'], 405);
+            return;
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!$data) {
+            $this->sendResponse(['success' => false, 'message' => 'Invalid data'], 400);
+            return;
+        }
+
+        if (empty($data['challenge_id']) || empty($data['flag'])) {
+            $this->sendResponse(['success' => false, 'message' => 'Challenge ID and flag are required'], 400);
+            return;
+        }
+
+        try {
+            $challengeId = $data['challenge_id'];
+            $submittedFlag = $data['flag'];
+
+            // Get challenge details to compare flag
+            $challenge = $this->challenge->getChallengeById($challengeId);
+            
+            if (!$challenge) {
+                $this->sendResponse(['success' => false, 'message' => 'Challenge not found'], 404);
+                return;
+            }
+
+            // Compare submitted flag with actual flag
+            $isCorrect = $submittedFlag === $challenge['flag'];
+            
+            // For now, we'll just return the comparison result
+            // In a real application, you would also:
+            // - Log the attempt
+            // - Update user points if correct
+            // - Mark challenge as completed for the user
+            // - Track attempt statistics
+            
+            $this->sendResponse([
+                'success' => true,
+                'correct' => $isCorrect,
+                'message' => $isCorrect ? 'Flag submitted successfully!' : 'Incorrect flag'
+            ]);
+            
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to submit flag: ' . $e->getMessage()], 500);
         }
     }
 

@@ -268,7 +268,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-3">
-                    <a class="nav-link" href="#logout">
+                    <a class="nav-link" href="#" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
@@ -298,7 +298,7 @@
                             <li><a class="dropdown-item" href="#profile">Profile</a></li>
                             <li><a class="dropdown-item" href="#settings">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -581,6 +581,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
         // Settings functionality
@@ -792,6 +793,75 @@
                 }, 3000);
             }
         };
+        // Logout function
+        function logout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/backend/logout.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Logout Successful',
+                                text: 'You have been logged out successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Logout Failed',
+                                text: 'Logout failed: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                timer: 3000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        // Still redirect on error
+                        Swal.fire({
+                            title: 'Redirecting',
+                            text: 'Logging out...',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#1a1a1a',
+                            color: '#00ff00'
+                        }).then(() => {
+                            window.location.href = '../../index.php';
+                        });
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>

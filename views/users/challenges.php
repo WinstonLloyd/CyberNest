@@ -249,13 +249,19 @@
             border: 1px solid #28a745;
         }
 
-        .difficulty-medium {
+        .difficulty-beginner {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.2), rgba(40, 167, 69, 0.1));
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .difficulty-intermediate {
             background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 193, 7, 0.1));
             color: #ffc107;
             border: 1px solid #ffc107;
         }
 
-        .difficulty-hard {
+        .difficulty-medium {
             background: linear-gradient(135deg, rgba(255, 165, 0, 0.2), rgba(255, 165, 0, 0.1));
             color: #ff8c00;
             border: 1px solid #ff8c00;
@@ -363,8 +369,20 @@
 
         .status-available {
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 255, 0, 0.1));
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .status-unavailable {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.1));
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .status-draft {
+            background: linear-gradient(135deg, rgba(108, 117, 125, 0.2), rgba(108, 117, 125, 0.1));
+            color: #6c757d;
+            border: 1px solid #6c757d;
         }
 
         .navbar-custom {
@@ -509,13 +527,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="home.html">
+                        <a class="nav-link nav-link-custom" href="home.php">
                             <i class="fas fa-home me-2"></i>Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="challenges.html">
+                        <a class="nav-link nav-link-custom active" href="challenges.php">
                             <i class="fas fa-trophy me-2"></i>Challenges
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="../terminal.html">
+                            <i class="fas fa-terminal me-2"></i>Terminal
                         </a>
                     </li>
                     <li class="nav-item">
@@ -630,304 +653,13 @@
         </div>
     </section>
 
-    <!-- Challenges Grid -->
-    <section class="container">
-        <div class="challenges-grid">
-            <div class="challenge-card" data-difficulty="easy" data-category="web" data-status="completed">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">Basic XSS</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-easy">Easy</span>
-                </div>
-                <p class="challenge-description">Learn the fundamentals of Cross-Site Scripting attacks by exploiting a vulnerable web application.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">847</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">92%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">15m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">web</span>
-                    <span class="tag">xss</span>
-                    <span class="tag">javascript</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">100 pts</div>
-                    <span class="challenge-status status-completed">Completed</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="medium" data-category="crypto" data-status="attempted">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">Caesar Cipher</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-medium">Medium</span>
-                </div>
-                <p class="challenge-description">Break a classic Caesar cipher encryption to reveal the hidden message.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">623</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">78%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">25m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">crypto</span>
-                    <span class="tag">cipher</span>
-                    <span class="tag">classical</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">250 pts</div>
-                    <span class="challenge-status status-attempted">Attempted</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="hard" data-category="network" data-status="available">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">Port Scanner</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-hard">Hard</span>
-                </div>
-                <p class="challenge-description">Identify open ports and services on a target network using advanced scanning techniques.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">412</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">45%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">45m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">network</span>
-                    <span class="tag">scanning</span>
-                    <span class="tag">nmap</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">500 pts</div>
-                    <span class="challenge-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="expert" data-category="reverse" data-status="available">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">Binary Analysis</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-expert">Expert</span>
-                </div>
-                <p class="challenge-description">Reverse engineer a compiled binary to find the hidden flag and understand its functionality.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">156</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">23%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">2h</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">reverse</span>
-                    <span class="tag">assembly</span>
-                    <span class="tag">gdb</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">750 pts</div>
-                    <span class="challenge-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="medium" data-category="forensics" data-status="completed">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">Memory Dump</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-medium">Medium</span>
-                </div>
-                <p class="challenge-description">Analyze a memory dump to extract sensitive information and identify malicious processes.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">389</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">67%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">35m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">forensics</span>
-                    <span class="tag">memory</span>
-                    <span class="tag">volatility</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">300 pts</div>
-                    <span class="challenge-status status-completed">Completed</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="easy" data-category="web" data-status="completed">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">SQL Injection</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-easy">Easy</span>
-                </div>
-                <p class="challenge-description">Exploit a vulnerable SQL query to bypass authentication and access sensitive data.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">923</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">89%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">20m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">web</span>
-                    <span class="tag">sql</span>
-                    <span class="tag">database</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">150 pts</div>
-                    <span class="challenge-status status-completed">Completed</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="insane" data-category="crypto" data-status="available">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">RSA Challenge</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-insane">Insane</span>
-                </div>
-                <p class="challenge-description">Break RSA encryption with weak parameters to recover the private key and decrypt messages.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">42</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">12%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">4h</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">crypto</span>
-                    <span class="tag">rsa</span>
-                    <span class="tag">number-theory</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">1000 pts</div>
-                    <span class="challenge-status status-available">Available</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="medium" data-category="mobile" data-status="attempted">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">APK Analysis</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-medium">Medium</span>
-                </div>
-                <p class="challenge-description">Decompile and analyze an Android application to find hardcoded secrets and vulnerabilities.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">267</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">54%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">40m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">mobile</span>
-                    <span class="tag">android</span>
-                    <span class="tag">apk</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">350 pts</div>
-                    <span class="challenge-status status-attempted">Attempted</span>
-                </div>
-            </div>
-
-            <div class="challenge-card" data-difficulty="hard" data-category="web" data-status="available">
-                <div class="challenge-header">
-                    <div>
-                        <h3 class="challenge-title">CSRF Attack</h3>
-                    </div>
-                    <span class="difficulty-badge difficulty-hard">Hard</span>
-                </div>
-                <p class="challenge-description">Exploit a Cross-Site Request Forgery vulnerability to perform unauthorized actions on behalf of users.</p>
-                <div class="challenge-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">198</div>
-                        <div class="stat-label">Attempts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">38%</div>
-                        <div class="stat-label">Success</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">55m</div>
-                        <div class="stat-label">Avg Time</div>
-                    </div>
-                </div>
-                <div class="challenge-tags">
-                    <span class="tag">web</span>
-                    <span class="tag">csrf</span>
-                    <span class="tag">session</span>
-                </div>
-                <div class="challenge-footer">
-                    <div class="challenge-points">600 pts</div>
-                    <span class="challenge-status status-available">Available</span>
-                </div>
+    <!-- Challenges Section -->
+    <section class="challenges-section container">
+        <div class="challenges-grid" id="challengesGrid">
+            <!-- Challenges will be loaded dynamically from backend -->
+            <div class="text-center py-5">
+                <i class="fas fa-spinner fa-spin fa-3x mb-3 text-success"></i>
+                <h4 class="text-success">Loading challenges...</h4>
             </div>
         </div>
     </section>
@@ -953,6 +685,9 @@
     <script>
         // Challenges functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load challenges from backend
+            loadChallenges();
+            
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
@@ -1050,36 +785,243 @@
                     }
                 });
             }
+        });
 
-            // Add click handlers to challenge cards
+        // Load challenges from backend
+        function loadChallenges() {
+            fetch('/backend/api/challenges.php?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayChallenges(data.challenges);
+                        updateStats(data.challenges);
+                    } else {
+                        console.error('Failed to load challenges:', data.message);
+                        showError('Failed to load challenges');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading challenges:', error);
+                    showError('Error loading challenges');
+                });
+        }
+
+        // Display challenges in the grid
+        function displayChallenges(challenges) {
+            const container = document.getElementById('challengesGrid');
+            
+            if (challenges.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-trophy fa-3x mb-3 text-muted"></i>
+                        <h4 class="text-muted">No challenges found</h4>
+                        <p class="text-muted">Check back later for new challenges!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = challenges.map(challenge => createChallengeCard(challenge)).join('');
+            
+            // Add click handlers to newly created challenge cards
+            addChallengeCardHandlers();
+        }
+
+        // Create challenge card HTML
+        function createChallengeCard(challenge) {
+            const difficultyClass = `difficulty-${challenge.difficulty}`;
+            const statusBadge = getStatusBadge(challenge.status);
+            const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
+            
+            return `
+                <div class="challenge-card" data-difficulty="${challenge.difficulty}" data-category="${challenge.category}" data-status="${challenge.status}" data-id="${challenge.id}">
+                    <div class="challenge-header">
+                        <div>
+                            <h3 class="challenge-title">${challenge.title}</h3>
+                        </div>
+                        <span class="difficulty-badge ${difficultyClass}">${challenge.difficulty}</span>
+                    </div>
+                    <p class="challenge-description">${challenge.description}</p>
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${challenge.attempts || 0}</div>
+                            <div class="stat-label">Attempts</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${challenge.solved_count || 0}</div>
+                            <div class="stat-label">Solved</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${challenge.points}</div>
+                            <div class="stat-label">Points</div>
+                        </div>
+                    </div>
+                    <div class="challenge-tags">
+                        ${tags}
+                    </div>
+                    <div class="challenge-footer">
+                        <div class="challenge-points">${challenge.points} pts</div>
+                        <span class="challenge-status status-${challenge.status}">${statusBadge}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get status badge HTML
+        function getStatusBadge(status) {
+            const badges = {
+                'active': 'Available',
+                'inactive': 'Unavailable',
+                'draft': 'Draft'
+            };
+            return badges[status] || 'Unknown';
+        }
+
+        // Update stats based on challenges
+        function updateStats(challenges) {
+            const totalChallenges = challenges.length;
+            const activeChallenges = challenges.filter(c => c.status === 'active').length;
+            const totalPoints = challenges.reduce((sum, c) => sum + c.points, 0);
+            
+            // Update stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            if (statCards.length >= 4) {
+                statCards[0].querySelector('.stat-number').textContent = totalChallenges;
+                statCards[1].querySelector('.stat-number').textContent = activeChallenges;
+                statCards[2].querySelector('.stat-number').textContent = totalChallenges - activeChallenges;
+                statCards[3].querySelector('.stat-number').textContent = totalPoints.toLocaleString();
+            }
+        }
+
+        // Add click handlers to challenge cards
+        function addChallengeCardHandlers() {
             const challengeCards = document.querySelectorAll('.challenge-card');
             challengeCards.forEach(card => {
                 card.addEventListener('click', function() {
                     const title = this.querySelector('.challenge-title').textContent;
                     const difficulty = this.querySelector('.difficulty-badge').textContent;
                     const status = this.dataset.status;
+                    const challengeId = this.dataset.id;
                     
-                    if (status === 'available') {
-                        alert(`Starting challenge: ${title} (${difficulty})`);
-                    } else if (status === 'attempted') {
-                        alert(`Resuming challenge: ${title} (${difficulty})`);
+                    if (status === 'active') {
+                        showFlagModal(title, difficulty, challengeId);
                     } else {
-                        alert(`Reviewing completed challenge: ${title} (${difficulty})`);
+                        alert(`This challenge is ${status}. Only active challenges can be attempted.`);
                     }
                 });
             });
+        }
 
-            // Add hover effects to challenge cards
-            challengeCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px) scale(1.02)';
-                });
+        // Function to show flag submission modal
+        function showFlagModal(challengeTitle, difficulty, challengeId) {
+            const modalHtml = `
+                <div class="modal fade" id="flagModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="background: #1a1a1a; border: 1px solid #00ff00;">
+                            <div class="modal-header" style="border-bottom: 1px solid #00ff00;">
+                                <h5 class="modal-title" style="color: #00ff00;">
+                                    <i class="fas fa-flag me-2"></i>Submit Flag
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <h6 style="color: #00ff00; margin-bottom: 15px;">Challenge: ${challengeTitle}</h6>
+                                    <h6 style="color: #00ff00; margin-bottom: 20px;">Difficulty: ${difficulty}</h6>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="flagInput" style="color: #00ff00; display: block; margin-bottom: 8px;">Enter Flag:</label>
+                                    <input type="text" class="form-control" id="flagInput" 
+                                           placeholder="e.g., CYBERNEST{flag_here}" 
+                                           style="background: rgba(0,0,0,0.8); border: 1px solid #00ff00; color: #00ff00;">
+                                    <small style="color: #888;">Enter the correct flag to complete this challenge</small>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border-top: 1px solid #00ff00;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+                                        style="background: transparent; border: 1px solid #6c757d; color: #6c757d;">Cancel</button>
+                                <button type="button" class="btn btn-success" onclick="submitFlag(${challengeId})" 
+                                        style="background: #00ff00; border: 1px solid #00ff00; color: #000;">Submit Flag</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            const existingModal = document.getElementById('flagModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('flagModal'));
+            modal.show();
+            
+            // Focus on input
+            setTimeout(() => {
+                document.getElementById('flagInput').focus();
+            }, 500);
+        }
+
+        // Function to submit flag
+        window.submitFlag = function(challengeId) {
+            const flagInput = document.getElementById('flagInput');
+            const flag = flagInput.value.trim();
+            
+            if (!flag) {
+                alert('Please enter a flag');
+                return;
+            }
+            
+            // Submit flag to backend
+            fetch('/backend/api/challenges.php?action=submitFlag', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    challenge_id: challengeId,
+                    flag: flag
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('flagModal'));
+                modal.hide();
                 
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
+                if (data.success) {
+                    if (data.correct) {
+                        alert(' Correct! Challenge completed successfully!');
+                        // Reload challenges to update status
+                        loadChallenges();
+                    } else {
+                        alert(' Incorrect flag. Try again!');
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting flag:', error);
+                alert('Error submitting flag. Please try again.');
             });
-        });
+        };
+
+        // Show error message
+        function showError(message) {
+            const container = document.getElementById('challengesGrid');
+            container.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x mb-3 text-danger"></i>
+                    <h4 class="text-danger">Error</h4>
+                    <p class="text-muted">${message}</p>
+                </div>
+            `;
+        }
 
         // Pagination functionality
         window.changePage = function(page) {
