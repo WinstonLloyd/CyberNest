@@ -244,13 +244,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="challenges.html">
+                    <a class="nav-link" href="challenges.php">
                         <i class="fas fa-trophy"></i>
                         Challenges
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="leaderboard.html">
+                    <a class="nav-link" href="leaderboard.php">
                         <i class="fas fa-chart-line"></i>
                         Leaderboard
                     </a>

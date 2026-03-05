@@ -337,31 +337,31 @@
         <div class="sidebar-menu">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="dashboard.html">
+                    <a class="nav-link" href="dashboard.php">
                         <i class="fas fa-tachometer-alt"></i>
                         Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="users.html">
+                    <a class="nav-link" href="users.php">
                         <i class="fas fa-users"></i>
                         Users
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="challenges.html">
+                    <a class="nav-link" href="challenges.php">
                         <i class="fas fa-trophy"></i>
                         Challenges
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="leaderboard.html">
+                    <a class="nav-link active" href="leaderboard.php">
                         <i class="fas fa-chart-line"></i>
                         Leaderboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="settings.html">
+                    <a class="nav-link" href="settings.php">
                         <i class="fas fa-cog"></i>
                         Settings
                     </a>
