@@ -469,22 +469,7 @@
 
             <!-- Stats Grid -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">45</div>
-                    <div class="stat-label">Total Challenges</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Beginner</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">18</div>
-                    <div class="stat-label">Intermediate</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">15</div>
-                    <div class="stat-label">Expert</div>
-                </div>
+                <!-- Stats will be loaded dynamically here -->
             </div>
 
             <!-- Filter Section -->
@@ -523,263 +508,7 @@
             <!-- Challenges List -->
             <div class="challenges-container">
                 <div class="challenges-grid">
-                    <!-- Challenge 1 -->
-                    <div class="challenge-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="text-success mb-2">Buffer Overflow Basics</h5>
-                                <span class="difficulty-badge difficulty-beginner">Beginner</span>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-success">Active</div>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users stat-icon"></i>
-                                <span class="stat-value">234 attempts</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle stat-icon"></i>
-                                <span class="stat-value">89 solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-trophy stat-icon"></i>
-                                <span class="stat-value">150 points</span>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-description">
-                            Learn the fundamentals of buffer overflow vulnerabilities. This challenge covers stack-based buffer overflows, memory layout, and basic exploitation techniques.
-                        </div>
-                        
-                        <div class="challenge-tags">
-                            <span class="tag">buffer-overflow</span>
-                            <span class="tag">stack</span>
-                            <span class="tag">memory</span>
-                            <span class="tag">beginner</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewChallenge('buffer-overflow-basics')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editChallenge('buffer-overflow-basics')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="deleteChallenge('buffer-overflow-basics')">
-                                <i class="fas fa-trash me-2"></i>Delete
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Challenge 2 -->
-                    <div class="challenge-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="text-success mb-2">SQL Injection Mastery</h5>
-                                <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-success">Active</div>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users stat-icon"></i>
-                                <span class="stat-value">156 attempts</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle stat-icon"></i>
-                                <span class="stat-value">45 solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-trophy stat-icon"></i>
-                                <span class="stat-value">300 points</span>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-description">
-                            Master SQL injection techniques including UNION-based attacks, blind SQL injection, and advanced bypass methods. Test your skills against realistic web applications.
-                        </div>
-                        
-                        <div class="challenge-tags">
-                            <span class="tag">sql-injection</span>
-                            <span class="tag">database</span>
-                            <span class="tag">web</span>
-                            <span class="tag">intermediate</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewChallenge('sql-injection-mastery')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editChallenge('sql-injection-mastery')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="deleteChallenge('sql-injection-mastery')">
-                                <i class="fas fa-trash me-2"></i>Delete
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Challenge 3 -->
-                    <div class="challenge-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="text-success mb-2">Advanced ROP Exploitation</h5>
-                                <span class="difficulty-badge difficulty-expert">Expert</span>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-success">Active</div>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users stat-icon"></i>
-                                <span class="stat-value">67 attempts</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle stat-icon"></i>
-                                <span class="stat-value">12 solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-trophy stat-icon"></i>
-                                <span class="stat-value">500 points</span>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-description">
-                            Advanced Return-Oriented Programming (ROP) exploitation techniques. Learn to bypass modern security protections like ASLR and NX using sophisticated ROP chains.
-                        </div>
-                        
-                        <div class="challenge-tags">
-                            <span class="tag">rop</span>
-                            <span class="tag">aslr</span>
-                            <span class="tag">nx</span>
-                            <span class="tag">expert</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewChallenge('advanced-rop-exploitation')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editChallenge('advanced-rop-exploitation')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="deleteChallenge('advanced-rop-exploitation')">
-                                <i class="fas fa-trash me-2"></i>Delete
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Challenge 4 -->
-                    <div class="challenge-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="text-success mb-2">Web Security Fundamentals</h5>
-                                <span class="difficulty-badge difficulty-beginner">Beginner</span>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-warning">Draft</div>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users stat-icon"></i>
-                                <span class="stat-value">0 attempts</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle stat-icon"></i>
-                                <span class="stat-value">0 solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-trophy stat-icon"></i>
-                                <span class="stat-value">100 points</span>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-description">
-                            Introduction to web security vulnerabilities including XSS, CSRF, and basic authentication bypasses. Perfect for beginners starting their cybersecurity journey.
-                        </div>
-                        
-                        <div class="challenge-tags">
-                            <span class="tag">xss</span>
-                            <span class="tag">csrf</span>
-                            <span class="tag">web</span>
-                            <span class="tag">beginner</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewChallenge('web-security-fundamentals')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editChallenge('web-security-fundamentals')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action" onclick="publishChallenge('web-security-fundamentals')">
-                                <i class="fas fa-rocket me-2"></i>Publish
-                            </a>
-                            <a href="#" class="btn-action danger" onclick="deleteChallenge('web-security-fundamentals')">
-                                <i class="fas fa-trash me-2"></i>Delete
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Challenge 5 -->
-                    <div class="challenge-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="text-success mb-2">Binary Reverse Engineering</h5>
-                                <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-danger">Inactive</div>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-users stat-icon"></i>
-                                <span class="stat-value">89 attempts</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle stat-icon"></i>
-                                <span class="stat-value">23 solved</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-trophy stat-icon"></i>
-                                <span class="stat-value">250 points</span>
-                            </div>
-                        </div>
-                        
-                        <div class="challenge-description">
-                            Learn to reverse engineer binary executables. This challenge covers assembly language basics, disassembly tools, and program analysis techniques.
-                        </div>
-                        
-                        <div class="challenge-tags">
-                            <span class="tag">reverse-engineering</span>
-                            <span class="tag">assembly</span>
-                            <span class="tag">binary</span>
-                            <span class="tag">intermediate</span>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-action" onclick="viewChallenge('binary-reverse-engineering')">
-                                <i class="fas fa-eye me-2"></i>View
-                            </a>
-                            <a href="#" class="btn-action" onclick="editChallenge('binary-reverse-engineering')">
-                                <i class="fas fa-edit me-2"></i>Edit
-                            </a>
-                            <a href="#" class="btn-action" onclick="activateChallenge('binary-reverse-engineering')">
-                                <i class="fas fa-power-off me-2"></i>Activate
-                            </a>
-                        </div>
-                    </div>
+                    <!-- Challenges will be loaded dynamically here -->
                 </div>
             </div>
         </div>
@@ -844,6 +573,11 @@
                             </div>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Flag</label>
+                            <input type="text" class="form-control" id="challengeFlag" placeholder="Enter the challenge flag (e.g., CYBERNEST{flag_here})" required>
+                            <small class="text-muted">The flag users need to submit to complete this challenge</small>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Tags (comma-separated)</label>
                             <input type="text" class="form-control" id="challengeTags" placeholder="xss, sql-injection, web">
                         </div>
@@ -858,151 +592,504 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
-        // Challenges specific functionality
+        // Challenges functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Search functionality
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const challenges = document.querySelectorAll('.challenge-card');
+            // Load challenges from backend
+            loadChallenges();
+            loadChallengeStats();
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        let allChallenges = [];
+
+        // Load challenges from backend
+        function loadChallenges(filters = {}) {
+            const params = new URLSearchParams();
+            
+            if (filters.difficulty && filters.difficulty !== 'all') {
+                params.append('difficulty', filters.difficulty);
+            }
+            
+            if (filters.status && filters.status !== 'all') {
+                params.append('status', filters.status);
+            }
+            
+            if (filters.search) {
+                params.append('search', filters.search);
+            }
+            
+            const url = '/backend/api/challenges.php?action=getAll' + (params.toString() ? '&' + params.toString() : '');
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allChallenges = data.challenges;
+                        displayChallenges(data.challenges);
+                    } else {
+                        console.error('Failed to load challenges:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading challenges:', error);
+                });
+        }
+
+        // Load challenge statistics
+        function loadChallengeStats() {
+            fetch('/backend/api/challenges.php?action=stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateStatsDisplay(data.stats);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading stats:', error);
+                });
+        }
+
+        // Display challenges in the grid
+        function displayChallenges(challenges) {
+            const container = document.querySelector('.challenges-grid');
+            
+            if (challenges.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-trophy fa-3x mb-3 text-muted"></i>
+                        <h4 class="text-muted">No challenges found</h4>
+                        <p class="text-muted">Try adjusting your filters or create a new challenge.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = challenges.map(challenge => createChallengeCard(challenge)).join('');
+        }
+
+        // Create challenge card HTML
+        function createChallengeCard(challenge) {
+            const difficultyClass = `difficulty-${challenge.difficulty}`;
+            const statusBadge = getStatusBadge(challenge.status);
+            const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
+            
+            return `
+                <div class="challenge-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="text-success mb-2">${challenge.title}</h5>
+                            <span class="difficulty-badge ${difficultyClass}">${challenge.difficulty}</span>
+                        </div>
+                        <div class="text-end">
+                            ${statusBadge}
+                        </div>
+                    </div>
                     
-                    challenges.forEach(challenge => {
-                        const title = challenge.querySelector('h4').textContent.toLowerCase();
-                        const description = challenge.querySelector('.challenge-description').textContent.toLowerCase();
-                        const tags = Array.from(challenge.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
-                        
-                        if (title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm)) {
-                            challenge.style.display = '';
-                        } else {
-                            challenge.style.display = 'none';
-                        }
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-users stat-icon"></i>
+                            <span class="stat-value">${challenge.attempts || 0} attempts</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-check-circle stat-icon"></i>
+                            <span class="stat-value">${challenge.solved_count || 0} solved</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-trophy stat-icon"></i>
+                            <span class="stat-value">${challenge.points} points</span>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-description">
+                        ${challenge.description}
+                    </div>
+                    
+                    <div class="challenge-tags">
+                        ${tags}
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <a href="#" class="btn-action" onclick="viewChallenge(${challenge.id})">
+                            <i class="fas fa-eye me-2"></i>View
+                        </a>
+                        <a href="#" class="btn-action" onclick="editChallenge(${challenge.id})">
+                            <i class="fas fa-edit me-2"></i>Edit
+                        </a>
+                        ${getAdditionalActions(challenge)}
+                        <a href="#" class="btn-action danger" onclick="deleteChallenge(${challenge.id})">
+                            <i class="fas fa-trash me-2"></i>Delete
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get status badge HTML
+        function getStatusBadge(status) {
+            const badges = {
+                'active': '<div class="badge bg-success">Active</div>',
+                'inactive': '<div class="badge bg-danger">Inactive</div>',
+                'draft': '<div class="badge bg-warning">Draft</div>'
+            };
+            return badges[status] || '<div class="badge bg-secondary">Unknown</div>';
+        }
+
+        // Get additional actions based on status
+        function getAdditionalActions(challenge) {
+            if (challenge.status === 'draft') {
+                return `<a href="#" class="btn-action" onclick="publishChallenge(${challenge.id})">
+                    <i class="fas fa-rocket me-2"></i>Publish
+                </a>`;
+            } else if (challenge.status === 'inactive') {
+                return `<a href="#" class="btn-action" onclick="activateChallenge(${challenge.id})">
+                    <i class="fas fa-power-off me-2"></i>Activate
+                </a>`;
+            }
+            return '';
+        }
+
+        // Update stats display
+        function updateStatsDisplay(stats) {
+            const totalChallenges = stats.total_challenges || 0;
+            const byDifficulty = stats.by_difficulty || [];
+            
+            document.querySelector('.stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${totalChallenges}</div>
+                    <div class="stat-label">Total Challenges</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${byDifficulty.find(d => d.difficulty === 'beginner')?.count || 0}</div>
+                    <div class="stat-label">Beginner</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${byDifficulty.find(d => d.difficulty === 'intermediate')?.count || 0}</div>
+                    <div class="stat-label">Intermediate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${byDifficulty.find(d => d.difficulty === 'expert')?.count || 0}</div>
+                    <div class="stat-label">Expert</div>
+                </div>
+            `;
+        }
+
+        // Refresh challenges
+        window.refreshChallenges = function() {
+            const refreshBtn = event.target;
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
+            refreshBtn.disabled = true;
+            
+            loadChallenges();
+            loadChallengeStats();
+            
+            setTimeout(() => {
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
+                refreshBtn.disabled = false;
+            }, 1000);
+        };
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value;
+            const filters = {
+                search: searchTerm,
+                difficulty: document.getElementById('difficultyFilter').value,
+                status: document.getElementById('statusFilter').value
+            };
+            loadChallenges(filters);
+        });
+
+        // Filter functionality
+        document.getElementById('difficultyFilter').addEventListener('change', function() {
+            const filters = {
+                search: document.getElementById('searchInput').value,
+                difficulty: this.value,
+                status: document.getElementById('statusFilter').value
+            };
+            loadChallenges(filters);
+        });
+
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            const filters = {
+                search: document.getElementById('searchInput').value,
+                difficulty: document.getElementById('difficultyFilter').value,
+                status: this.value
+            };
+            loadChallenges(filters);
+        });
+
+        window.viewChallenge = function(challengeId) {
+            console.log('Viewing challenge:', challengeId);
+            fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: data.challenge.title,
+                            html: `
+                                <div style="text-align: left;">
+                                    <p><strong>Description:</strong><br>${data.challenge.description}</p>
+                                    <p><strong>Difficulty:</strong> ${data.challenge.difficulty}</p>
+                                    <p><strong>Points:</strong> ${data.challenge.points}</p>
+                                    <p><strong>Category:</strong> ${data.challenge.category}</p>
+                                    <p><strong>Status:</strong> ${data.challenge.status}</p>
+                                    <p><strong>Flag:</strong> <code>${data.challenge.flag || 'Not set'}</code></p>
+                                </div>
+                            `,
+                            icon: 'info',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Close'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching challenge:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to fetch challenge details',
+                        confirmButtonColor: '#dc3545'
                     });
                 });
-            }
+        };
 
-            // Filter functionality
-            const difficultyFilter = document.getElementById('difficultyFilter');
-            const statusFilter = document.getElementById('statusFilter');
+        window.deleteChallenge = function(challengeId) {
+            Swal.fire({
+                title: 'Delete Challenge?',
+                text: 'Are you sure you want to delete this challenge? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/challenges.php?action=delete&id=${challengeId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Challenge deleted successfully!',
+                                confirmButtonColor: '#28a745'
+                            });
+                            loadChallenges();
+                            loadChallengeStats();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Delete Failed',
+                                text: 'Failed to delete challenge: ' + data.message,
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting challenge:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to delete challenge. Please try again.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    });
+                }
+            });
+        };
+
+        window.publishChallenge = function(challengeId) {
+            Swal.fire({
+                title: 'Publish Challenge?',
+                text: 'Are you sure you want to publish this challenge?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Publish',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const challenge = data.challenge;
+                                challenge.status = 'active';
+                                
+                                return fetch('/backend/api/challenges.php?action=update', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(challenge)
+                                });
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Published!',
+                                    text: 'Challenge published successfully!',
+                                    confirmButtonColor: '#28a745'
+                                });
+                                loadChallenges();
+                                loadChallengeStats();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Publish Failed',
+                                    text: 'Failed to publish challenge: ' + data.message,
+                                    confirmButtonColor: '#dc3545'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error publishing challenge:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to publish challenge. Please try again.',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        });
+                }
+            });
+        };
+
+        window.activateChallenge = function(challengeId) {
+            Swal.fire({
+                title: 'Activate Challenge?',
+                text: 'Are you sure you want to activate this challenge?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Activate',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const challenge = data.challenge;
+                                challenge.status = 'active';
+                                
+                                return fetch('/backend/api/challenges.php?action=update', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(challenge)
+                                });
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Activated!',
+                                    text: 'Challenge activated successfully!',
+                                    confirmButtonColor: '#28a745'
+                                });
+                                loadChallenges();
+                                loadChallengeStats();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Activate Failed',
+                                    text: 'Failed to activate challenge: ' + data.message,
+                                    confirmButtonColor: '#dc3545'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error activating challenge:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to activate challenge. Please try again.',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        });
+                }
+            });
+        };
+
+        // Save challenge
+        window.saveChallenge = function() {
+            const form = document.getElementById('addChallengeForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
             
-            if (difficultyFilter) {
-                difficultyFilter.addEventListener('change', function() {
-                    filterChallenges();
-                });
-            }
-
-            if (statusFilter) {
-                statusFilter.addEventListener('change', function() {
-                    filterChallenges();
-                });
-            }
-
-            function filterChallenges() {
-                const difficulty = difficultyFilter.value;
-                const status = statusFilter.value;
-                const challenges = document.querySelectorAll('.challenge-card');
-                
-                challenges.forEach(challenge => {
-                    let show = true;
-                    
-                    if (difficulty !== 'all') {
-                        const difficultyBadge = challenge.querySelector('.difficulty-badge');
-                        if (!difficultyBadge || !difficultyBadge.textContent.toLowerCase().includes(difficulty)) {
-                            show = false;
-                        }
-                    }
-                    
-                    if (status !== 'all') {
-                        const statusBadge = challenge.querySelector('.badge');
-                        if (!statusBadge || !statusBadge.textContent.toLowerCase().includes(status)) {
-                            show = false;
-                        }
-                    }
-                    
-                    challenge.style.display = show ? '' : 'none';
-                });
-            }
-
-            // Refresh challenges
-            window.refreshChallenges = function() {
-                console.log('Refreshing challenges...');
-                const refreshBtn = event.target;
-                refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
-                refreshBtn.disabled = true;
-                
-                setTimeout(() => {
-                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
-                    refreshBtn.disabled = false;
-                    console.log('Challenges refreshed');
-                }, 2000);
+            const challengeData = {
+                title: document.getElementById('challengeName').value,
+                difficulty: document.getElementById('challengeDifficulty').value,
+                description: document.getElementById('challengeDescription').value,
+                points: parseInt(document.getElementById('challengePoints').value),
+                category: document.getElementById('challengeCategory').value,
+                status: document.getElementById('challengeStatus').value,
+                flag: document.getElementById('challengeFlag').value,
+                tags: document.getElementById('challengeTags').value
             };
-
-            // Challenge actions
-            window.viewChallenge = function(challengeId) {
-                console.log('Viewing challenge:', challengeId);
-                alert(`Viewing challenge: ${challengeId}`);
-            };
-
-            window.editChallenge = function(challengeId) {
-                console.log('Editing challenge:', challengeId);
-                alert(`Editing challenge: ${challengeId}`);
-            };
-
-            window.viewSubmissions = function(challengeId) {
-                console.log('Viewing submissions for:', challengeId);
-                alert(`Viewing submissions for: ${challengeId}`);
-            };
-
-            window.deleteChallenge = function(challengeId) {
-                if (confirm(`Are you sure you want to delete challenge "${challengeId}"?`)) {
-                    console.log('Deleting challenge:', challengeId);
-                    alert(`Challenge "${challengeId}" deleted successfully!`);
-                }
-            };
-
-            window.publishChallenge = function(challengeId) {
-                if (confirm(`Are you sure you want to publish challenge "${challengeId}"?`)) {
-                    console.log('Publishing challenge:', challengeId);
-                    alert(`Challenge "${challengeId}" published successfully!`);
-                }
-            };
-
-            window.activateChallenge = function(challengeId) {
-                if (confirm(`Are you sure you want to activate challenge "${challengeId}"?`)) {
-                    console.log('Activating challenge:', challengeId);
-                    alert(`Challenge "${challengeId}" activated successfully!`);
-                }
-            };
-
-            // Save challenge
-            window.saveChallenge = function() {
-                const form = document.getElementById('addChallengeForm');
-                if (form.checkValidity()) {
-                    console.log('Saving new challenge...');
+            
+            fetch('/backend/api/challenges.php?action=create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(challengeData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
                     modal.hide();
                     form.reset();
-                    alert('Challenge saved successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved!',
+                        text: 'Challenge saved successfully!',
+                        confirmButtonColor: '#28a745'
+                    });
+                    loadChallenges();
+                    loadChallengeStats();
                 } else {
-                    form.reportValidity();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Save Failed',
+                        text: 'Failed to save challenge: ' + data.message,
+                        confirmButtonColor: '#dc3545'
+                    });
                 }
-            };
-
-            // Simulate real-time updates
-            setInterval(() => {
-                const stats = document.querySelectorAll('.stat-value');
-                stats.forEach(stat => {
-                    if (stat.textContent.includes('attempts') || stat.textContent.includes('solved')) {
-                        const currentValue = parseInt(stat.textContent);
-                        const change = Math.floor(Math.random() * 3) - 1;
-                        const newValue = Math.max(0, currentValue + change);
-                        stat.textContent = newValue + ' ' + (stat.textContent.includes('attempts') ? 'attempts' : 'solved');
-                    }
+            })
+            .catch(error => {
+                console.error('Error saving challenge:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to save challenge. Please try again.',
+                    confirmButtonColor: '#dc3545'
                 });
-            }, 15000);
-        });
-    </script>
+            });
+        };
+</script>
 </body>
 </html>
