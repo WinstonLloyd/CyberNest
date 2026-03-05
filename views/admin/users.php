@@ -423,7 +423,7 @@
         <div class="sidebar-menu">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="dashboard.html">
+                    <a class="nav-link" href="dashboard.php">
                         <i class="fas fa-tachometer-alt"></i>
                         Dashboard
                     </a>
@@ -441,7 +441,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="users.html">
+                    <a class="nav-link active" href="users.php">
                         <i class="fas fa-users"></i>
                         Users
                     </a>
@@ -536,14 +536,6 @@
                             <option value="banned">Banned</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <select class="filter-select" id="roleFilter">
-                            <option value="all">All Roles</option>
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                            <option value="moderator">Moderator</option>
-                        </select>
-                    </div>
                     <div class="col-md-2">
                         <button class="btn btn-success w-100" onclick="refreshUsers()">
                             <i class="fas fa-sync-alt me-2"></i>Refresh
@@ -628,16 +620,9 @@
 
             // Filter functionality
             const statusFilter = document.getElementById('statusFilter');
-            const roleFilter = document.getElementById('roleFilter');
             
             if (statusFilter) {
                 statusFilter.addEventListener('change', function() {
-                    filterUsers();
-                });
-            }
-
-            if (roleFilter) {
-                roleFilter.addEventListener('change', function() {
                     filterUsers();
                 });
             }
@@ -807,7 +792,6 @@
         function filterUsers() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
-            const roleFilter = document.getElementById('roleFilter').value;
 
             filteredUsers = allUsers.filter(user => {
                 const matchesSearch = !searchTerm || 
@@ -816,9 +800,8 @@
                     user.username.toLowerCase().includes(searchTerm);
                 
                 const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
-                const matchesRole = roleFilter === 'all' || user.role === roleFilter;
 
-                return matchesSearch && matchesStatus && matchesRole;
+                return matchesSearch && matchesStatus;
             });
 
             renderUsers();
