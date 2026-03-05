@@ -77,10 +77,14 @@ class UserController {
 
     private function getAllUsers() {
         try {
-            $query = "SELECT id, username, email, display_name, role, is_active, created_at, last_login 
-                      FROM users 
-                      WHERE role != 'admin'
-                      ORDER BY created_at DESC";
+            $query = "SELECT u.id, u.username, u.email, u.display_name, u.role, u.is_active, u.created_at, u.last_login,
+                             COALESCE(up.points, 0) as points,
+                             COALESCE(up.challenges_completed, 0) as challenges_completed,
+                             COALESCE(up.rank, 'N/A') as rank
+                      FROM users u
+                      LEFT JOIN user_profiles up ON u.id = up.user_id
+                      WHERE u.role != 'admin'
+                      ORDER BY u.created_at DESC";
             
             $stmt = $this->db->prepare($query);
             $stmt->execute();
@@ -108,9 +112,13 @@ class UserController {
         }
 
         try {
-            $query = "SELECT id, username, email, display_name, role, is_active, created_at, last_login 
-                      FROM users 
-                      WHERE id = :id 
+            $query = "SELECT u.id, u.username, u.email, u.display_name, u.role, u.is_active, u.created_at, u.last_login,
+                             COALESCE(up.points, 0) as points,
+                             COALESCE(up.challenges_completed, 0) as challenges_completed,
+                             COALESCE(up.rank, 'N/A') as rank
+                      FROM users u
+                      LEFT JOIN user_profiles up ON u.id = up.user_id
+                      WHERE u.id = :id 
                       LIMIT 1";
             
             $stmt = $this->db->prepare($query);

@@ -749,15 +749,15 @@
                 
                 <div class="user-stats">
                     <div class="stat-box">
-                        <div class="stat-value">${Math.floor(Math.random() * 5000)}</div>
+                        <div class="stat-value">${user.points || 0}</div>
                         <div class="stat-label">Points</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value">${Math.floor(Math.random() * 100)}</div>
+                        <div class="stat-value">${user.challenges_completed || 0}</div>
                         <div class="stat-label">Challenges</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value">${Math.floor(Math.random() * 50) + 1}</div>
+                        <div class="stat-value">${user.rank || 'N/A'}</div>
                         <div class="stat-label">Rank</div>
                     </div>
                 </div>
@@ -881,14 +881,13 @@
                 preConfirm: () => {
                     const displayName = document.getElementById('swal-display-name').value;
                     const email = document.getElementById('swal-email').value;
-                    const role = document.getElementById('swal-role').value;
                     
                     if (!displayName || !email) {
                         Swal.showValidationMessage('Please fill in all fields');
                         return false;
                     }
                     
-                    return { displayName, email, role };
+                    return { displayName, email };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

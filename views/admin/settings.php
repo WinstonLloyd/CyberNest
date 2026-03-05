@@ -585,12 +585,58 @@
     <script>
         // Settings functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load settings from backend
+            loadSettings();
+            
             // Initialize tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+        // Load settings from backend
+        function loadSettings() {
+            fetch('/backend/api/settings.php?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const settings = data.settings;
+                        
+                        // Update site name
+                        document.getElementById('siteName').value = settings.siteName;
+                        document.getElementById('adminEmail').value = settings.adminEmail;
+                        document.getElementById('defaultLanguage').value = settings.defaultLanguage;
+                        document.getElementById('timezone').value = settings.timezone;
+                        document.getElementById('sessionTimeout').value = settings.sessionTimeout;
+                        document.getElementById('passwordMinLength').value = settings.passwordMinLength;
+                        document.getElementById('primaryColor').value = settings.primaryColor;
+                        document.getElementById('secondaryColor').value = settings.secondaryColor;
+                        document.getElementById('theme').value = settings.theme;
+                        document.getElementById('fontSize').value = settings.fontSize;
+                        document.getElementById('notificationEmail').value = settings.notificationEmail;
+                        document.getElementById('notificationFrequency').value = settings.notificationFrequency;
+                        
+                        // Update page title and header
+                        document.title = settings.siteName + ' Admin - Settings';
+                        
+                        // Update sidebar header
+                        const sidebarHeader = document.querySelector('.sidebar-header h3');
+                        if (sidebarHeader) {
+                            sidebarHeader.innerHTML = '<i class="fas fa-shield-alt me-2"></i>' + settings.siteName;
+                        }
+                        
+                        // Update settings header
+                        const settingsTitle = document.querySelector('.settings-title');
+                        if (settingsTitle) {
+                            settingsTitle.textContent = settings.siteName + ' SETTINGS';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading settings:', error);
+                });
+        }
 
         // Toggle switch functionality
         window.toggleSwitch = function(element) {
@@ -626,46 +672,95 @@
                 compactMode: document.getElementById('compactMode').classList.contains('active')
             };
 
-            console.log('Saving settings:', settings);
-            
-            // Show success message
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-success alert-dismissible fade show';
-            alertDiv.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i>
-                Settings saved successfully!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            
-            const container = document.querySelector('.container-fluid');
-            container.insertBefore(alertDiv, container.firstChild);
-            
-            // Auto-dismiss after 3 seconds
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 3000);
+            fetch('/backend/api/settings.php?action=save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update page title and header with new site name
+                    document.title = settings.siteName + ' Admin - Settings';
+                    
+                    // Update sidebar header
+                    const sidebarHeader = document.querySelector('.sidebar-header h3');
+                    if (sidebarHeader) {
+                        sidebarHeader.innerHTML = '<i class="fas fa-shield-alt me-2"></i>' + settings.siteName;
+                    }
+                    
+                    // Update settings header
+                    const settingsTitle = document.querySelector('.settings-title');
+                    if (settingsTitle) {
+                        settingsTitle.textContent = settings.siteName + ' SETTINGS';
+                    }
+                    
+                    // Show success message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>
+                        Settings saved successfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    
+                    const container = document.querySelector('.container-fluid');
+                    container.insertBefore(alertDiv, container.firstChild);
+                    
+                    // Auto-dismiss after 3 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 3000);
+                } else {
+                    // Show error message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Failed to save settings: ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    
+                    const container = document.querySelector('.container-fluid');
+                    container.insertBefore(alertDiv, container.firstChild);
+                    
+                    // Auto-dismiss after 3 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving settings:', error);
+                
+                // Show error message
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Failed to save settings. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                const container = document.querySelector('.container-fluid');
+                container.insertBefore(alertDiv, container.firstChild);
+                
+                // Auto-dismiss after 3 seconds
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 3000);
+            });
         };
 
         // Reset settings
         window.resetSettings = function() {
-            if (confirm('Are you sure you want to reset all settings to their default values?')) {
-                console.log('Resetting settings to defaults...');
+            if (confirm('Are you sure you want to reset all settings to their database values?')) {
+                // Reload settings from database
+                loadSettings();
                 
-                // Reset form values
-                document.getElementById('siteName').value = 'CyberNest';
-                document.getElementById('adminEmail').value = 'admin@cybernest.com';
-                document.getElementById('defaultLanguage').value = 'en';
-                document.getElementById('timezone').value = 'UTC';
-                document.getElementById('sessionTimeout').value = '30';
-                document.getElementById('passwordMinLength').value = '8';
-                document.getElementById('primaryColor').value = '#00ff00';
-                document.getElementById('secondaryColor').value = '#00cc00';
-                document.getElementById('theme').value = 'cyber';
-                document.getElementById('fontSize').value = 'medium';
-                document.getElementById('notificationEmail').value = 'admin@cybernest.com';
-                document.getElementById('notificationFrequency').value = 'immediate';
-                
-                // Reset toggle switches
+                // Reset toggle switches to default states
                 document.querySelectorAll('.toggle-switch').forEach(toggle => {
                     toggle.classList.remove('active');
                 });
@@ -684,7 +779,7 @@
                 alertDiv.className = 'alert alert-info alert-dismissible fade show';
                 alertDiv.innerHTML = `
                     <i class="fas fa-info-circle me-2"></i>
-                    Settings reset to default values!
+                    Settings reset to database values!
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 `;
                 

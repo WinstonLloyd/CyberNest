@@ -35,6 +35,7 @@ class Database {
             
             // Check if users table exists and has correct structure
             $users_table_exists = false;
+            $profiles_table_exists = false;
             $correct_structure = false;
             
             try {
@@ -53,6 +54,16 @@ class Database {
                         $correct_structure = true;
                     }
                 }
+                
+                // Check if user_profiles table exists
+                try {
+                    $result = $conn->query("DESCRIBE user_profiles");
+                    if ($result->rowCount() > 0) {
+                        $profiles_table_exists = true;
+                    }
+                } catch (Exception $e) {
+                    // Table doesn't exist
+                }
             } catch (Exception $e) {
                 // Table doesn't exist, will create it
             }
@@ -60,7 +71,9 @@ class Database {
             // Only drop and recreate if structure is incorrect
             if ($users_table_exists && !$correct_structure) {
                 $conn->exec("DROP TABLE IF EXISTS user_sessions");
+                $conn->exec("DROP TABLE IF EXISTS user_profiles");
                 $conn->exec("DROP TABLE IF EXISTS users");
+                $profiles_table_exists = false;
             }
             
             // Create users table only if it doesn't exist or was dropped
@@ -80,6 +93,19 @@ class Database {
                 
                 $conn->exec($sql);
                 
+                // Create user profiles table for statistics
+                $sql = "CREATE TABLE user_profiles (
+                    user_id INT(11) PRIMARY KEY,
+                    points INT(11) DEFAULT 0,
+                    challenges_completed INT(11) DEFAULT 0,
+                    rank VARCHAR(20) DEFAULT 'N/A',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                )";
+                
+                $conn->exec($sql);
+                
                 // Create sessions table
                 $sql = "CREATE TABLE user_sessions (
                     id INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -93,7 +119,7 @@ class Database {
                 $conn->exec($sql);
                 
                 // Auto-insert admin account
-                $username = 'admin';
+                $username = 'CyberNest';
                 $email = 'admin@cybernest.local';
                 $password = 'admin123';
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -102,6 +128,33 @@ class Database {
                 
                 $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, display_name, role) VALUES (?, ?, ?, ?, ?)");
                 $stmt->execute([$username, $email, $password_hash, $display_name, $role]);
+                
+                // Create admin profile
+                $admin_id = $conn->lastInsertId();
+                $stmt = $conn->prepare("INSERT INTO user_profiles (user_id, points, challenges_completed, rank) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$admin_id, 10000, 50, 'Admin']);
+            } elseif (!$profiles_table_exists) {
+                // Create only user_profiles table if it doesn't exist
+                $sql = "CREATE TABLE user_profiles (
+                    user_id INT(11) PRIMARY KEY,
+                    points INT(11) DEFAULT 0,
+                    challenges_completed INT(11) DEFAULT 0,
+                    rank VARCHAR(20) DEFAULT 'N/A',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                )";
+                
+                $conn->exec($sql);
+                
+                // Create profiles for existing users
+                $stmt = $conn->query("SELECT id FROM users WHERE role != 'admin'");
+                $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                foreach ($users as $user) {
+                    $stmt = $conn->prepare("INSERT INTO user_profiles (user_id) VALUES (?)");
+                    $stmt->execute([$user['id']]);
+                }
             }
         } catch (Exception $e) {
             throw new Exception("Failed to create tables: " . $e->getMessage());
