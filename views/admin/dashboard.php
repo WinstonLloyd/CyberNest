@@ -29,15 +29,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#users">
+                    <a class="nav-link" href="users.html">
                         <i class="fas fa-users"></i>
                         Users
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="terminal.html">
-                        <i class="fas fa-terminal"></i>
-                        Terminal
                     </a>
                 </li>
                 <li class="nav-item">
@@ -59,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-3">
-                    <a class="nav-link" href="#logout">
+                    <a class="nav-link" href="#" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
@@ -89,7 +83,7 @@
                             <li><a class="dropdown-item" href="#profile">Profile</a></li>
                             <li><a class="dropdown-item" href="#settings">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -302,5 +296,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/backend/logout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect to login page
+                        window.location.href = '../../index.php';
+                    } else {
+                        alert('Logout failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    // Still redirect on error
+                    window.location.href = '../../index.php';
+                });
+            }
+        }
+    </script>
 </body>
 </html>

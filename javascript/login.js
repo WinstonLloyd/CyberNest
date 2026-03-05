@@ -103,23 +103,43 @@ function showForgotPassword() {
 }
 
 function showMessage(message, type = 'error') {
-    const statusDiv = document.getElementById('statusMessage');
-    const regStatusDiv = document.getElementById('regStatusMessage');
+    let icon, title, confirmButtonColor, timer;
     
-    if (document.getElementById('loginForm').classList.contains('hidden')) {
-        regStatusDiv.textContent = message;
-        regStatusDiv.classList.remove('hidden');
-        regStatusDiv.className = `mt-4 text-center text-sm ${type === 'error' ? 'text-red-400' : 'text-green-400'}`;
-    } else {
-        statusDiv.textContent = message;
-        statusDiv.classList.remove('hidden');
-        statusDiv.className = `mt-4 text-center text-sm ${type === 'error' ? 'text-red-400' : 'text-green-400'}`;
+    switch(type) {
+        case 'success':
+            icon = 'success';
+            title = 'Success';
+            confirmButtonColor = '#00ff00';
+            timer = 2000;
+            break;
+        case 'info':
+            icon = 'info';
+            title = 'Information';
+            confirmButtonColor = '#00ff00';
+            timer = 3000;
+            break;
+        case 'error':
+        default:
+            icon = 'error';
+            title = 'Error';
+            confirmButtonColor = '#00ff00';
+            timer = 3000;
+            break;
     }
     
-    setTimeout(() => {
-        statusDiv.classList.add('hidden');
-        regStatusDiv.classList.add('hidden');
-    }, 3000);
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        confirmButtonColor: confirmButtonColor,
+        background: '#1a1a1a',
+        color: '#00ff00',
+        border: '1px solid #00ff00',
+        timer: timer,
+        showConfirmButton: false,
+        toast: type === 'info',
+        position: type === 'info' ? 'top-end' : 'center'
+    });
 }
 
 // Login form submission
@@ -130,31 +150,53 @@ document.getElementById('loginFormElement').addEventListener('submit', function(
     const password = document.getElementById('password').value;
     const remember = document.getElementById('remember').checked;
     
-    // Simulate authentication
-    if (username && password) {
-        if (username === 'admin' && password === 'cyber2025') {
+    if (!username || !password) {
+        showMessage('Please enter username and password.', 'error');
+        return;
+    }
+    
+    // Show loading message
+    showMessage('Authenticating...', 'info');
+    
+    // Call backend API
+    fetch('/backend/login.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            remember: remember
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
             showMessage('Authentication successful. Access granted.', 'success');
+            
+            // Redirect based on user role
             setTimeout(() => {
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('terminalAccess').classList.remove('hidden');
-            }, 1500);
-        } else if (username === 'root' && password === 'toor') {
-            showMessage('Root access detected. Elevated privileges granted.', 'success');
-            setTimeout(() => {
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('terminalAccess').classList.remove('hidden');
+                if (data.user && data.user.role === 'admin') {
+                    window.location.href = 'views/admin/dashboard.php';
+                } else {
+                    // Redirect regular users to home page
+                    window.location.href = 'views/users/home.php';
+                }
             }, 1500);
         } else {
-            showMessage('Access denied. Invalid credentials.', 'error');
+            showMessage('Access denied: ' + data.message, 'error');
             // Add glitch effect
             document.body.style.animation = 'glitch 0.5s';
             setTimeout(() => {
                 document.body.style.animation = '';
             }, 500);
         }
-    } else {
-        showMessage('Please enter username and password.', 'error');
-    }
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        showMessage('System error. Please try again.', 'error');
+    });
 });
 
 // Registration form submission
@@ -182,11 +224,38 @@ document.getElementById('registerFormElement').addEventListener('submit', functi
         return;
     }
     
-    // Simulate registration
-    showMessage('Identity created successfully. Redirecting to login...', 'success');
-    setTimeout(() => {
-        showLogin();
-    }, 2000);
+    // Show loading message
+    showMessage('Creating identity...', 'info');
+    
+    // Call backend API
+    fetch('/backend/register.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            confirm_password: confirmPassword,
+            display_name: username
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage('Identity created successfully. Redirecting to login...', 'success');
+            setTimeout(() => {
+                showLogin();
+            }, 2000);
+        } else {
+            showMessage('Registration failed: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Registration error:', error);
+        showMessage('System error. Please try again.', 'error');
+    });
 });
 
 // Window resize handler
