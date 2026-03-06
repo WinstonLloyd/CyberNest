@@ -605,29 +605,29 @@
                 <div class="stat-icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number">1,247</div>
+                <div class="stat-number" id="totalHackers">Loading...</div>
                 <div class="stat-label">Total Hackers</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="stat-number">45</div>
+                <div class="stat-number" id="totalChallenges">Loading...</div>
                 <div class="stat-label">Challenges</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-flag-checkered"></i>
                 </div>
-                <div class="stat-number">892</div>
+                <div class="stat-number" id="totalCompleted">Loading...</div>
                 <div class="stat-label">Completed</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Competition</div>
+                <div class="stat-number" id="activeToday">Loading...</div>
+                <div class="stat-label">Active Today</div>
             </div>
         </div>
     </section>
@@ -690,265 +690,11 @@
                         <th>Level</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="leaderboardTableBody">
                     <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-1">1</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">AS</div>
-                            <div class="user-info">
-                                <div class="user-name">Alice Smith</div>
-                                <div class="user-level">Level 45</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">45</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">98%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">4,123</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-elite">
-                                <i class="fas fa-crown"></i> Elite
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-2">2</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">BJ</div>
-                            <div class="user-info">
-                                <div class="user-name">Bob Johnson</div>
-                                <div class="user-level">Level 42</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">42</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">95%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">3,856</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-elite">
-                                <i class="fas fa-crown"></i> Elite
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-3">3</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">EM</div>
-                            <div class="user-info">
-                                <div class="user-name">Emma Martinez</div>
-                                <div class="user-level">Level 40</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">40</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">92%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">3,456</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-master">
-                                <i class="fas fa-medal"></i> Master
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">4</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">MW</div>
-                            <div class="user-info">
-                                <div class="user-name">Michael Wilson</div>
-                                <div class="user-level">Level 38</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">38</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">89%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">2,987</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-master">
-                                <i class="fas fa-medal"></i> Master
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">5</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">SA</div>
-                            <div class="user-info">
-                                <div class="user-name">Sarah Anderson</div>
-                                <div class="user-level">Level 35</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">35</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">87%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">2,567</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-expert">
-                                <i class="fas fa-star"></i> Expert
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">6</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">JD</div>
-                            <div class="user-info">
-                                <div class="user-name">John Doe</div>
-                                <div class="user-level">Level 32</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">32</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">85%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">2,234</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-expert">
-                                <i class="fas fa-star"></i> Expert
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">7</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">LW</div>
-                            <div class="user-info">
-                                <div class="user-name">Lisa Wang</div>
-                                <div class="user-level">Level 30</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">30</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">82%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">1,987</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-advanced">
-                                <i class="fas fa-award"></i> Advanced
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">8</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">RC</div>
-                            <div class="user-info">
-                                <div class="user-name">Robert Chen</div>
-                                <div class="user-level">Level 28</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">28</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">80%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">1,756</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-advanced">
-                                <i class="fas fa-award"></i> Advanced
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">9</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">JT</div>
-                            <div class="user-info">
-                                <div class="user-name">Jessica Taylor</div>
-                                <div class="user-level">Level 25</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">25</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">78%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">1,523</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-intermediate">
-                                <i class="fas fa-shield-alt"></i> Intermediate
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rank-cell">
-                            <div class="rank-badge rank-other">10</div>
-                        </td>
-                        <td class="user-cell">
-                            <div class="user-avatar">DL</div>
-                            <div class="user-info">
-                                <div class="user-name">David Lee</div>
-                                <div class="user-level">Level 23</div>
-                            </div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">23</div>
-                            <div class="stat-label">Completed</div>
-                        </td>
-                        <td class="stats-cell">
-                            <div class="stat-value">75%</div>
-                            <div class="stat-label">Success</div>
-                        </td>
-                        <td class="points-cell">1,345</td>
-                        <td class="badge-cell">
-                            <span class="achievement-badge badge-intermediate">
-                                <i class="fas fa-shield-alt"></i> Intermediate
-                            </span>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x mb-3 text-success"></i>
+                            <p class="text-success">Loading leaderboard...</p>
                         </td>
                     </tr>
                 </tbody>
@@ -977,6 +723,11 @@
     <script>
         // Leaderboard functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load real-time data
+            loadPlatformStats();
+            loadLeaderboard();
+            startRealTimeUpdates();
+            
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
@@ -1099,6 +850,173 @@
                 });
             }, 30000); // Update every 30 seconds
         });
+
+        // Backend data loading functions
+        function loadPlatformStats() {
+            fetch('/backend/api/challenges.php?action=getPlatformStats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const stats = data.stats;
+                        updateStatCard('totalHackers', stats.total_hackers);
+                        updateStatCard('totalChallenges', stats.total_challenges);
+                        updateStatCard('totalCompleted', stats.total_completed);
+                        updateStatCard('activeToday', stats.active_today);
+                    } else {
+                        console.error('Failed to load platform stats:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading platform stats:', error);
+                });
+        }
+
+        function loadLeaderboard() {
+            fetch('/backend/api/challenges.php?action=getTopHackers&limit=50')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayLeaderboard(data.hackers);
+                    } else {
+                        console.error('Failed to load leaderboard:', data.message);
+                        // Show error message
+                        const tbody = document.getElementById('leaderboardTableBody');
+                        if (tbody) {
+                            tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <i class="fas fa-exclamation-triangle fa-2x mb-3 text-warning"></i>
+                                        <p class="text-warning">Error loading leaderboard: ${data.message}</p>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading leaderboard:', error);
+                    // Show error message
+                    const tbody = document.getElementById('leaderboardTableBody');
+                    if (tbody) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <i class="fas fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
+                                    <p class="text-danger">Network error loading leaderboard</p>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                });
+        }
+
+        function updateStatCard(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value.toLocaleString();
+                
+                // Add animation for the update
+                element.style.transition = 'all 0.5s ease';
+                element.style.transform = 'scale(1.1)';
+                element.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '';
+                }, 500);
+            }
+        }
+
+        function displayLeaderboard(hackers) {
+            const tbody = document.getElementById('leaderboardTableBody');
+            if (!tbody) return;
+
+            if (hackers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-users fa-2x mb-3 text-muted"></i>
+                            <p class="text-muted">No hackers found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = hackers.map(hacker => {
+                const rankClass = hacker.rank <= 3 ? `rank-${hacker.rank}` : 'rank-other';
+                const levelBadge = getLevelBadge(hacker.points);
+                const initials = getInitials(hacker.username);
+                
+                return `
+                    <tr>
+                        <td class="rank-cell">
+                            <div class="rank-badge ${rankClass}">${hacker.rank}</div>
+                        </td>
+                        <td class="user-cell">
+                            <div class="user-avatar">${initials}</div>
+                            <div class="user-info">
+                                <div class="user-name">${hacker.username}</div>
+                                <div class="user-level">Level ${hacker.challenges_completed}</div>
+                            </div>
+                        </td>
+                        <td class="stats-cell">
+                            <div class="stat-value">${hacker.challenges_completed}</div>
+                            <div class="stat-label">Completed</div>
+                        </td>
+                        <td class="stats-cell">
+                            <div class="stat-value">${hacker.success_rate}%</div>
+                            <div class="stat-label">Success</div>
+                        </td>
+                        <td class="points-cell">${hacker.points.toLocaleString()}</td>
+                        <td class="badge-cell">
+                            <span class="achievement-badge ${levelBadge.class}">
+                                <i class="${levelBadge.icon}"></i> ${levelBadge.name}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getLevelBadge(points) {
+            if (points >= 4000) {
+                return { class: 'badge-elite', name: 'Elite', icon: 'fas fa-crown' };
+            } else if (points >= 3000) {
+                return { class: 'badge-master', name: 'Master', icon: 'fas fa-medal' };
+            } else if (points >= 2000) {
+                return { class: 'badge-expert', name: 'Expert', icon: 'fas fa-star' };
+            } else if (points >= 1000) {
+                return { class: 'badge-advanced', name: 'Advanced', icon: 'fas fa-award' };
+            } else if (points >= 500) {
+                return { class: 'badge-intermediate', name: 'Intermediate', icon: 'fas fa-shield-alt' };
+            } else {
+                return { class: 'badge-beginner', name: 'Beginner', icon: 'fas fa-user' };
+            }
+        }
+
+        function getInitials(username) {
+            return username.split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join('')
+                .substring(0, 2);
+        }
+
+        function startRealTimeUpdates() {
+            // Update every 30 seconds
+            setInterval(() => {
+                loadPlatformStats();
+                loadLeaderboard();
+            }, 30000);
+
+            // Also update when page becomes visible again
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    loadPlatformStats();
+                    loadLeaderboard();
+                }
+            });
+        }
 
         // Pagination functionality
         window.changePage = function(page) {

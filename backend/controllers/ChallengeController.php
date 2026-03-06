@@ -517,10 +517,11 @@ class ChallengeController {
         try {
             $limit = $_GET['limit'] ?? 5;
             
-            // Query to get points from challenge_attempts table
+            // Query to get points from challenge_attempts table with success rate
             $query = "SELECT u.username, 
                              COALESCE(SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END), 0) as points,
                              COALESCE(COUNT(CASE WHEN ca.completed = 1 THEN 1 END), 0) as challenges_completed,
+                             COALESCE(COUNT(ca.id), 0) as total_attempts,
                              MAX(ca.completed_at) as last_activity
                       FROM users u
                       LEFT JOIN challenge_attempts ca ON u.id = ca.user_id
@@ -541,11 +542,17 @@ class ChallengeController {
                 $rank = $index + 1;
                 $lastActivity = $hacker['last_activity'] ? $this->getTimeAgo($hacker['last_activity']) : 'Never';
                 
+                // Calculate real success rate
+                $successRate = $hacker['total_attempts'] > 0 ? 
+                    round(($hacker['challenges_completed'] / $hacker['total_attempts']) * 100, 1) : 0;
+                
                 $formattedHackers[] = [
                     'rank' => $rank,
                     'username' => $hacker['username'],
                     'points' => (int)$hacker['points'],
                     'challenges_completed' => (int)$hacker['challenges_completed'],
+                    'total_attempts' => (int)$hacker['total_attempts'],
+                    'success_rate' => $successRate,
                     'last_activity' => $lastActivity
                 ];
             }

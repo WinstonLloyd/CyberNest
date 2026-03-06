@@ -448,7 +448,7 @@
         .pagination-container {
             display: flex;
             justify-content: center;
-            margin: 30px 0;
+            margin-bottom: 20px;
         }
 
         .pagination-custom {
