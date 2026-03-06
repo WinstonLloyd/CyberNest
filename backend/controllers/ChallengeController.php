@@ -84,6 +84,15 @@ class ChallengeController {
             case 'getTopHackers':
                 $this->getTopHackers();
                 break;
+            case 'getUserProfile':
+                $this->getUserProfile();
+                break;
+            case 'getUserSkills':
+                $this->getUserSkills();
+                break;
+            case 'updateUserSettings':
+                $this->updateUserSettings();
+                break;
             default:
                 $this->sendResponse(['success' => false, 'message' => 'Invalid action'], 404);
         }
@@ -560,6 +569,333 @@ class ChallengeController {
             $this->sendResponse(['success' => true, 'hackers' => $formattedHackers]);
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to fetch top hackers: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getUserProfile() {
+        try {
+            $userId = $this->getUserIdFromSession();
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
+
+            // Get user profile data
+            $query = "SELECT u.username, u.email, u.created_at, u.bio, u.location, u.website
+                      FROM users u
+                      WHERE u.id = :user_id
+                      LIMIT 1";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if (!$user) {
+                $this->sendResponse(['success' => false, 'message' => 'User not found'], 404);
+                return;
+            }
+
+            // Get user challenge statistics
+            $query = "SELECT 
+                        COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as challenges_completed,
+                        COUNT(ca.id) as total_attempts,
+                        COALESCE(SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END), 0) as points_earned,
+                        MAX(ca.completed_at) as last_activity
+                      FROM challenge_attempts ca
+                      WHERE ca.user_id = :user_id";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Calculate success rate
+            $successRate = $stats['total_attempts'] > 0 ? 
+                round(($stats['challenges_completed'] / $stats['total_attempts']) * 100, 1) : 0;
+
+            // Get user rank position
+            $rankQuery = "SELECT COUNT(*) + 1 as rank_position
+                          FROM (
+                              SELECT u2.id, COALESCE(SUM(CASE WHEN ca2.completed = 1 THEN ca2.points ELSE 0 END), 0) as total_points
+                              FROM users u2
+                              LEFT JOIN challenge_attempts ca2 ON u2.id = ca2.user_id
+                              GROUP BY u2.id
+                              HAVING total_points > COALESCE((SELECT SUM(CASE WHEN ca3.completed = 1 THEN ca3.points ELSE 0 END)
+                                                              FROM challenge_attempts ca3
+                                                              WHERE ca3.user_id = :user_id), 0)
+                          ) as rankings";
+            
+            $stmt = $this->db->prepare($rankQuery);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $rankResult = $stmt->fetch(PDO::FETCH_ASSOC);
+            $rankPosition = $rankResult['rank_position'];
+
+            // Get recent activity for this user
+            $activityQuery = "SELECT ca.challenge_id, ca.completed_at, c.title,
+                                     CASE WHEN ca.completed = 1 THEN 'completed' ELSE 'attempted' END as activity_type
+                              FROM challenge_attempts ca
+                              JOIN challenges c ON ca.challenge_id = c.id
+                              WHERE ca.user_id = :user_id
+                              ORDER BY ca.completed_at DESC
+                              LIMIT 10";
+            
+            $stmt = $this->db->prepare($activityQuery);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Format activities for display
+            $formattedActivities = [];
+            foreach ($activities as $activity) {
+                $timeAgo = $this->getTimeAgo($activity['completed_at']);
+                
+                if ($activity['activity_type'] === 'completed') {
+                    $formattedActivities[] = [
+                        'icon' => 'fas fa-trophy',
+                        'title' => 'Challenge Completed',
+                        'description' => "Completed {$activity['title']}",
+                        'time' => $timeAgo,
+                        'type' => 'success'
+                    ];
+                } else {
+                    $formattedActivities[] = [
+                        'icon' => 'fas fa-code',
+                        'title' => 'Challenge Attempted',
+                        'description' => "Attempted {$activity['title']}",
+                        'time' => $timeAgo,
+                        'type' => 'info'
+                    ];
+                }
+            }
+
+            $this->sendResponse([
+                'success' => true,
+                'profile' => [
+                    'username' => $user['username'],
+                    'email' => $user['email'],
+                    'bio' => $user['bio'] ?? '',
+                    'location' => $user['location'] ?? '',
+                    'website' => $user['website'] ?? '',
+                    'rank' => 'Beginner',
+                    'joined_date' => $user['created_at'],
+                    'challenges_completed' => (int)$stats['challenges_completed'],
+                    'total_attempts' => (int)$stats['total_attempts'],
+                    'points_earned' => (int)$stats['points_earned'],
+                    'success_rate' => $successRate,
+                    'rank_position' => $rankPosition,
+                    'last_activity' => $stats['last_activity'] ? $this->getTimeAgo($stats['last_activity']) : 'Never',
+                    'recent_activities' => $formattedActivities
+                ]
+            ]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch user profile: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getUserSkills() {
+        try {
+            $userId = $this->getUserIdFromSession();
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
+
+            // Get user skill progress by category
+            $query = "SELECT 
+                        c.category as skill_name,
+                        COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as completed_challenges,
+                        COUNT(ca.id) as total_challenges,
+                        COALESCE(SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END), 0) as points_earned,
+                        MAX(ca.completed_at) as last_activity
+                      FROM challenges c
+                      LEFT JOIN challenge_attempts ca ON c.id = ca.challenge_id AND ca.user_id = :user_id
+                      GROUP BY c.category
+                      ORDER BY completed_challenges DESC, points_earned DESC";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $skills = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Get total challenges per category for percentage calculation
+            $totalQuery = "SELECT category, COUNT(*) as total_category_challenges
+                           FROM challenges
+                           GROUP BY category";
+            
+            $stmt = $this->db->prepare($totalQuery);
+            $stmt->execute();
+            
+            $totals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Create lookup array for totals
+            $totalLookup = [];
+            foreach ($totals as $total) {
+                $totalLookup[$total['category']] = $total['total_category_challenges'];
+            }
+
+            // Format skills with progress percentages
+            $formattedSkills = [];
+            foreach ($skills as $skill) {
+                $totalChallenges = $totalLookup[$skill['skill_name']] ?? 1;
+                $progressPercentage = $totalChallenges > 0 ? 
+                    round(($skill['completed_challenges'] / $totalChallenges) * 100, 1) : 0;
+                
+                // Calculate skill level based on progress and points
+                $skillLevel = $this->calculateSkillLevel($progressPercentage, $skill['points_earned']);
+                
+                $formattedSkills[] = [
+                    'skill_name' => $skill['skill_name'],
+                    'completed_challenges' => (int)$skill['completed_challenges'],
+                    'total_challenges' => $totalChallenges,
+                    'points_earned' => (int)$skill['points_earned'],
+                    'progress_percentage' => $progressPercentage,
+                    'skill_level' => $skillLevel,
+                    'last_activity' => $skill['last_activity'] ? $this->getTimeAgo($skill['last_activity']) : 'Never'
+                ];
+            }
+
+            $this->sendResponse([
+                'success' => true,
+                'skills' => $formattedSkills
+            ]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch user skills: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function calculateSkillLevel($progressPercentage, $pointsEarned) {
+        // Calculate skill level based on progress and points
+        if ($progressPercentage >= 90 && $pointsEarned >= 1000) {
+            return 'Expert';
+        } elseif ($progressPercentage >= 70 && $pointsEarned >= 500) {
+            return 'Advanced';
+        } elseif ($progressPercentage >= 50 && $pointsEarned >= 200) {
+            return 'Intermediate';
+        } elseif ($progressPercentage >= 25 && $pointsEarned >= 100) {
+            return 'Beginner';
+        } else {
+            return 'Novice';
+        }
+    }
+
+    private function updateUserSettings() {
+        try {
+            $userId = $this->getUserIdFromSession();
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
+
+            // Get JSON data from request body
+            $input = json_decode(file_get_contents('php://input'), true);
+            
+            if (!$input) {
+                $this->sendResponse(['success' => false, 'message' => 'Invalid JSON data'], 400);
+                return;
+            }
+
+            // Validate and sanitize input
+            $username = trim($input['username'] ?? '');
+            $displayName = trim($input['displayName'] ?? '');
+            $email = trim($input['email'] ?? '');
+            $bio = trim($input['bio'] ?? '');
+            $location = trim($input['location'] ?? '');
+            $website = trim($input['website'] ?? '');
+
+            // Basic validation
+            if (empty($username)) {
+                $this->sendResponse(['success' => false, 'message' => 'Username is required'], 400);
+                return;
+            }
+
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->sendResponse(['success' => false, 'message' => 'Valid email is required'], 400);
+                return;
+            }
+
+            // Check if username is already taken by another user
+            $checkQuery = "SELECT id FROM users WHERE username = :username AND id != :user_id";
+            $stmt = $this->db->prepare($checkQuery);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            if ($stmt->fetch()) {
+                $this->sendResponse(['success' => false, 'message' => 'Username is already taken'], 400);
+                return;
+            }
+
+            // Check if email is already taken by another user
+            $checkQuery = "SELECT id FROM users WHERE email = :email AND id != :user_id";
+            $stmt = $this->db->prepare($checkQuery);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            if ($stmt->fetch()) {
+                $this->sendResponse(['success' => false, 'message' => 'Email is already taken'], 400);
+                return;
+            }
+
+            // Update user information
+            $updateQuery = "UPDATE users SET username = :username, email = :email, bio = :bio, location = :location, website = :website WHERE id = :user_id";
+            $stmt = $this->db->prepare($updateQuery);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':bio', $bio);
+            $stmt->bindParam(':location', $location);
+            $stmt->bindParam(':website', $website);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+
+            // Handle password change if provided
+            if (!empty($input['currentPassword']) && !empty($input['newPassword'])) {
+                $currentPassword = $input['currentPassword'];
+                $newPassword = $input['newPassword'];
+                
+                // Verify current password
+                $passwordQuery = "SELECT password FROM users WHERE id = :user_id";
+                $stmt = $this->db->prepare($passwordQuery);
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->execute();
+                
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!password_verify($currentPassword, $user['password'])) {
+                    $this->sendResponse(['success' => false, 'message' => 'Current password is incorrect'], 400);
+                    return;
+                }
+                
+                // Update password
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $passwordUpdateQuery = "UPDATE users SET password = :password WHERE id = :user_id";
+                $stmt = $this->db->prepare($passwordUpdateQuery);
+                $stmt->bindParam(':password', $hashedPassword);
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->execute();
+            }
+
+            $this->sendResponse([
+                'success' => true,
+                'message' => 'Settings updated successfully',
+                'data' => [
+                    'username' => $username,
+                    'displayName' => $displayName,
+                    'email' => $email,
+                    'bio' => $bio,
+                    'location' => $location,
+                    'website' => $website
+                ]
+            ]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to update settings: ' . $e->getMessage()], 500);
         }
     }
 

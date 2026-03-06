@@ -773,28 +773,28 @@
                 <div class="stat-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="stat-number">12</div>
+                <div class="stat-number" id="userChallengesCompleted">Loading...</div>
                 <div class="stat-label">Challenges Completed</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <div class="stat-number">2,450</div>
+                <div class="stat-number" id="userPointsEarned">Loading...</div>
                 <div class="stat-label">Points Earned</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-percentage"></i>
                 </div>
-                <div class="stat-number">89%</div>
+                <div class="stat-number" id="userSuccessRate">Loading...</div>
                 <div class="stat-label">Success Rate</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="stat-number">6</div>
+                <div class="stat-number" id="userRankPosition">Loading...</div>
                 <div class="stat-label">Rank Position</div>
             </div>
         </div>
@@ -803,53 +803,10 @@
         <div class="progress-section">
             <h2 class="section-title">Skill Progress</h2>
             
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span class="progress-name">Web Security</span>
-                    <span class="progress-percentage">85%</span>
-                </div>
-                <div class="progress-bar-custom">
-                    <div class="progress-fill" style="width: 85%;"></div>
-                </div>
-            </div>
-
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span class="progress-name">Cryptography</span>
-                    <span class="progress-percentage">72%</span>
-                </div>
-                <div class="progress-bar-custom">
-                    <div class="progress-fill" style="width: 72%;"></div>
-                </div>
-            </div>
-
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span class="progress-name">Network Security</span>
-                    <span class="progress-percentage">68%</span>
-                </div>
-                <div class="progress-bar-custom">
-                    <div class="progress-fill" style="width: 68%;"></div>
-                </div>
-            </div>
-
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span class="progress-name">Digital Forensics</span>
-                    <span class="progress-percentage">45%</span>
-                </div>
-                <div class="progress-bar-custom">
-                    <div class="progress-fill" style="width: 45%;"></div>
-                </div>
-            </div>
-
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span class="progress-name">Reverse Engineering</span>
-                    <span class="progress-percentage">38%</span>
-                </div>
-                <div class="progress-bar-custom">
-                    <div class="progress-fill" style="width: 38%;"></div>
+            <div id="skillsProgressContainer">
+                <div class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x mb-3 text-success"></i>
+                    <p class="text-success">Loading skill progress...</p>
                 </div>
             </div>
         </div>
@@ -992,6 +949,11 @@
     <script>
         // Profile functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load user profile data
+            loadUserProfile();
+            loadUserSkills();
+            startRealTimeUpdates();
+            
             // Animate progress bars on scroll
             const observerOptions = {
                 threshold: 0.5,
@@ -1137,6 +1099,218 @@
                 }
             });
         }, 60000); // Update every minute
+
+        // Backend data loading functions
+        function loadUserProfile() {
+            fetch('/backend/api/challenges.php?action=getUserProfile')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayUserProfile(data.profile);
+                    } else {
+                        console.error('Failed to load user profile:', data.message);
+                        // Show error message
+                        showError('Failed to load profile data. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user profile:', error);
+                    // Show error message
+                    showError('Network error loading profile data.');
+                });
+        }
+
+        function loadUserSkills() {
+            fetch('/backend/api/challenges.php?action=getUserSkills')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayUserSkills(data.skills);
+                    } else {
+                        console.error('Failed to load user skills:', data.message);
+                        // Show error message
+                        const container = document.getElementById('skillsProgressContainer');
+                        if (container) {
+                            container.innerHTML = `
+                                <div class="text-center py-4">
+                                    <i class="fas fa-exclamation-triangle fa-2x mb-3 text-warning"></i>
+                                    <p class="text-warning">Error loading skills: ${data.message}</p>
+                                </div>
+                            `;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user skills:', error);
+                    // Show error message
+                    const container = document.getElementById('skillsProgressContainer');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="text-center py-4">
+                                <i class="fas fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
+                                <p class="text-danger">Network error loading skills</p>
+                            </div>
+                        `;
+                    }
+                });
+        }
+
+        function displayUserSkills(skills) {
+            const container = document.getElementById('skillsProgressContainer');
+            if (!container) return;
+
+            if (skills.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-info-circle fa-2x mb-3 text-muted"></i>
+                        <p class="text-muted">No skill progress found. Start completing challenges to see your progress!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = skills.map(skill => `
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span class="progress-name">${skill.skill_name}</span>
+                        <span class="progress-percentage">${skill.progress_percentage}%</span>
+                    </div>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: ${skill.progress_percentage}%;" data-width="${skill.progress_percentage}%"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span class="progress-stat">${skill.completed_challenges}/${skill.total_challenges} completed</span>
+                        <span class="progress-stat">${skill.points_earned} points</span>
+                        <span class="progress-stat">Level: ${skill.skill_level}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Trigger animation for the newly added progress bars
+            setTimeout(() => {
+                animateProgressBars();
+            }, 100);
+        }
+
+        function displayUserProfile(profile) {
+            // Update profile header
+            updateProfileHeader(profile);
+            
+            // Update statistics
+            updateStatistics(profile);
+            
+            // Update recent activity
+            updateRecentActivity(profile.recent_activities);
+        }
+
+        function updateProfileHeader(profile) {
+            // Update avatar with user initials
+            const avatar = document.querySelector('.profile-avatar');
+            if (avatar) {
+                const initials = getInitials(profile.username);
+                avatar.textContent = initials;
+            }
+
+            // Update name and username
+            const nameElement = document.querySelector('.profile-name');
+            const usernameElement = document.querySelector('.profile-username');
+            if (nameElement) nameElement.textContent = profile.username;
+            if (usernameElement) usernameElement.textContent = '@' + profile.username.toLowerCase();
+
+            // Update bio
+            const bioElement = document.querySelector('.profile-bio');
+            if (bioElement) {
+                bioElement.textContent = profile.bio || 'Cybersecurity enthusiast and ethical hacker.';
+            }
+
+            // Update meta information
+            const locationElement = document.querySelector('.meta-item:nth-child(1) span');
+            const websiteElement = document.querySelector('.meta-item:nth-child(3) span');
+            
+            if (locationElement) locationElement.textContent = profile.location || 'Location not specified';
+            if (websiteElement) websiteElement.textContent = profile.website || 'No website';
+        }
+
+        function updateStatistics(profile) {
+            // Update stat cards with real data
+            updateStatCard('userChallengesCompleted', profile.challenges_completed);
+            updateStatCard('userPointsEarned', profile.points_earned);
+            updateStatCard('userSuccessRate', profile.success_rate, '%');
+            updateStatCard('userRankPosition', profile.rank_position);
+        }
+
+        function updateStatCard(elementId, value, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value.toLocaleString() + suffix;
+                
+                // Add animation for the update
+                element.style.transition = 'all 0.5s ease';
+                element.style.transform = 'scale(1.1)';
+                element.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '';
+                }, 500);
+            }
+        }
+
+        function updateRecentActivity(activities) {
+            const activityList = document.querySelector('.activity-list');
+            if (!activityList) return;
+
+            if (activities.length === 0) {
+                activityList.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-info-circle fa-2x mb-3 text-muted"></i>
+                        <p class="text-muted">No recent activity found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            activityList.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-description">${activity.description}</div>
+                    </div>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function getInitials(username) {
+            return username.split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join('')
+                .substring(0, 2);
+        }
+
+        function showError(message) {
+            // Create a simple error alert (you could replace this with a better UI notification)
+            alert(message);
+        }
+
+        function startRealTimeUpdates() {
+            // Update every 30 seconds
+            setInterval(() => {
+                loadUserProfile();
+                loadUserSkills();
+            }, 30000);
+
+            // Also update when page becomes visible again
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    loadUserProfile();
+                    loadUserSkills();
+                }
+            });
+        }
     </script>
 </body>
 </html>

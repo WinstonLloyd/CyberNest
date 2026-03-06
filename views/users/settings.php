@@ -622,19 +622,19 @@
                 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">12</div>
+                        <div class="stat-value" id="settingsChallengesCompleted">Loading...</div>
                         <div class="stat-label">Challenges Completed</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">2,450</div>
+                        <div class="stat-value" id="settingsPointsEarned">Loading...</div>
                         <div class="stat-label">Points Earned</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">89%</div>
+                        <div class="stat-value" id="settingsSuccessRate">Loading...</div>
                         <div class="stat-label">Success Rate</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">6</div>
+                        <div class="stat-value" id="settingsRankPosition">Loading...</div>
                         <div class="stat-label">Rank Position</div>
                     </div>
                 </div>
@@ -1072,21 +1072,16 @@
             }
         });
 
-        // Load saved settings on page load
+        // Load user data and settings on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Load user profile data
+            loadUserProfile();
+            loadUserStats();
+            
+            // Load saved settings from localStorage for non-profile settings
             const savedSettings = localStorage.getItem('cybernest-settings');
             if (savedSettings) {
                 const settings = JSON.parse(savedSettings);
-                
-                // Apply saved settings to form fields
-                if (settings.profile) {
-                    document.getElementById('username').value = settings.profile.username || '';
-                    document.getElementById('displayName').value = settings.profile.displayName || '';
-                    document.getElementById('email').value = settings.profile.email || '';
-                    document.getElementById('bio').value = settings.profile.bio || '';
-                    document.getElementById('location').value = settings.profile.location || '';
-                    document.getElementById('website').value = settings.profile.website || '';
-                }
                 
                 // Apply saved toggle states
                 if (settings.security && settings.security.twoFactor) {
@@ -1116,6 +1111,136 @@
                 }
             }
         });
+
+        // Backend data loading functions
+        function loadUserProfile() {
+            fetch('/backend/api/challenges.php?action=getUserProfile')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        populateProfileForm(data.profile);
+                    } else {
+                        console.error('Failed to load user profile:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user profile:', error);
+                });
+        }
+
+        function loadUserStats() {
+            fetch('/backend/api/challenges.php?action=getUserProfile')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateSettingsStats(data.profile);
+                    } else {
+                        console.error('Failed to load user stats:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user stats:', error);
+                });
+        }
+
+        function populateProfileForm(profile) {
+            // Update form fields with real user data
+            document.getElementById('username').value = profile.username || '';
+            document.getElementById('displayName').value = profile.username || '';
+            document.getElementById('email').value = profile.email || '';
+            document.getElementById('bio').value = profile.bio || '';
+            document.getElementById('location').value = profile.location || '';
+            document.getElementById('website').value = profile.website || '';
+            
+            // Update avatar with user initials
+            const avatarPreview = document.getElementById('avatarPreview');
+            const initials = getInitials(profile.username);
+            avatarPreview.textContent = initials;
+        }
+
+        function updateSettingsStats(profile) {
+            // Update statistics with real data
+            updateStatCard('settingsChallengesCompleted', profile.challenges_completed);
+            updateStatCard('settingsPointsEarned', profile.points_earned);
+            updateStatCard('settingsSuccessRate', profile.success_rate, '%');
+            updateStatCard('settingsRankPosition', profile.rank_position);
+        }
+
+        function updateStatCard(elementId, value, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value.toLocaleString() + suffix;
+                
+                // Add animation for the update
+                element.style.transition = 'all 0.5s ease';
+                element.style.transform = 'scale(1.1)';
+                element.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '';
+                }, 500);
+            }
+        }
+
+        function getInitials(username) {
+            return username.split(' ')
+                .map(word => word.charAt(0).toUpperCase())
+                .join('')
+                .substring(0, 2);
+        }
+
+        // Update saveSettings function to use backend
+        function saveSettings() {
+            // Collect profile data
+            const profileData = {
+                username: document.getElementById('username').value,
+                displayName: document.getElementById('displayName').value,
+                email: document.getElementById('email').value,
+                bio: document.getElementById('bio').value,
+                location: document.getElementById('location').value,
+                website: document.getElementById('website').value
+            };
+
+            // Collect security data (password change)
+            const securityData = {
+                currentPassword: document.getElementById('currentPassword').value,
+                newPassword: document.getElementById('newPassword').value,
+                confirmPassword: document.getElementById('confirmPassword').value
+            };
+
+            // Send to backend
+            fetch('/backend/api/challenges.php?action=updateUserSettings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...profileData,
+                    ...securityData
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('Settings saved successfully!');
+                    
+                    // Clear password fields
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                    
+                    // Reload user data to reflect changes
+                    loadUserProfile();
+                } else {
+                    showAlert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving settings:', error);
+                showAlert('Network error. Please try again.');
+            });
+        }
     </script>
 </body>
 </html>
