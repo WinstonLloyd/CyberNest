@@ -189,6 +189,55 @@ class Challenge {
     }
 
     /**
+     * Get challenges with user-specific status
+     */
+    public function getChallengesForUser($userId, $filters = []) {
+        try {
+            $query = "SELECT c.*, 
+                             COALESCE(ca.completed, 0) as user_completed,
+                             COALESCE(ca.attempt_count, 0) as user_attempts,
+                             COALESCE(ca.points, 0) as user_points,
+                             ca.completed_at as user_completed_at,
+                             COUNT(DISTINCT ca2.user_id) as attempts,
+                             COUNT(DISTINCT CASE WHEN ca2.completed = 1 THEN ca2.user_id END) as solved_count
+                      FROM challenges c
+                      LEFT JOIN challenge_attempts ca ON c.id = ca.challenge_id AND ca.user_id = :user_id
+                      LEFT JOIN challenge_attempts ca2 ON c.id = ca2.challenge_id";
+            
+            $where_clauses = [];
+            $params = [':user_id' => $userId];
+            
+            if (!empty($filters['difficulty'])) {
+                $where_clauses[] = "c.difficulty = :difficulty";
+                $params[':difficulty'] = $filters['difficulty'];
+            }
+            
+            if (!empty($filters['status'])) {
+                $where_clauses[] = "c.status = :status";
+                $params[':status'] = $filters['status'];
+            }
+            
+            if (!empty($filters['search'])) {
+                $where_clauses[] = "(c.title LIKE :search OR c.description LIKE :search OR c.tags LIKE :search)";
+                $params[':search'] = '%' . $filters['search'] . '%';
+            }
+            
+            if (!empty($where_clauses)) {
+                $query .= " WHERE " . implode(' AND ', $where_clauses);
+            }
+            
+            $query .= " GROUP BY c.id ORDER BY c.points DESC, c.created_at DESC";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute($params);
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Failed to fetch user challenges: " . $e->getMessage());
+        }
+    }
+
+    /**
      * Get top performers for challenges
      */
     public function getTopPerformers($limit = 10) {

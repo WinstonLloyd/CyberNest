@@ -25,6 +25,14 @@ class Database {
         return $this->conn;
     }
 
+    public static function getInstance() {
+        static $instance = null;
+        if ($instance === null) {
+            $instance = new self();
+        }
+        return $instance->getConnection();
+    }
+
     public function createTables() {
         try {
             $conn = $this->getConnection();
@@ -144,6 +152,7 @@ class Database {
                     challenge_id INT(11) NOT NULL,
                     completed BOOLEAN DEFAULT FALSE,
                     attempt_count INT(11) DEFAULT 1,
+                    points INT(11) DEFAULT 0,
                     completed_at TIMESTAMP NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -291,6 +300,7 @@ class Database {
                     challenge_id INT(11) NOT NULL,
                     completed BOOLEAN DEFAULT FALSE,
                     attempt_count INT(11) DEFAULT 1,
+                    points INT(11) DEFAULT 0,
                     completed_at TIMESTAMP NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

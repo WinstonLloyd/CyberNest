@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/admin/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
@@ -367,13 +368,13 @@
             border: 1px solid #ffc107;
         }
 
-        .status-available {
+        .status-active {
             background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 255, 0, 0.1));
             color: #00ff00;
             border: 1px solid #00ff00;
         }
 
-        .status-unavailable {
+        .status-inactive {
             background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.1));
             color: #dc3545;
             border: 1px solid #dc3545;
@@ -561,7 +562,7 @@
                             <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -789,7 +790,7 @@
 
         // Load challenges from backend
         function loadChallenges() {
-            fetch('/backend/api/challenges.php?action=getAll')
+            fetch('/backend/api/challenges.php?action=getUserChallenges')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -833,8 +834,36 @@
             const statusBadge = getStatusBadge(challenge.status);
             const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
             
+            // Determine user status
+            let userStatusClass = '';
+            let userStatusText = '';
+            let userStatusIcon = '';
+            
+            // For inactive challenges, always show Unavailable
+            if (challenge.status === 'inactive') {
+                userStatusClass = 'status-inactive';
+                userStatusText = 'Unavailable';
+                userStatusIcon = '<i class="fas fa-times-circle"></i>';
+            } else if (challenge.status === 'draft') {
+                userStatusClass = 'status-draft';
+                userStatusText = 'Draft';
+                userStatusIcon = '<i class="fas fa-edit"></i>';
+            } else if (challenge.user_completed == 1) {
+                userStatusClass = 'status-completed';
+                userStatusText = 'Completed';
+                userStatusIcon = '<i class="fas fa-check-circle"></i>';
+            } else if (challenge.user_attempts > 0) {
+                userStatusClass = 'status-attempted';
+                userStatusText = 'Attempted';
+                userStatusIcon = '<i class="fas fa-clock"></i>';
+            } else {
+                userStatusClass = 'status-active';
+                userStatusText = 'Available';
+                userStatusIcon = '<i class="fas fa-play-circle"></i>';
+            }
+            
             return `
-                <div class="challenge-card" data-difficulty="${challenge.difficulty}" data-category="${challenge.category}" data-status="${challenge.status}" data-id="${challenge.id}">
+                <div class="challenge-card" data-difficulty="${challenge.difficulty}" data-category="${challenge.category}" data-status="${challenge.status}" data-id="${challenge.id}" data-user-completed="${challenge.user_completed}">
                     <div class="challenge-header">
                         <div>
                             <h3 class="challenge-title">${challenge.title}</h3>
@@ -845,15 +874,15 @@
                     <div class="challenge-stats">
                         <div class="stat-item">
                             <div class="stat-value">${challenge.attempts || 0}</div>
-                            <div class="stat-label">Attempts</div>
+                            <div class="stat-label">Total Attempts</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-value">${challenge.solved_count || 0}</div>
                             <div class="stat-label">Solved</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">${challenge.points}</div>
-                            <div class="stat-label">Points</div>
+                            <div class="stat-value">${challenge.user_attempts || 0}</div>
+                            <div class="stat-label">Your Attempts</div>
                         </div>
                     </div>
                     <div class="challenge-tags">
@@ -861,7 +890,7 @@
                     </div>
                     <div class="challenge-footer">
                         <div class="challenge-points">${challenge.points} pts</div>
-                        <span class="challenge-status status-${challenge.status}">${statusBadge}</span>
+                        <span class="challenge-status ${userStatusClass}">${userStatusIcon} ${userStatusText}</span>
                     </div>
                 </div>
             `;
@@ -881,15 +910,17 @@
         function updateStats(challenges) {
             const totalChallenges = challenges.length;
             const activeChallenges = challenges.filter(c => c.status === 'active').length;
-            const totalPoints = challenges.reduce((sum, c) => sum + c.points, 0);
+            const completedChallenges = challenges.filter(c => c.user_completed == 1).length;
+            const attemptedChallenges = challenges.filter(c => c.user_attempts > 0 && c.user_completed == 0).length;
+            const earnedPoints = challenges.filter(c => c.user_completed == 1).reduce((sum, c) => sum + c.points, 0);
             
             // Update stat cards
             const statCards = document.querySelectorAll('.stat-card');
             if (statCards.length >= 4) {
                 statCards[0].querySelector('.stat-number').textContent = totalChallenges;
-                statCards[1].querySelector('.stat-number').textContent = activeChallenges;
-                statCards[2].querySelector('.stat-number').textContent = totalChallenges - activeChallenges;
-                statCards[3].querySelector('.stat-number').textContent = totalPoints.toLocaleString();
+                statCards[1].querySelector('.stat-number').textContent = completedChallenges;
+                statCards[2].querySelector('.stat-number').textContent = attemptedChallenges;
+                statCards[3].querySelector('.stat-number').textContent = earnedPoints.toLocaleString();
             }
         }
 
@@ -901,13 +932,26 @@
                     const title = this.querySelector('.challenge-title').textContent;
                     const difficulty = this.querySelector('.difficulty-badge').textContent;
                     const status = this.dataset.status;
+                    const userCompleted = this.dataset.userCompleted;
                     const challengeId = this.dataset.id;
                     
-                    if (status === 'active') {
-                        showFlagModal(title, difficulty, challengeId);
-                    } else {
-                        alert(`This challenge is ${status}. Only active challenges can be attempted.`);
+                    if (status === 'inactive') {
+                        alert('This challenge is currently inactive and cannot be attempted.');
+                        return;
                     }
+                    
+                    if (status === 'draft') {
+                        alert('This challenge is still in draft mode and not available.');
+                        return;
+                    }
+                    
+                    if (userCompleted === '1') {
+                        alert('You have already completed this challenge!');
+                        return;
+                    }
+                    
+                    // Challenge is active and user hasn't completed it
+                    showFlagModal(title, difficulty, challengeId);
                 });
             });
         }
@@ -994,15 +1038,21 @@
                 modal.hide();
                 
                 if (data.success) {
-                    if (data.correct) {
-                        alert(' Correct! Challenge completed successfully!');
+                    if (data.already_completed) {
+                        alert('✅ ' + data.message);
+                    } else if (data.correct) {
+                        let message = '🎉 ' + data.message;
+                        if (data.points_earned) {
+                            message += '\n\n🏆 Points earned: ' + data.points_earned;
+                        }
+                        alert(message);
                         // Reload challenges to update status
                         loadChallenges();
                     } else {
-                        alert(' Incorrect flag. Try again!');
+                        alert('❌ ' + data.message);
                     }
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('❌ Error: ' + data.message);
                 }
             })
             .catch(error => {
@@ -1039,6 +1089,73 @@
                 buttons[page].classList.add('active');
             }
         };
+        // Logout function
+        function logout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/backend/logout.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Logout Successful',
+                                text: 'You have been logged out successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Logout Failed',
+                                text: 'Logout failed: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        // Still redirect on error
+                        Swal.fire({
+                            title: 'Redirecting',
+                            text: 'Logging out...',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        }).then(() => {
+                            window.location.href = '../../index.php';
+                        });
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>
