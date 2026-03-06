@@ -568,29 +568,29 @@
                 <div class="stat-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="stat-number">45</div>
+                <div class="stat-number" id="totalChallenges">Loading...</div>
                 <div class="stat-label">Challenges</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number">1,247</div>
+                <div class="stat-number" id="totalHackers">Loading...</div>
                 <div class="stat-label">Hackers</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-flag-checkered"></i>
                 </div>
-                <div class="stat-number">892</div>
-                <div class="stat-label">Completed</div>
+                <div class="stat-number" id="userCompleted">Loading...</div>
+                <div class="stat-label">Your Completed</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Available</div>
+                <div class="stat-number" id="activeToday">Loading...</div>
+                <div class="stat-label">Active Today</div>
             </div>
         </div>
     </section>
@@ -641,46 +641,10 @@
     <!-- Recent Activity -->
     <section class="recent-activity container">
         <h2 class="section-title">RECENT ACTIVITY</h2>
-        <div class="activity-list">
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <div class="activity-content">
-                    <div class="activity-title">New Challenge Released</div>
-                    <div class="activity-description">Advanced SQL Injection challenge is now available</div>
-                </div>
-                <div class="activity-time">2 hours ago</div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="activity-content">
-                    <div class="activity-title">New Top Hacker</div>
-                    <div class="activity-description">Alice Smith reached #1 on the leaderboard</div>
-                </div>
-                <div class="activity-time">5 hours ago</div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-flag-checkered"></i>
-                </div>
-                <div class="activity-content">
-                    <div class="activity-title">Challenge Completed</div>
-                    <div class="activity-description">John Doe completed Buffer Overflow Basics</div>
-                </div>
-                <div class="activity-time">8 hours ago</div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <div class="activity-content">
-                    <div class="activity-title">System Update</div>
-                    <div class="activity-description">New security patches applied to all challenges</div>
-                </div>
-                <div class="activity-time">1 day ago</div>
+        <div class="activity-list" id="recentActivityList">
+            <div class="text-center py-4">
+                <i class="fas fa-spinner fa-spin fa-2x mb-3 text-success"></i>
+                <p class="text-success">Loading recent activity...</p>
             </div>
         </div>
     </section>
@@ -688,46 +652,10 @@
     <!-- Leaderboard Preview -->
     <section class="leaderboard-preview container">
         <h2 class="section-title">TOP HACKERS</h2>
-        <div class="leaderboard-card">
-            <div class="leaderboard-item">
-                <div class="rank-badge rank-1">1</div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">Alice Smith</div>
-                    <div class="leaderboard-stats">45 challenges • 12 hours ago</div>
-                </div>
-                <div class="leaderboard-points">4,123 pts</div>
-            </div>
-            <div class="leaderboard-item">
-                <div class="rank-badge rank-2">2</div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">Bob Johnson</div>
-                    <div class="leaderboard-stats">42 challenges • 3 hours ago</div>
-                </div>
-                <div class="leaderboard-points">3,856 pts</div>
-            </div>
-            <div class="leaderboard-item">
-                <div class="rank-badge rank-3">3</div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">Emma Martinez</div>
-                    <div class="leaderboard-stats">40 challenges • 6 hours ago</div>
-                </div>
-                <div class="leaderboard-points">3,456 pts</div>
-            </div>
-            <div class="leaderboard-item">
-                <div class="rank-badge rank-other">4</div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">Michael Wilson</div>
-                    <div class="leaderboard-stats">38 challenges • 1 day ago</div>
-                </div>
-                <div class="leaderboard-points">2,987 pts</div>
-            </div>
-            <div class="leaderboard-item">
-                <div class="rank-badge rank-other">5</div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">Sarah Anderson</div>
-                    <div class="leaderboard-stats">35 challenges • 2 days ago</div>
-                </div>
-                <div class="leaderboard-points">2,567 pts</div>
+        <div class="leaderboard-card" id="topHackersList">
+            <div class="text-center py-4">
+                <i class="fas fa-spinner fa-spin fa-2x mb-3 text-success"></i>
+                <p class="text-success">Loading top hackers...</p>
             </div>
         </div>
         <div class="text-center mt-4">
@@ -741,6 +669,14 @@
     <script>
         // Home page functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load real-time data
+            loadPlatformStats();
+            loadRecentActivity();
+            loadTopHackers();
+            
+            // Start real-time updates
+            startRealTimeUpdates();
+            
             // Animate stats on scroll
             const observerOptions = {
                 threshold: 0.5,
@@ -832,6 +768,149 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+        // Real-time data loading functions
+        function loadPlatformStats() {
+            fetch('/backend/api/challenges.php?action=getPlatformStats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const stats = data.stats;
+                        updateStatCard('totalChallenges', stats.total_challenges);
+                        updateStatCard('totalHackers', stats.total_hackers);
+                        updateStatCard('userCompleted', stats.user_completed);
+                        updateStatCard('activeToday', stats.active_today);
+                    } else {
+                        console.error('Failed to load platform stats:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading platform stats:', error);
+                });
+        }
+
+        function loadRecentActivity() {
+            fetch('/backend/api/challenges.php?action=getRecentActivity&limit=8')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayRecentActivity(data.activities);
+                    } else {
+                        console.error('Failed to load recent activity:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading recent activity:', error);
+                });
+        }
+
+        function loadTopHackers() {
+            fetch('/backend/api/challenges.php?action=getTopHackers&limit=5')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayTopHackers(data.hackers);
+                    } else {
+                        console.error('Failed to load top hackers:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading top hackers:', error);
+                });
+        }
+
+        function updateStatCard(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const oldValue = element.textContent;
+                element.textContent = value.toLocaleString();
+                
+                // Add animation for the update
+                element.style.transition = 'all 0.5s ease';
+                element.style.transform = 'scale(1.1)';
+                element.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '';
+                }, 500);
+            }
+        }
+
+        function displayRecentActivity(activities) {
+            const container = document.getElementById('recentActivityList');
+            if (!container) return;
+
+            if (activities.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-info-circle fa-2x mb-3 text-muted"></i>
+                        <p class="text-muted">No recent activity found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-description">${activity.description}</div>
+                    </div>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function displayTopHackers(hackers) {
+            const container = document.getElementById('topHackersList');
+            if (!container) return;
+
+            if (hackers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-users fa-2x mb-3 text-muted"></i>
+                        <p class="text-muted">No hackers found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = hackers.map(hacker => {
+                const rankClass = hacker.rank <= 3 ? `rank-${hacker.rank}` : 'rank-other';
+                return `
+                    <div class="leaderboard-item">
+                        <div class="rank-badge ${rankClass}">${hacker.rank}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${hacker.username}</div>
+                            <div class="leaderboard-stats">${hacker.challenges_completed} challenges • ${hacker.last_activity}</div>
+                        </div>
+                        <div class="leaderboard-points">${hacker.points.toLocaleString()} pts</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startRealTimeUpdates() {
+            // Update every 30 seconds
+            setInterval(() => {
+                loadPlatformStats();
+                loadRecentActivity();
+                loadTopHackers();
+            }, 30000);
+
+            // Also update when page becomes visible again
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    loadPlatformStats();
+                    loadRecentActivity();
+                    loadTopHackers();
+                }
+            });
+        }
 
         // Logout function
         function logout() {

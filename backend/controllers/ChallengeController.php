@@ -75,6 +75,15 @@ class ChallengeController {
             case 'getRealTimeAttempts':
                 $this->getRealTimeAttempts();
                 break;
+            case 'getPlatformStats':
+                $this->getPlatformStats();
+                break;
+            case 'getRecentActivity':
+                $this->getRecentActivity();
+                break;
+            case 'getTopHackers':
+                $this->getTopHackers();
+                break;
             default:
                 $this->sendResponse(['success' => false, 'message' => 'Invalid action'], 404);
         }
@@ -337,7 +346,7 @@ class ChallengeController {
                 $this->sendResponse([
                     'success' => true,
                     'correct' => true,
-                    'message' => 'Correct! Challenge completed successfully!',
+                    'message' => 'Challenge completed successfully!',
                     'points_earned' => $challenge['points']
                 ]);
             } else {
@@ -395,6 +404,178 @@ class ChallengeController {
             $this->sendResponse(['success' => true, 'performers' => $performers]);
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to fetch top performers: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getPlatformStats() {
+        try {
+            // Get total challenges
+            $query = "SELECT COUNT(*) as total_challenges FROM challenges WHERE status = 'active'";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $totalChallenges = $stmt->fetch(PDO::FETCH_ASSOC)['total_challenges'];
+
+            // Get total users (hackers)
+            $query = "SELECT COUNT(DISTINCT u.id) as total_hackers 
+                      FROM users u 
+                      JOIN user_profiles up ON u.id = up.user_id 
+                      WHERE up.points > 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $totalHackers = $stmt->fetch(PDO::FETCH_ASSOC)['total_hackers'];
+
+            // Get total completed challenges
+            $query = "SELECT COUNT(*) as total_completed FROM challenge_attempts WHERE completed = 1";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $totalCompleted = $stmt->fetch(PDO::FETCH_ASSOC)['total_completed'];
+
+            // Get active users in last 24 hours
+            $query = "SELECT COUNT(DISTINCT user_id) as active_today 
+                      FROM challenge_attempts 
+                      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $activeToday = $stmt->fetch(PDO::FETCH_ASSOC)['active_today'];
+
+            // Get current user's completed challenges
+            $userId = $this->getUserIdFromSession();
+            $userCompleted = 0;
+            if ($userId) {
+                $query = "SELECT COUNT(*) as user_completed FROM challenge_attempts WHERE user_id = :user_id AND completed = 1";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->execute();
+                $userCompleted = $stmt->fetch(PDO::FETCH_ASSOC)['user_completed'];
+            }
+
+            $this->sendResponse([
+                'success' => true,
+                'stats' => [
+                    'total_challenges' => (int)$totalChallenges,
+                    'total_hackers' => (int)$totalHackers,
+                    'total_completed' => (int)$totalCompleted,
+                    'active_today' => (int)$activeToday,
+                    'user_completed' => (int)$userCompleted
+                ]
+            ]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch platform stats: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getRecentActivity() {
+        try {
+            $limit = $_GET['limit'] ?? 10;
+            
+            // Get recent challenge completions
+            $query = "SELECT ca.challenge_id, ca.completed_at, c.title, u.username,
+                             CASE WHEN ca.completed = 1 THEN 'completed' ELSE 'attempted' END as activity_type
+                      FROM challenge_attempts ca
+                      JOIN challenges c ON ca.challenge_id = c.id
+                      JOIN users u ON ca.user_id = u.id
+                      ORDER BY ca.completed_at DESC
+                      LIMIT :limit";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Format activities for display
+            $formattedActivities = [];
+            foreach ($activities as $activity) {
+                $timeAgo = $this->getTimeAgo($activity['completed_at']);
+                
+                if ($activity['activity_type'] === 'completed') {
+                    $formattedActivities[] = [
+                        'icon' => 'fas fa-flag-checkered',
+                        'title' => 'Challenge Completed',
+                        'description' => $activity['username'] . ' completed ' . $activity['title'],
+                        'time' => $timeAgo,
+                        'type' => 'success'
+                    ];
+                } else {
+                    $formattedActivities[] = [
+                        'icon' => 'fas fa-clock',
+                        'title' => 'Challenge Attempted',
+                        'description' => $activity['username'] . ' attempted ' . $activity['title'],
+                        'time' => $timeAgo,
+                        'type' => 'info'
+                    ];
+                }
+            }
+            
+            $this->sendResponse(['success' => true, 'activities' => $formattedActivities]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch recent activity: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getTopHackers() {
+        try {
+            $limit = $_GET['limit'] ?? 5;
+            
+            $query = "SELECT u.username, up.points, up.challenges_completed, 
+                             MAX(ca.completed_at) as last_activity
+                      FROM user_profiles up
+                      JOIN users u ON up.user_id = u.id
+                      LEFT JOIN challenge_attempts ca ON u.id = ca.user_id
+                      WHERE up.points > 0
+                      GROUP BY u.id, u.username, up.points, up.challenges_completed
+                      ORDER BY up.points DESC
+                      LIMIT :limit";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $hackers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Format hackers for display
+            $formattedHackers = [];
+            foreach ($hackers as $index => $hacker) {
+                $rank = $index + 1;
+                $lastActivity = $hacker['last_activity'] ? $this->getTimeAgo($hacker['last_activity']) : 'Never';
+                
+                $formattedHackers[] = [
+                    'rank' => $rank,
+                    'username' => $hacker['username'],
+                    'points' => (int)$hacker['points'],
+                    'challenges_completed' => (int)$hacker['challenges_completed'],
+                    'last_activity' => $lastActivity
+                ];
+            }
+            
+            $this->sendResponse(['success' => true, 'hackers' => $formattedHackers]);
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch top hackers: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getTimeAgo($datetime) {
+        try {
+            $time = strtotime($datetime);
+            $now = time();
+            $diff = $now - $time;
+            
+            if ($diff < 60) {
+                return 'Just now';
+            } elseif ($diff < 3600) {
+                $minutes = floor($diff / 60);
+                return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ago';
+            } elseif ($diff < 86400) {
+                $hours = floor($diff / 3600);
+                return $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
+            } elseif ($diff < 604800) {
+                $days = floor($diff / 86400);
+                return $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
+            } else {
+                return date('M j, Y', $time);
+            }
+        } catch (Exception $e) {
+            return 'Unknown time';
         }
     }
 
