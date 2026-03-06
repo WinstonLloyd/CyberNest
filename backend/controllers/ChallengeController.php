@@ -69,6 +69,9 @@ class ChallengeController {
             case 'stats':
                 $this->getChallengeStats();
                 break;
+            case 'attempts_by_day':
+                $this->getAttemptsByDay();
+                break;
             case 'topPerformers':
                 $this->getTopPerformers();
                 break;
@@ -1079,6 +1082,53 @@ class ChallengeController {
             
         } catch (Exception $e) {
             throw new Exception("Failed to update user rank: " . $e->getMessage());
+        }
+    }
+
+    private function getAttemptsByDay() {
+        try {
+            // Get challenge attempts grouped by day of the week for the last 7 days
+            $query = "SELECT 
+                        DAYNAME(ca.created_at) as day_name,
+                        DAYOFWEEK(ca.created_at) as day_of_week,
+                        COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as solved_challenges,
+                        COUNT(ca.id) as total_attempts
+                      FROM challenge_attempts ca
+                      WHERE ca.created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                      GROUP BY DAYNAME(ca.created_at), DAYOFWEEK(ca.created_at)
+                      ORDER BY DAYOFWEEK(ca.created_at)";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Initialize arrays for all days of the week
+            $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            $solvedChallenges = array_fill(0, 7, 0);
+            $totalAttempts = array_fill(0, 7, 0);
+            
+            // Fill in actual data
+            // MySQL DAYOFWEEK: Sunday=1, Monday=2, Tuesday=3, Wednesday=4, Thursday=5, Friday=6, Saturday=7
+            foreach ($results as $row) {
+                $dayIndex = ($row['day_of_week'] - 2 + 7) % 7; // Convert to Monday=0 ... Sunday=6
+                $solvedChallenges[$dayIndex] = (int)$row['solved_challenges'];
+                $totalAttempts[$dayIndex] = (int)$row['total_attempts'];
+            }
+            
+            $this->sendResponse([
+                'success' => true,
+                'attempts' => [
+                    'labels' => $days,
+                    'solved_challenges' => $solvedChallenges,
+                    'total_attempts' => $totalAttempts
+                ]
+            ]);
+            
+        } catch (Exception $e) {
+            $this->sendResponse([
+                'success' => false,
+                'message' => 'Failed to get attempts by day: ' . $e->getMessage()
+            ], 500);
         }
     }
 

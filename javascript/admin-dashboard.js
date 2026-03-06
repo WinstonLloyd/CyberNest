@@ -36,21 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simulate real-time updates
-    setInterval(function() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        statNumbers.forEach(stat => {
-            const currentValue = stat.textContent;
-            if (currentValue.includes('%')) return;
-            
-            const num = parseInt(currentValue.replace(/,/g, ''));
-            const change = Math.floor(Math.random() * 5) - 2;
-            const newValue = Math.max(0, num + change);
-            stat.textContent = newValue.toLocaleString();
-        });
-    }, 5000);
-
-    // Add hover effects to cards
     const statCards = document.querySelectorAll('.stat-card');
     statCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
