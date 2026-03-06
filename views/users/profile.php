@@ -946,6 +946,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Profile functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -1056,7 +1057,13 @@
         }
 
         function editProfile() {
-            alert('Edit profile functionality would open a modal or redirect to settings page');
+            Swal.fire({
+                icon: 'info',
+                title: 'Edit Profile',
+                text: 'Edit profile functionality would open a modal or redirect to settings page',
+                confirmButtonColor: '#00ff00',
+                confirmButtonText: 'OK'
+            });
         }
 
         function shareProfile() {
@@ -1077,7 +1084,16 @@
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
                 
-                alert('Profile URL copied to clipboard!');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    text: 'Profile URL copied to clipboard!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
             }
         }
 
@@ -1292,8 +1308,13 @@
         }
 
         function showError(message) {
-            // Create a simple error alert (you could replace this with a better UI notification)
-            alert(message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: message,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'OK'
+            });
         }
 
         function startRealTimeUpdates() {

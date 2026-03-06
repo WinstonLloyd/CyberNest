@@ -856,10 +856,22 @@
                     
                     if (action === 'view') {
                         console.log('Viewing user:', userName);
-                        alert(`Viewing profile for: ${userName}`);
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'User Profile',
+                            text: `Viewing profile for: ${userName}`,
+                            confirmButtonColor: '#00ff00',
+                            confirmButtonText: 'OK'
+                        });
                     } else if (action === 'edit') {
                         console.log('Editing user:', userName);
-                        alert(`Editing profile for: ${userName}`);
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Edit User',
+                            text: `Editing profile for: ${userName}`,
+                            confirmButtonColor: '#00ff00',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
             });

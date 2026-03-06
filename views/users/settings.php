@@ -904,8 +904,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Tab switching functionality
         function switchTab(tabName) {
             // Hide all tabs
             const tabs = document.querySelectorAll('.tab-content');
@@ -969,38 +969,67 @@
             localStorage.setItem('cybernest-settings', JSON.stringify(settings));
             
             // Show success message
-            showAlert('Settings saved successfully!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Settings saved successfully!',
+                confirmButtonColor: '#00ff00',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                confirmButtonText: 'OK'
+            });
         }
 
         // Reset settings functionality
         function resetSettings() {
-            if (confirm('Are you sure you want to reset all settings to default values?')) {
-                // Reset form fields
-                document.getElementById('username').value = 'JohnDoe';
-                document.getElementById('displayName').value = 'John Doe';
-                document.getElementById('email').value = 'john.doe@example.com';
-                document.getElementById('bio').value = 'Cybersecurity enthusiast and ethical hacker. Always learning and exploring new security challenges.';
-                document.getElementById('location').value = 'San Francisco, CA';
-                document.getElementById('website').value = 'https://johndoe.dev';
-                
-                // Reset toggles
-                const toggles = document.querySelectorAll('.toggle-switch');
-                toggles.forEach(toggle => {
-                    if (toggle.id.includes('Toggle') && 
-                        !['twoFactorToggle', 'desktopToggle', 'showEmailToggle'].includes(toggle.id)) {
-                        toggle.classList.add('active');
-                    } else {
-                        toggle.classList.remove('active');
-                    }
-                });
-                
-                // Reset selects
-                document.getElementById('colorTheme').value = 'green';
-                document.getElementById('fontSize').value = 'medium';
-                document.getElementById('language').value = 'en';
-                
-                showAlert('Settings reset to default values!');
-            }
+            Swal.fire({
+                title: 'Reset Settings?',
+                text: 'Are you sure you want to reset all settings to default values?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Yes, reset!',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Reset form fields
+                    document.getElementById('username').value = 'JohnDoe';
+                    document.getElementById('displayName').value = 'John Doe';
+                    document.getElementById('email').value = 'john.doe@example.com';
+                    document.getElementById('bio').value = 'Cybersecurity enthusiast and ethical hacker. Always learning and exploring new security challenges.';
+                    document.getElementById('location').value = 'San Francisco, CA';
+                    document.getElementById('website').value = 'https://johndoe.dev';
+                    
+                    // Reset toggles
+                    const toggles = document.querySelectorAll('.toggle-switch');
+                    toggles.forEach(toggle => {
+                        if (toggle.id.includes('Toggle') && 
+                            !['twoFactorToggle', 'desktopToggle', 'showEmailToggle'].includes(toggle.id)) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    });
+                    
+                    // Reset selects
+                    document.getElementById('colorTheme').value = 'green';
+                    document.getElementById('fontSize').value = 'medium';
+                    document.getElementById('language').value = 'en';
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Settings reset to default values!',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
         }
 
         // Export data functionality
@@ -1033,30 +1062,59 @@
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
             
-            showAlert('Data exported successfully!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Data exported successfully!',
+                confirmButtonColor: '#00ff00',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                confirmButtonText: 'OK'
+            });
         }
 
         // Confirm account deletion
         function confirmDeleteAccount() {
-            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
-                    showAlert('Account deletion request submitted. You will receive an email confirmation.');
-                    // In a real app, this would send a request to the server
+            Swal.fire({
+                title: 'Delete Account?',
+                text: 'This action cannot be undone. Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete Forever',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Absolutely Sure?',
+                        text: 'This will permanently delete all your data. This action cannot be undone!',
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Delete Forever',
+                        cancelButtonText: 'Cancel',
+                        background: '#1a1a1a',
+                        color: '#00ff00'
+                    }).then((finalResult) => {
+                        if (finalResult.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Account deletion request submitted. You will receive an email confirmation.',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                confirmButtonText: 'OK'
+                            });
+                            // In a real app, this would send a request to the server
+                        }
+                    });
                 }
-            }
-        }
-
-        // Show alert message
-        function showAlert(message) {
-            const alertElement = document.getElementById('alertMessage');
-            const alertText = document.getElementById('alertText');
-            
-            alertText.textContent = message;
-            alertElement.classList.add('show');
-            
-            setTimeout(() => {
-                alertElement.classList.remove('show');
-            }, 3000);
+            });
         }
 
         // Avatar upload functionality
@@ -1223,7 +1281,15 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showAlert('Settings saved successfully!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Settings saved successfully!',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        confirmButtonText: 'OK'
+                    });
                     
                     // Clear password fields
                     document.getElementById('currentPassword').value = '';
@@ -1233,12 +1299,28 @@
                     // Reload user data to reflect changes
                     loadUserProfile();
                 } else {
-                    showAlert('Error: ' + data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Error: ' + data.message,
+                        confirmButtonColor: '#dc3545',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        confirmButtonText: 'OK'
+                    });
                 }
             })
             .catch(error => {
                 console.error('Error saving settings:', error);
-                showAlert('Network error. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Network error. Please try again.',
+                    confirmButtonColor: '#dc3545',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    confirmButtonText: 'OK'
+                });
             });
         }
     </script>
