@@ -248,13 +248,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js?v=<?php echo time(); ?>"></script>
     <script>
-        // Load dashboard data on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardStats();
             loadRecentUsers();
             initializeCharts();
             
-            // Refresh data every 30 seconds
             setInterval(loadDashboardStats, 30000);
             setInterval(loadRecentUsers, 30000);
             setInterval(updateCharts, 30000);
@@ -264,7 +262,6 @@
         let systemResourcesChart = null;
 
         function initializeCharts() {
-            // Initialize User Activity Chart
             const userActivityCtx = document.getElementById('userActivityChart').getContext('2d');
             userActivityChart = new Chart(userActivityCtx, {
                 type: 'line',
@@ -317,7 +314,6 @@
                 }
             });
 
-            // Initialize System Resources Chart
             const systemResourcesCtx = document.getElementById('systemResourcesChart').getContext('2d');
             systemResourcesChart = new Chart(systemResourcesCtx, {
                 type: 'doughnut',
@@ -348,12 +344,10 @@
                 }
             });
 
-            // Load initial chart data
             loadChartData();
         }
 
         function loadChartData() {
-            // Fetch challenge attempts data from database
             fetch('/backend/api/challenges.php?action=attempts_by_day')
                 .then(response => response.json())
                 .then(data => {
@@ -361,7 +355,6 @@
                         updateChartWithChallengeData(data.attempts);
                     } else {
                         console.error('Failed to load challenge attempts data:', data.message);
-                        // Show empty chart if database fails
                         if (userActivityChart) {
                             userActivityChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                             userActivityChart.data.datasets[0].data = [0, 0, 0, 0, 0, 0, 0];
@@ -372,7 +365,6 @@
                 })
                 .catch(error => {
                     console.error('Error loading challenge attempts data:', error);
-                    // Show empty chart if error occurs
                     if (userActivityChart) {
                         userActivityChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                         userActivityChart.data.datasets[0].data = [0, 0, 0, 0, 0, 0, 0];
@@ -393,13 +385,11 @@
         }
 
         function updateCharts() {
-            // Reload real data from database
             loadChartData();
         }
 
         function updateSystemResources() {
             if (systemResourcesChart) {
-                // Use static system resource values instead of random
                 const cpuUsage = 65;
                 const memoryUsage = 45;
                 const diskUsage = 30;
@@ -411,7 +401,6 @@
         }
 
         function loadDashboardStats() {
-            // Load user stats
             fetch('/backend/api/users.php?action=stats')
                 .then(response => response.json())
                 .then(data => {
@@ -424,7 +413,6 @@
                     console.error('Error loading user stats:', error);
                 });
 
-            // Load challenge stats
             fetch('/backend/api/challenges.php?action=stats')
                 .then(response => response.json())
                 .then(data => {
@@ -436,7 +424,6 @@
                     console.error('Error loading challenge stats:', error);
                 });
 
-            // Calculate system uptime (simplified)
             const uptime = calculateUptime();
             document.getElementById('systemUptime').textContent = uptime;
         }
@@ -486,7 +473,6 @@
         }
 
         function calculateUptime() {
-            // Use static uptime instead of random
             const uptimePercent = 99.9;
             return uptimePercent.toFixed(1) + '%';
         }

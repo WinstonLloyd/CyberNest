@@ -1001,7 +1001,6 @@
             activityItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const title = this.querySelector('.activity-title').textContent;
-                    console.log('Activity clicked:', title);
                 });
             });
         });

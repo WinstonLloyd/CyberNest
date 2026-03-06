@@ -821,7 +821,6 @@
         });
 
         window.viewChallenge = function(challengeId) {
-            console.log('Viewing challenge:', challengeId);
             fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -860,7 +859,6 @@
         };
 
         window.editChallenge = function(challengeId) {
-            console.log('Editing challenge:', challengeId);
             fetch(`/backend/api/challenges.php?action=getById&id=${challengeId}`)
                 .then(response => response.json())
                 .then(data => {

@@ -446,7 +446,6 @@ class UserController {
     }
 
     private function getUserIdFromSession() {
-        // Get session token from cybernest_session cookie (same as ChallengeController)
         $sessionToken = $_COOKIE['cybernest_session'] ?? null;
         
         if (!$sessionToken) {
@@ -471,7 +470,6 @@ class UserController {
 
     private function uploadProfilePicture() {
         try {
-            // Check if file was uploaded
             if (!isset($_FILES['profile_picture']) || $_FILES['profile_picture']['error'] !== UPLOAD_ERR_OK) {
                 $this->sendResponse(['success' => false, 'message' => 'No file uploaded or upload error'], 400);
                 return;
@@ -479,7 +477,6 @@ class UserController {
 
             $file = $_FILES['profile_picture'];
             
-            // Validate file type
             $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mimeType = finfo_file($finfo, $file['tmp_name']);
@@ -490,38 +487,32 @@ class UserController {
                 return;
             }
 
-            // Validate file size (5MB max)
-            $maxSize = 5 * 1024 * 1024; // 5MB
+            $maxSize = 5 * 1024 * 1024;
             if ($file['size'] > $maxSize) {
                 $this->sendResponse(['success' => false, 'message' => 'File too large. Maximum size is 5MB'], 400);
                 return;
             }
 
-            // Get current user ID from session
             $userId = $this->getUserIdFromSession();
             if (!$userId) {
                 $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
                 return;
             }
 
-            // Create uploads directory if it doesn't exist
             $uploadDir = __DIR__ . '/../../uploads/profile_pictures/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
 
-            // Generate unique filename
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $filename = 'user_' . $userId . '_' . time() . '.' . $extension;
             $filepath = $uploadDir . $filename;
 
-            // Move uploaded file
             if (!move_uploaded_file($file['tmp_name'], $filepath)) {
                 $this->sendResponse(['success' => false, 'message' => 'Failed to save uploaded file'], 500);
                 return;
             }
 
-            // Update user's profile picture in database
             $profilePictureUrl = '/uploads/profile_pictures/' . $filename;
             $query = "UPDATE users SET profile_picture = :profile_picture WHERE id = :user_id";
             $stmt = $this->db->prepare($query);
@@ -529,13 +520,11 @@ class UserController {
             $stmt->bindParam(':user_id', $userId);
             
             if (!$stmt->execute()) {
-                // Remove uploaded file if database update fails
                 unlink($filepath);
                 $this->sendResponse(['success' => false, 'message' => 'Failed to update database'], 500);
                 return;
             }
 
-            // Delete old profile picture if exists
             $query = "SELECT profile_picture FROM users WHERE id = :user_id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':user_id', $userId);

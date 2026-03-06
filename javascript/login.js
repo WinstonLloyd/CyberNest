@@ -1,4 +1,3 @@
-// Matrix rain effect
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 
@@ -36,9 +35,7 @@ function drawMatrix() {
 
 setInterval(drawMatrix, 35);
 
-// Form handling
 function showLogin() {
-    console.log('showLogin called');
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const terminalAccess = document.getElementById('terminalAccess');
@@ -58,21 +55,16 @@ function showLogin() {
 }
 
 function showRegister() {
-    console.log('showRegister called - ONLY showing registration form');
-    
-    // Hide ALL forms first
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const terminalAccess = document.getElementById('terminalAccess');
     
-    // Force hide login and terminal access
     if (loginForm) {
         loginForm.classList.add('d-none');
         loginForm.classList.add('hidden');
         loginForm.style.display = 'none';
         loginForm.style.visibility = 'hidden';
         loginForm.style.opacity = '0';
-        console.log('Login form forcefully hidden');
     }
     
     if (terminalAccess) {
@@ -81,10 +73,8 @@ function showRegister() {
         terminalAccess.style.display = 'none';
         terminalAccess.style.visibility = 'hidden';
         terminalAccess.style.opacity = '0';
-        console.log('Terminal access forcefully hidden');
     }
     
-    // Show ONLY registration form
     if (registerForm) {
         registerForm.classList.remove('d-none');
         registerForm.classList.remove('hidden');
@@ -92,9 +82,6 @@ function showRegister() {
         registerForm.style.visibility = 'visible';
         registerForm.style.opacity = '1';
         registerForm.style.zIndex = '1000';
-        console.log('Registration form forcefully shown');
-        console.log('Register form final classes:', registerForm.className);
-        console.log('Register form final display:', registerForm.style.display);
     }
 }
 
@@ -142,7 +129,6 @@ function showMessage(message, type = 'error') {
     });
 }
 
-// Login form submission
 document.getElementById('loginFormElement').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -155,10 +141,8 @@ document.getElementById('loginFormElement').addEventListener('submit', function(
         return;
     }
     
-    // Show loading message
     showMessage('Authenticating...', 'info');
     
-    // Call backend API
     fetch('/backend/login.php', {
         method: 'POST',
         headers: {
@@ -175,18 +159,15 @@ document.getElementById('loginFormElement').addEventListener('submit', function(
         if (data.success) {
             showMessage('Authentication successful. Access granted.', 'success');
             
-            // Redirect based on user role
             setTimeout(() => {
                 if (data.user && data.user.role === 'admin') {
                     window.location.href = 'views/admin/dashboard.php';
                 } else {
-                    // Redirect regular users to home page
                     window.location.href = 'views/users/home.php';
                 }
             }, 1500);
         } else {
             showMessage('Access denied: ' + data.message, 'error');
-            // Add glitch effect
             document.body.style.animation = 'glitch 0.5s';
             setTimeout(() => {
                 document.body.style.animation = '';
@@ -199,7 +180,6 @@ document.getElementById('loginFormElement').addEventListener('submit', function(
     });
 });
 
-// Registration form submission
 document.getElementById('registerFormElement').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -224,10 +204,8 @@ document.getElementById('registerFormElement').addEventListener('submit', functi
         return;
     }
     
-    // Show loading message
     showMessage('Creating identity...', 'info');
     
-    // Call backend API
     fetch('/backend/register.php', {
         method: 'POST',
         headers: {
@@ -258,13 +236,11 @@ document.getElementById('registerFormElement').addEventListener('submit', functi
     });
 });
 
-// Window resize handler
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
 
-// Add keyboard shortcuts
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'r') {
         location.reload();

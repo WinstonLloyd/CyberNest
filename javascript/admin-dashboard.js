@@ -1,6 +1,4 @@
-// Admin Dashboard JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    // Toggle Sidebar
     const toggleSidebar = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
     
@@ -10,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {
         if (window.innerWidth <= 768 && 
             !sidebar.contains(event.target) && 
@@ -20,18 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Active navigation highlighting
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Only prevent default for hash links, allow actual navigation
             if (this.getAttribute('href').startsWith('#')) {
                 e.preventDefault();
             }
             
-            // Remove active class from all links
             navLinks.forEach(l => l.classList.remove('active'));
-            // Add active class to clicked link
             this.classList.add('active');
         });
     });
@@ -47,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle window resize
     function handleResize() {
         if (window.innerWidth > 768 && sidebar.classList.contains('active')) {
             sidebar.classList.remove('active');
@@ -56,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('resize', handleResize);
 
-    // Initialize tooltips if Bootstrap is available
     if (typeof bootstrap !== 'undefined') {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -64,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Action buttons functionality
     const actionButtons = document.querySelectorAll('.action-btn');
     actionButtons.forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -74,18 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const userName = userRow.querySelector('td div').textContent.trim();
             
             if (action === 'view') {
-                console.log('View user:', userName);
-                // Add view functionality here
                 alert(`Viewing user: ${userName}`);
             } else if (action === 'edit') {
-                console.log('Edit user:', userName);
-                // Add edit functionality here
                 alert(`Editing user: ${userName}`);
             }
         });
     });
 
-    // Status badge click functionality
     const statusBadges = document.querySelectorAll('.status-badge');
     statusBadges.forEach(badge => {
         badge.addEventListener('click', function() {
@@ -96,17 +81,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.remove('status-online');
                 this.classList.add('status-offline');
                 this.textContent = 'Offline';
-                console.log(`User ${userName} is now offline`);
             } else {
                 this.classList.remove('status-offline');
                 this.classList.add('status-online');
                 this.textContent = 'Online';
-                console.log(`User ${userName} is now online`);
             }
         });
     });
 
-    // Clear history functionality
     const clearHistoryBtn = document.getElementById('clearHistory');
     if (clearHistoryBtn) {
         clearHistoryBtn.addEventListener('click', function() {
@@ -128,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dropdown menu functionality
     const dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
@@ -136,17 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const dropdownMenu = this.nextElementSibling;
             const isOpen = dropdownMenu.style.display === 'block';
             
-            // Close all other dropdowns
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 menu.style.display = 'none';
             });
             
-            // Toggle current dropdown
             dropdownMenu.style.display = isOpen ? 'none' : 'block';
         });
     });
 
-    // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.matches('[data-bs-toggle="dropdown"]') && !e.target.closest('.dropdown-menu')) {
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -155,9 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add keyboard shortcuts
     document.addEventListener('keydown', function(e) {
-        // Ctrl + B to toggle sidebar
         if (e.ctrlKey && e.key === 'b') {
             e.preventDefault();
             if (toggleSidebar) {
@@ -165,14 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Ctrl + R to refresh stats
         if (e.ctrlKey && e.key === 'r') {
             e.preventDefault();
-            console.log('Refreshing statistics...');
-            // Add refresh functionality here
         }
     });
-
-    // Initialize dashboard
-    console.log('Admin Dashboard initialized');
 });

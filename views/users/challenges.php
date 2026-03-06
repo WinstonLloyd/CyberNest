@@ -1143,7 +1143,6 @@
         }
 
         window.changePage = function(page) {
-            console.log('Changing to page:', page);
             const buttons = document.querySelectorAll('.page-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             

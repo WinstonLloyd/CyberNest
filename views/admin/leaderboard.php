@@ -522,7 +522,6 @@
             loadLeaderboardData();
             loadLeaderboardStats();
             
-            // Setup event listeners
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', filterLeaderboard);
@@ -695,13 +694,11 @@
             const challengeFilter = document.getElementById('challengeFilter').value;
 
             filteredLeaderboardData = allLeaderboardData.filter(user => {
-                // Search filter
                 const matchesSearch = !searchTerm || 
                     user.display_name.toLowerCase().includes(searchTerm) ||
                     user.email.toLowerCase().includes(searchTerm) ||
                     user.username.toLowerCase().includes(searchTerm);
 
-                // Time filter
                 let matchesTime = true;
                 if (timeFilter !== 'all') {
                     const createdDate = new Date(user.created_at);
@@ -722,7 +719,6 @@
                     }
                 }
 
-                // Challenge filter
                 const matchesChallenge = challengeFilter === 'all' || user.rank === challengeFilter;
 
                 return matchesSearch && matchesTime && matchesChallenge;

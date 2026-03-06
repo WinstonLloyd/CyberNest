@@ -1183,8 +1183,6 @@
         }
 
         function populateProfileForm(profile) {
-            console.log('Profile data loaded:', profile); // Debug
-            console.log('Profile picture:', profile.profile_picture); // Debug
             
             document.getElementById('username').value = profile.username || '';
             document.getElementById('displayName').value = profile.display_name || profile.username;
@@ -1194,14 +1192,10 @@
             document.getElementById('website').value = profile.website || '';
             
             const avatarPreview = document.getElementById('avatarPreview');
-            console.log('Avatar preview element:', avatarPreview); // Debug
             
-            // Display profile picture if it exists
             if (profile.profile_picture && profile.profile_picture !== '') {
-                console.log('Setting profile picture:', profile.profile_picture); // Debug
                 avatarPreview.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
             } else {
-                console.log('No profile picture, using initials'); // Debug
                 const initials = getInitials(profile.username);
                 avatarPreview.textContent = initials;
             }
@@ -1253,16 +1247,13 @@
                 confirmPassword: document.getElementById('confirmPassword').value
             };
 
-            // Check if there's a profile picture to upload
             const avatarInput = document.getElementById('avatarInput');
             const hasNewAvatar = avatarInput.files.length > 0;
 
             if (hasNewAvatar) {
-                // If there's a new avatar, upload it first
                 const formData = new FormData();
                 formData.append('profile_picture', avatarInput.files[0]);
 
-                // Show loading
                 Swal.fire({
                     title: 'Uploading Profile Picture...',
                     text: 'Please wait while we upload your profile picture',
@@ -1279,7 +1270,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Profile picture uploaded successfully, now save other settings
                         saveProfileData(profileData, securityData);
                     } else {
                         Swal.close();
@@ -1308,13 +1298,11 @@
                     });
                 });
             } else {
-                // No new avatar, just save profile data
                 saveProfileData(profileData, securityData);
             }
         }
 
         function saveProfileData(profileData, securityData) {
-            // Show loading
             Swal.fire({
                 title: 'Saving...',
                 text: 'Please wait while we save your settings',
