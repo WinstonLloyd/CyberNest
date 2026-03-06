@@ -417,10 +417,9 @@ class ChallengeController {
             $stmt->execute();
             $totalChallenges = $stmt->fetch(PDO::FETCH_ASSOC)['total_challenges'];
 
-            $query = "SELECT COUNT(DISTINCT u.id) as total_hackers 
-                      FROM users u 
-                      JOIN user_profiles up ON u.id = up.user_id 
-                      WHERE up.points > 0";
+            $query = "SELECT COUNT(DISTINCT ca.user_id) as total_hackers 
+                      FROM challenge_attempts ca 
+                      WHERE ca.completed = 1 AND ca.points > 0";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             $totalHackers = $stmt->fetch(PDO::FETCH_ASSOC)['total_hackers'];
