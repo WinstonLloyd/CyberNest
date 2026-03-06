@@ -48,6 +48,9 @@ class ChallengeController {
             case 'getUserChallenges':
                 $this->getUserChallenges();
                 break;
+            case 'getUserTotalPoints':
+                $this->getUserTotalPoints();
+                break;
             case 'getById':
                 $this->getChallengeById();
                 break;
@@ -68,6 +71,9 @@ class ChallengeController {
                 break;
             case 'topPerformers':
                 $this->getTopPerformers();
+                break;
+            case 'getRealTimeAttempts':
+                $this->getRealTimeAttempts();
                 break;
             default:
                 $this->sendResponse(['success' => false, 'message' => 'Invalid action'], 404);
@@ -148,6 +154,35 @@ class ChallengeController {
             }
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to fetch challenge: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getUserTotalPoints() {
+        try {
+            // Get actual user ID from session
+            $userId = $this->getUserIdFromSession();
+            
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
+            
+            // Get user's total points from user_profiles table
+            $query = "SELECT COALESCE(points, 0) as total_points 
+                      FROM user_profiles 
+                      WHERE user_id = :user_id";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':user_id', $userId);
+            $stmt->execute();
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $totalPoints = $result ? (int)$result['total_points'] : 0;
+            
+            $this->sendResponse(['success' => true, 'total_points' => $totalPoints]);
+            
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch user points: ' . $e->getMessage()], 500);
         }
     }
 
@@ -360,6 +395,57 @@ class ChallengeController {
             $this->sendResponse(['success' => true, 'performers' => $performers]);
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to fetch top performers: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function getRealTimeAttempts() {
+        try {
+            $userId = $this->getUserIdFromSession();
+            
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
+
+            $challengeId = $_GET['challenge_id'] ?? '';
+            
+            if (empty($challengeId)) {
+                // Get all attempts for user
+                $query = "SELECT ca.challenge_id, ca.attempt_count, ca.completed, c.title 
+                          FROM challenge_attempts ca
+                          JOIN challenges c ON ca.challenge_id = c.id
+                          WHERE ca.user_id = :user_id";
+                
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->execute();
+                
+                $attempts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->sendResponse(['success' => true, 'attempts' => $attempts]);
+            } else {
+                // Get attempts for specific challenge
+                $query = "SELECT ca.attempt_count, ca.completed, c.title 
+                          FROM challenge_attempts ca
+                          JOIN challenges c ON ca.challenge_id = c.id
+                          WHERE ca.user_id = :user_id AND ca.challenge_id = :challenge_id
+                          LIMIT 1";
+                
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':user_id', $userId);
+                $stmt->bindParam(':challenge_id', $challengeId);
+                $stmt->execute();
+                
+                $attempt = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($attempt) {
+                    $this->sendResponse(['success' => true, 'attempt' => $attempt]);
+                } else {
+                    $this->sendResponse(['success' => true, 'attempt' => ['attempt_count' => 0, 'completed' => 0]]);
+                }
+            }
+            
+        } catch (Exception $e) {
+            $this->sendResponse(['success' => false, 'message' => 'Failed to fetch real-time attempts: ' . $e->getMessage()], 500);
         }
     }
 

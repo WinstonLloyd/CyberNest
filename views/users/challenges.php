@@ -606,7 +606,7 @@
                 <div class="stat-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <div class="stat-number">2,450</div>
+                <div class="stat-number" id="totalPointsDisplay">Loading...</div>
                 <div class="stat-label">Points Earned</div>
             </div>
         </div>
@@ -688,6 +688,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Load challenges from backend
             loadChallenges();
+            
+            // Load user total points from backend
+            loadUserTotalPoints();
+            
+            // Start real-time polling for attempt updates
+            startRealTimeUpdates();
             
             // Search functionality
             const searchInput = document.getElementById('searchInput');
@@ -804,6 +810,26 @@
                 .catch(error => {
                     console.error('Error loading challenges:', error);
                     showError('Error loading challenges');
+                });
+        }
+
+        // Load user total points from backend
+        function loadUserTotalPoints() {
+            fetch('/backend/api/challenges.php?action=getUserTotalPoints')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the Points Earned stat card using specific ID
+                        const pointsDisplay = document.getElementById('totalPointsDisplay');
+                        if (pointsDisplay) {
+                            pointsDisplay.textContent = data.total_points.toLocaleString();
+                        }
+                    } else {
+                        console.error('Failed to load user points:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user points:', error);
                 });
         }
 
@@ -936,17 +962,41 @@
                     const challengeId = this.dataset.id;
                     
                     if (status === 'inactive') {
-                        alert('This challenge is currently inactive and cannot be attempted.');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Challenge Inactive',
+                            text: 'This challenge is currently inactive and cannot be attempted.',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
                         return;
                     }
                     
                     if (status === 'draft') {
-                        alert('This challenge is still in draft mode and not available.');
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Challenge in Draft',
+                            text: 'This challenge is still in draft mode and not available.',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
                         return;
                     }
                     
                     if (userCompleted === '1') {
-                        alert('You have already completed this challenge!');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Already Completed',
+                            text: 'You have already completed this challenge!',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
                         return;
                     }
                     
@@ -1017,7 +1067,15 @@
             const flag = flagInput.value.trim();
             
             if (!flag) {
-                alert('Please enter a flag');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Flag Required',
+                    text: 'Please enter a flag to submit.',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    border: '1px solid #00ff00'
+                });
                 return;
             }
             
@@ -1039,25 +1097,73 @@
                 
                 if (data.success) {
                     if (data.already_completed) {
-                        alert('✅ ' + data.message);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Already Completed',
+                            text: data.message,
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        });
                     } else if (data.correct) {
                         let message = '🎉 ' + data.message;
                         if (data.points_earned) {
                             message += '\n\n🏆 Points earned: ' + data.points_earned;
                         }
-                        alert(message);
-                        // Reload challenges to update status
-                        loadChallenges();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Challenge Completed!',
+                            html: message,
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        }).then(() => {
+                            // Reload challenges to update status
+                            loadChallenges();
+                            // Reload user total points to update display
+                            loadUserTotalPoints();
+                            // Trigger immediate real-time update
+                            updateRealTimeAttempts();
+                        });
                     } else {
-                        alert('❌ ' + data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Incorrect Flag',
+                            text: data.message,
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        }).then(() => {
+                            // Trigger immediate real-time update for incorrect attempts too
+                            updateRealTimeAttempts();
+                        });
                     }
                 } else {
-                    alert('❌ Error: ' + data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Submission Error',
+                        text: data.message,
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00',
+                        border: '1px solid #00ff00'
+                    });
                 }
             })
             .catch(error => {
                 console.error('Error submitting flag:', error);
-                alert('Error submitting flag. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error Submitting Flag',
+                    text: 'An error occurred while submitting the flag. Please try again.',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    border: '1px solid #00ff00'
+                });
             });
         };
 
@@ -1084,11 +1190,166 @@
                 const activeBtn = document.querySelector('.page-btn.active');
                 const currentPage = parseInt(activeBtn.textContent);
                 const newPage = page === 'prev' ? Math.max(1, currentPage - 1) : Math.min(5, currentPage + 1);
-                buttons[newPage].classList.add('active');
+                buttons[newPage - 1].classList.add('active');
             } else {
-                buttons[page].classList.add('active');
+                buttons[page - 1].classList.add('active');
             }
         };
+
+        // Real-time updates functionality
+        let realTimeInterval;
+        let lastAttemptCounts = {};
+        
+        function startRealTimeUpdates() {
+            // Update every 5 seconds
+            realTimeInterval = setInterval(updateRealTimeAttempts, 5000);
+            
+            // Also update immediately when page becomes visible again
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    updateRealTimeAttempts();
+                }
+            });
+        }
+        
+        function updateRealTimeAttempts() {
+            fetch('/backend/api/challenges.php?action=getRealTimeAttempts')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.attempts) {
+                        data.attempts.forEach(attempt => {
+                            const challengeId = attempt.challenge_id;
+                            const newCount = attempt.attempt_count;
+                            
+                            // Check if this is a new attempt (count increased)
+                            if (lastAttemptCounts[challengeId] !== undefined && 
+                                lastAttemptCounts[challengeId] < newCount) {
+                                // Show visual feedback for the updated attempt
+                                showAttemptUpdate(challengeId, newCount, attempt.completed);
+                            }
+                            
+                            // Update the stored count
+                            lastAttemptCounts[challengeId] = newCount;
+                            
+                            // Update the UI
+                            updateChallengeAttemptCount(challengeId, newCount, attempt.completed);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating real-time attempts:', error);
+                });
+        }
+        
+        function updateChallengeAttemptCount(challengeId, attemptCount, completed) {
+            const challengeCard = document.querySelector(`[data-id="${challengeId}"]`);
+            if (challengeCard) {
+                const yourAttemptsElement = challengeCard.querySelector('.challenge-stats .stat-item:nth-child(3) .stat-value');
+                if (yourAttemptsElement) {
+                    const oldCount = parseInt(yourAttemptsElement.textContent);
+                    yourAttemptsElement.textContent = attemptCount;
+                    
+                    // Add animation for the update
+                    yourAttemptsElement.style.transition = 'all 0.3s ease';
+                    yourAttemptsElement.style.transform = 'scale(1.2)';
+                    yourAttemptsElement.style.color = '#00ff00';
+                    
+                    setTimeout(() => {
+                        yourAttemptsElement.style.transform = 'scale(1)';
+                        yourAttemptsElement.style.color = '';
+                    }, 300);
+                }
+                
+                // Update status if completed
+                if (completed) {
+                    const statusElement = challengeCard.querySelector('.challenge-status');
+                    if (statusElement) {
+                        statusElement.className = 'challenge-status status-completed';
+                        statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Completed';
+                    }
+                    
+                    // Update data attribute
+                    challengeCard.dataset.userCompleted = '1';
+                }
+            }
+        }
+        
+        function showAttemptUpdate(challengeId, newCount, completed) {
+            const challengeCard = document.querySelector(`[data-id="${challengeId}"]`);
+            if (challengeCard) {
+                // Create a notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: rgba(0, 255, 0, 0.9);
+                    color: #000;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                    font-size: 0.8rem;
+                    font-weight: bold;
+                    z-index: 1000;
+                    animation: slideInRight 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 255, 0, 0.4);
+                `;
+                
+                if (completed) {
+                    notification.innerHTML = `<i class="fas fa-check-circle"></i> Challenge Completed!`;
+                    notification.style.background = 'rgba(40, 167, 69, 0.9)';
+                } else {
+                    notification.innerHTML = `<i class="fas fa-clock"></i> Attempt ${newCount}`;
+                }
+                
+                challengeCard.style.position = 'relative';
+                challengeCard.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOutRight 0.3s ease';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+        }
+        
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Clean up interval when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            if (realTimeInterval) {
+                clearInterval(realTimeInterval);
+            }
+        });
+
         // Logout function
         function logout() {
             Swal.fire({
