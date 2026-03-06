@@ -1,8 +1,4 @@
 <?php
-/**
- * Authentication Controller for CyberNest
- */
-
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../config/database.php';
 
@@ -17,10 +13,8 @@ class AuthController {
             $this->db = $database->getConnection();
             $this->user = new User($this->db);
             
-            // Create tables if they don't exist
             $database->createTables();
         } catch (Exception $e) {
-            // Store error for later use in handleRequest
             $this->init_error = $e->getMessage();
         }
     }
@@ -35,7 +29,6 @@ class AuthController {
             exit(0);
         }
 
-        // Check if there was an initialization error
         if ($this->init_error) {
             $this->sendResponse([
                 'success' => false, 
@@ -87,7 +80,6 @@ class AuthController {
             $session_token = $this->user->createSession($result['user']['id'], $remember);
             
             if ($session_token) {
-                // Set session cookie
                 $cookie_name = 'cybernest_session';
                 $cookie_value = $session_token;
                 $cookie_expire = $remember ? time() + (86400 * 30) : time() + (86400);
@@ -130,7 +122,6 @@ class AuthController {
         $password = $data['password'];
         $display_name = isset($data['display_name']) ? trim($data['display_name']) : $username;
 
-        // Validation
         if (empty($username) || empty($email) || empty($password)) {
             $this->sendResponse(['success' => false, 'message' => 'All fields are required'], 400);
             return;

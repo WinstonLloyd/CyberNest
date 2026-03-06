@@ -1,8 +1,4 @@
 <?php
-/**
- * User Model for CyberNest
- */
-
 require_once __DIR__ . '/../config/database.php';
 
 class User {
@@ -27,7 +23,6 @@ class User {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($row['is_active'] && password_verify($password, $row['password_hash'])) {
-                // Update last login
                 $this->updateLastLogin($row['id']);
                 
                 return [
@@ -47,15 +42,12 @@ class User {
     }
 
     public function register($username, $email, $password, $display_name = null) {
-        // Check if user exists
         if ($this->userExists($username, $email)) {
             return ['success' => false, 'message' => 'Username or email already exists'];
         }
 
-        // Hash password
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert new user with 'user' role
         $query = "INSERT INTO " . $this->table_name . " 
                   (username, email, password_hash, display_name, role) 
                   VALUES (:username, :email, :password_hash, :display_name, :role)";
@@ -63,7 +55,7 @@ class User {
         $stmt = $this->conn->prepare($query);
         
         $display_name = $display_name ?: $username;
-        $role = 'user'; // Auto-assign user role
+        $role = 'user';
         
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);

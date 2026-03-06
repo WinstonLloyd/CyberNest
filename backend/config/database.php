@@ -194,66 +194,66 @@ class Database {
                 $stmt->execute([$admin_id, 10000, 50, 'Admin']);
                 
                 // Insert sample challenges
-                $sample_challenges = [
-                    [
-                        'title' => 'Buffer Overflow Basics',
-                        'description' => 'Learn the fundamentals of buffer overflow vulnerabilities. This challenge covers stack-based buffer overflows, memory layout, and basic exploitation techniques.',
-                        'difficulty' => 'beginner',
-                        'points' => 150,
-                        'category' => 'binary',
-                        'status' => 'active',
-                        'tags' => 'buffer-overflow,stack,memory,beginner'
-                    ],
-                    [
-                        'title' => 'SQL Injection Mastery',
-                        'description' => 'Master SQL injection techniques including UNION-based attacks, blind SQL injection, and advanced bypass methods. Test your skills against realistic web applications.',
-                        'difficulty' => 'intermediate',
-                        'points' => 300,
-                        'category' => 'web',
-                        'status' => 'active',
-                        'tags' => 'sql-injection,database,web,intermediate'
-                    ],
-                    [
-                        'title' => 'Advanced ROP Exploitation',
-                        'description' => 'Advanced Return-Oriented Programming (ROP) exploitation techniques. Learn to bypass modern security protections like ASLR and NX using sophisticated ROP chains.',
-                        'difficulty' => 'expert',
-                        'points' => 500,
-                        'category' => 'binary',
-                        'status' => 'active',
-                        'tags' => 'rop,aslr,nx,expert'
-                    ],
-                    [
-                        'title' => 'Web Security Fundamentals',
-                        'description' => 'Introduction to web security vulnerabilities including XSS, CSRF, and basic authentication bypasses. Perfect for beginners starting their cybersecurity journey.',
-                        'difficulty' => 'beginner',
-                        'points' => 100,
-                        'category' => 'web',
-                        'status' => 'draft',
-                        'tags' => 'xss,csrf,web,beginner'
-                    ],
-                    [
-                        'title' => 'Binary Reverse Engineering',
-                        'description' => 'Learn to reverse engineer binary executables. This challenge covers assembly language basics, disassembly tools, and program analysis techniques.',
-                        'difficulty' => 'intermediate',
-                        'points' => 250,
-                        'category' => 'reverse',
-                        'status' => 'inactive',
-                        'tags' => 'reverse-engineering,assembly,binary,intermediate'
-                    ]
-                ];
+                // $sample_challenges = [
+                //     [
+                //         'title' => 'Buffer Overflow Basics',
+                //         'description' => 'Learn the fundamentals of buffer overflow vulnerabilities. This challenge covers stack-based buffer overflows, memory layout, and basic exploitation techniques.',
+                //         'difficulty' => 'beginner',
+                //         'points' => 150,
+                //         'category' => 'binary',
+                //         'status' => 'active',
+                //         'tags' => 'buffer-overflow,stack,memory,beginner'
+                //     ],
+                //     [
+                //         'title' => 'SQL Injection Mastery',
+                //         'description' => 'Master SQL injection techniques including UNION-based attacks, blind SQL injection, and advanced bypass methods. Test your skills against realistic web applications.',
+                //         'difficulty' => 'intermediate',
+                //         'points' => 300,
+                //         'category' => 'web',
+                //         'status' => 'active',
+                //         'tags' => 'sql-injection,database,web,intermediate'
+                //     ],
+                //     [
+                //         'title' => 'Advanced ROP Exploitation',
+                //         'description' => 'Advanced Return-Oriented Programming (ROP) exploitation techniques. Learn to bypass modern security protections like ASLR and NX using sophisticated ROP chains.',
+                //         'difficulty' => 'expert',
+                //         'points' => 500,
+                //         'category' => 'binary',
+                //         'status' => 'active',
+                //         'tags' => 'rop,aslr,nx,expert'
+                //     ],
+                //     [
+                //         'title' => 'Web Security Fundamentals',
+                //         'description' => 'Introduction to web security vulnerabilities including XSS, CSRF, and basic authentication bypasses. Perfect for beginners starting their cybersecurity journey.',
+                //         'difficulty' => 'beginner',
+                //         'points' => 100,
+                //         'category' => 'web',
+                //         'status' => 'draft',
+                //         'tags' => 'xss,csrf,web,beginner'
+                //     ],
+                //     [
+                //         'title' => 'Binary Reverse Engineering',
+                //         'description' => 'Learn to reverse engineer binary executables. This challenge covers assembly language basics, disassembly tools, and program analysis techniques.',
+                //         'difficulty' => 'intermediate',
+                //         'points' => 250,
+                //         'category' => 'reverse',
+                //         'status' => 'inactive',
+                //         'tags' => 'reverse-engineering,assembly,binary,intermediate'
+                //     ]
+                // ];
                 
-                foreach ($sample_challenges as $challenge) {
-                    $stmt = $conn->prepare("INSERT INTO challenges (title, description, difficulty, points, category, status, tags) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([
-                        $challenge['title'],
-                        $challenge['description'],
-                        $challenge['difficulty'],
-                        $challenge['points'],
-                        $challenge['category'],
-                        $challenge['status'],
-                        $challenge['tags']
-                    ]);
-                }
+                // foreach ($sample_challenges as $challenge) {
+                //     $stmt = $conn->prepare("INSERT INTO challenges (title, description, difficulty, points, category, status, tags) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                //     $stmt->execute([
+                //         $challenge['title'],
+                //         $challenge['description'],
+                //         $challenge['difficulty'],
+                //         $challenge['points'],
+                //         $challenge['category'],
+                //         $challenge['status'],
+                //         $challenge['tags']
+                //     ]);
+                // }
             } elseif (!$profiles_table_exists) {
                 // Create only user_profiles table if it doesn't exist
                 $sql = "CREATE TABLE user_profiles (
@@ -314,72 +314,72 @@ class Database {
                 $conn->exec($sql);
                 
                 // Insert sample challenges
-                $sample_challenges = [
-                    [
-                        'title' => 'Buffer Overflow Basics',
-                        'description' => 'Learn fundamentals of buffer overflow vulnerabilities. This challenge covers stack-based buffer overflows, memory layout, and basic exploitation techniques.',
-                        'difficulty' => 'beginner',
-                        'points' => 150,
-                        'category' => 'binary',
-                        'status' => 'active',
-                        'flag' => 'CYBERNEST{buffer_overflow_master}',
-                        'tags' => 'buffer-overflow,stack,memory,beginner'
-                    ],
-                    [
-                        'title' => 'SQL Injection Mastery',
-                        'description' => 'Master SQL injection techniques including UNION-based attacks, blind SQL injection, and advanced bypass methods. Test your skills against realistic web applications.',
-                        'difficulty' => 'intermediate',
-                        'points' => 300,
-                        'category' => 'web',
-                        'status' => 'active',
-                        'flag' => 'CYBERNEST{sql_injection_expert}',
-                        'tags' => 'sql-injection,database,web,intermediate'
-                    ],
-                    [
-                        'title' => 'Advanced ROP Exploitation',
-                        'description' => 'Advanced Return-Oriented Programming (ROP) exploitation techniques. Learn to bypass modern security protections like ASLR and NX using sophisticated ROP chains.',
-                        'difficulty' => 'expert',
-                        'points' => 500,
-                        'category' => 'binary',
-                        'status' => 'active',
-                        'flag' => 'CYBERNEST{rop_chains_are_fun}',
-                        'tags' => 'rop,aslr,nx,expert'
-                    ],
-                    [
-                        'title' => 'Web Security Fundamentals',
-                        'description' => 'Introduction to web security vulnerabilities including XSS, CSRF, and basic authentication bypasses. Perfect for beginners starting their cybersecurity journey.',
-                        'difficulty' => 'beginner',
-                        'points' => 100,
-                        'category' => 'web',
-                        'status' => 'draft',
-                        'flag' => 'CYBERNEST{web_security_basics}',
-                        'tags' => 'xss,csrf,web,beginner'
-                    ],
-                    [
-                        'title' => 'Binary Reverse Engineering',
-                        'description' => 'Learn to reverse engineer binary executables. This challenge covers assembly language basics, disassembly tools, and program analysis techniques.',
-                        'difficulty' => 'intermediate',
-                        'points' => 250,
-                        'category' => 'reverse',
-                        'status' => 'inactive',
-                        'flag' => 'CYBERNEST{reverse_engineering_pro}',
-                        'tags' => 'reverse-engineering,assembly,binary,intermediate'
-                    ]
-                ];
+                // $sample_challenges = [
+                //     [
+                //         'title' => 'Buffer Overflow Basics',
+                //         'description' => 'Learn fundamentals of buffer overflow vulnerabilities. This challenge covers stack-based buffer overflows, memory layout, and basic exploitation techniques.',
+                //         'difficulty' => 'beginner',
+                //         'points' => 150,
+                //         'category' => 'binary',
+                //         'status' => 'active',
+                //         'flag' => 'CYBERNEST{buffer_overflow_master}',
+                //         'tags' => 'buffer-overflow,stack,memory,beginner'
+                //     ],
+                //     [
+                //         'title' => 'SQL Injection Mastery',
+                //         'description' => 'Master SQL injection techniques including UNION-based attacks, blind SQL injection, and advanced bypass methods. Test your skills against realistic web applications.',
+                //         'difficulty' => 'intermediate',
+                //         'points' => 300,
+                //         'category' => 'web',
+                //         'status' => 'active',
+                //         'flag' => 'CYBERNEST{sql_injection_expert}',
+                //         'tags' => 'sql-injection,database,web,intermediate'
+                //     ],
+                //     [
+                //         'title' => 'Advanced ROP Exploitation',
+                //         'description' => 'Advanced Return-Oriented Programming (ROP) exploitation techniques. Learn to bypass modern security protections like ASLR and NX using sophisticated ROP chains.',
+                //         'difficulty' => 'expert',
+                //         'points' => 500,
+                //         'category' => 'binary',
+                //         'status' => 'active',
+                //         'flag' => 'CYBERNEST{rop_chains_are_fun}',
+                //         'tags' => 'rop,aslr,nx,expert'
+                //     ],
+                //     [
+                //         'title' => 'Web Security Fundamentals',
+                //         'description' => 'Introduction to web security vulnerabilities including XSS, CSRF, and basic authentication bypasses. Perfect for beginners starting their cybersecurity journey.',
+                //         'difficulty' => 'beginner',
+                //         'points' => 100,
+                //         'category' => 'web',
+                //         'status' => 'draft',
+                //         'flag' => 'CYBERNEST{web_security_basics}',
+                //         'tags' => 'xss,csrf,web,beginner'
+                //     ],
+                //     [
+                //         'title' => 'Binary Reverse Engineering',
+                //         'description' => 'Learn to reverse engineer binary executables. This challenge covers assembly language basics, disassembly tools, and program analysis techniques.',
+                //         'difficulty' => 'intermediate',
+                //         'points' => 250,
+                //         'category' => 'reverse',
+                //         'status' => 'inactive',
+                //         'flag' => 'CYBERNEST{reverse_engineering_pro}',
+                //         'tags' => 'reverse-engineering,assembly,binary,intermediate'
+                //     ]
+                // ];
                 
-                foreach ($sample_challenges as $challenge) {
-                    $stmt = $conn->prepare("INSERT INTO challenges (title, description, difficulty, points, category, status, flag, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([
-                        $challenge['title'],
-                        $challenge['description'],
-                        $challenge['difficulty'],
-                        $challenge['points'],
-                        $challenge['category'],
-                        $challenge['status'],
-                        $challenge['flag'],
-                        $challenge['tags']
-                    ]);
-                }
+                // foreach ($sample_challenges as $challenge) {
+                //     $stmt = $conn->prepare("INSERT INTO challenges (title, description, difficulty, points, category, status, flag, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                //     $stmt->execute([
+                //         $challenge['title'],
+                //         $challenge['description'],
+                //         $challenge['difficulty'],
+                //         $challenge['points'],
+                //         $challenge['category'],
+                //         $challenge['status'],
+                //         $challenge['flag'],
+                //         $challenge['tags']
+                //     ]);
+                // }
             }
         } catch (Exception $e) {
             throw new Exception("Failed to create tables: " . $e->getMessage());

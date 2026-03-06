@@ -1,8 +1,4 @@
 <?php
-/**
- * Challenge Model for CyberNest
- */
-
 class Challenge {
     private $db;
     private $conn;
@@ -12,9 +8,6 @@ class Challenge {
         $this->conn = $this->db->getConnection();
     }
 
-    /**
-     * Get all challenges with optional filtering
-     */
     public function getAllChallenges($filters = []) {
         try {
             $query = "SELECT c.*, 
@@ -56,9 +49,6 @@ class Challenge {
         }
     }
 
-    /**
-     * Get challenge by ID
-     */
     public function getChallengeById($id) {
         try {
             $query = "SELECT c.*, 
@@ -80,9 +70,6 @@ class Challenge {
         }
     }
 
-    /**
-     * Create new challenge
-     */
     public function createChallenge($data) {
         try {
             $query = "INSERT INTO challenges (title, description, difficulty, points, category, status, flag, tags, created_at) 
@@ -105,9 +92,6 @@ class Challenge {
         }
     }
 
-    /**
-     * Update challenge
-     */
     public function updateChallenge($id, $data) {
         try {
             $query = "UPDATE challenges 
@@ -133,18 +117,13 @@ class Challenge {
         }
     }
 
-    /**
-     * Delete challenge
-     */
     public function deleteChallenge($id) {
         try {
-            // Delete related attempts first
             $query = "DELETE FROM challenge_attempts WHERE challenge_id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             
-            // Delete the challenge
             $query = "DELETE FROM challenges WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
@@ -155,30 +134,22 @@ class Challenge {
         }
     }
 
-    /**
-     * Get challenge statistics
-     */
     public function getChallengeStats() {
         try {
             $stats = [];
             
-            // Total challenges
             $stmt = $this->conn->query("SELECT COUNT(*) as total FROM challenges");
             $stats['total_challenges'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
             
-            // Challenges by difficulty
             $stmt = $this->conn->query("SELECT difficulty, COUNT(*) as count FROM challenges GROUP BY difficulty");
             $stats['by_difficulty'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Challenges by status
             $stmt = $this->conn->query("SELECT status, COUNT(*) as count FROM challenges GROUP BY status");
             $stats['by_status'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Total attempts
             $stmt = $this->conn->query("SELECT COUNT(*) as total FROM challenge_attempts");
             $stats['total_attempts'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
             
-            // Total solves
             $stmt = $this->conn->query("SELECT COUNT(*) as total FROM challenge_attempts WHERE completed = 1");
             $stats['total_solves'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
             
@@ -188,9 +159,6 @@ class Challenge {
         }
     }
 
-    /**
-     * Get challenges with user-specific status
-     */
     public function getChallengesForUser($userId, $filters = []) {
         try {
             $query = "SELECT c.*, 
@@ -237,9 +205,6 @@ class Challenge {
         }
     }
 
-    /**
-     * Get top performers for challenges
-     */
     public function getTopPerformers($limit = 10) {
         try {
             $query = "SELECT u.username, u.display_name, 

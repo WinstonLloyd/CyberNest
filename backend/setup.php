@@ -1,9 +1,4 @@
 <?php
-/**
- * Database Setup Script for CyberNest
- * Run this script once to create the database and tables
- */
-
 require_once __DIR__ . '/config/database.php';
 
 echo "<h1>CyberNest Database Setup</h1>";
@@ -15,16 +10,13 @@ try {
     if ($conn) {
         echo "<p style='color: green;'>✓ Database connection successful</p>";
         
-        // Create database if it doesn't exist
         $conn->exec("CREATE DATABASE IF NOT EXISTS cybernest");
         $conn->exec("USE cybernest");
         
-        // Create tables
         $database->createTables();
         
         echo "<p style='color: green;'>✓ Database tables created successfully</p>";
         
-        // Check if tables exist
         $tables = ['users', 'user_sessions'];
         foreach ($tables as $table) {
             $result = $conn->query("SHOW TABLES LIKE '$table'");

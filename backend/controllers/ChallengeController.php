@@ -124,7 +124,6 @@ class ChallengeController {
 
     private function getUserChallenges() {
         try {
-            // Get actual user ID from session
             $userId = $this->getUserIdFromSession();
             
             if (!$userId) {
@@ -177,7 +176,6 @@ class ChallengeController {
 
     private function getUserTotalPoints() {
         try {
-            // Get actual user ID from session
             $userId = $this->getUserIdFromSession();
             
             if (!$userId) {
@@ -185,7 +183,6 @@ class ChallengeController {
                 return;
             }
             
-            // Get user's total points from user_profiles table
             $query = "SELECT COALESCE(points, 0) as total_points 
                       FROM user_profiles 
                       WHERE user_id = :user_id";
@@ -313,7 +310,6 @@ class ChallengeController {
             $challengeId = $data['challenge_id'];
             $submittedFlag = $data['flag'];
             
-            // Get actual user ID from session
             $userId = $this->getUserIdFromSession();
             
             if (!$userId) {
@@ -321,7 +317,6 @@ class ChallengeController {
                 return;
             }
 
-            // Get challenge details to compare flag
             $challenge = $this->challenge->getChallengeById($challengeId);
             
             if (!$challenge) {
@@ -329,7 +324,6 @@ class ChallengeController {
                 return;
             }
 
-            // Check if user has already completed this challenge
             $existingAttempt = $this->getChallengeAttempt($userId, $challengeId);
             
             if ($existingAttempt && $existingAttempt['completed']) {
@@ -342,14 +336,11 @@ class ChallengeController {
                 return;
             }
 
-            // Compare submitted flag with actual flag
             $isCorrect = $submittedFlag === $challenge['flag'];
             
-            // Log the attempt
             $this->logChallengeAttempt($userId, $challengeId, $isCorrect);
             
             if ($isCorrect) {
-                // Update user points and statistics
                 $this->updateUserStats($userId, $challenge['points']);
                 
                 $this->sendResponse([
@@ -418,13 +409,11 @@ class ChallengeController {
 
     private function getPlatformStats() {
         try {
-            // Get total challenges
             $query = "SELECT COUNT(*) as total_challenges FROM challenges WHERE status = 'active'";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             $totalChallenges = $stmt->fetch(PDO::FETCH_ASSOC)['total_challenges'];
 
-            // Get total users (hackers)
             $query = "SELECT COUNT(DISTINCT u.id) as total_hackers 
                       FROM users u 
                       JOIN user_profiles up ON u.id = up.user_id 
@@ -433,13 +422,11 @@ class ChallengeController {
             $stmt->execute();
             $totalHackers = $stmt->fetch(PDO::FETCH_ASSOC)['total_hackers'];
 
-            // Get total completed challenges
             $query = "SELECT COUNT(*) as total_completed FROM challenge_attempts WHERE completed = 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             $totalCompleted = $stmt->fetch(PDO::FETCH_ASSOC)['total_completed'];
 
-            // Get active users in last 24 hours
             $query = "SELECT COUNT(DISTINCT user_id) as active_today 
                       FROM challenge_attempts 
                       WHERE created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)";
@@ -447,7 +434,6 @@ class ChallengeController {
             $stmt->execute();
             $activeToday = $stmt->fetch(PDO::FETCH_ASSOC)['active_today'];
 
-            // Get current user's completed challenges
             $userId = $this->getUserIdFromSession();
             $userCompleted = 0;
             if ($userId) {
@@ -477,7 +463,6 @@ class ChallengeController {
         try {
             $limit = $_GET['limit'] ?? 10;
             
-            // Get recent challenge completions
             $query = "SELECT ca.challenge_id, ca.completed_at, c.title, u.username,
                              CASE WHEN ca.completed = 1 THEN 'completed' ELSE 'attempted' END as activity_type
                       FROM challenge_attempts ca
@@ -492,7 +477,6 @@ class ChallengeController {
             
             $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Format activities for display
             $formattedActivities = [];
             foreach ($activities as $activity) {
                 $timeAgo = $this->getTimeAgo($activity['completed_at']);
@@ -526,7 +510,6 @@ class ChallengeController {
         try {
             $limit = $_GET['limit'] ?? 5;
             
-            // Query to get points from challenge_attempts table with success rate
             $query = "SELECT u.username, 
                              COALESCE(SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END), 0) as points,
                              COALESCE(COUNT(CASE WHEN ca.completed = 1 THEN 1 END), 0) as challenges_completed,
@@ -545,13 +528,11 @@ class ChallengeController {
             
             $hackers = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Format hackers for display
             $formattedHackers = [];
             foreach ($hackers as $index => $hacker) {
                 $rank = $index + 1;
                 $lastActivity = $hacker['last_activity'] ? $this->getTimeAgo($hacker['last_activity']) : 'Never';
                 
-                // Calculate real success rate
                 $successRate = $hacker['total_attempts'] > 0 ? 
                     round(($hacker['challenges_completed'] / $hacker['total_attempts']) * 100, 1) : 0;
                 
@@ -580,7 +561,6 @@ class ChallengeController {
                 return;
             }
 
-            // Get user profile data
             $query = "SELECT u.username, u.email, u.created_at, u.bio, u.location, u.website
                       FROM users u
                       WHERE u.id = :user_id
@@ -597,7 +577,6 @@ class ChallengeController {
                 return;
             }
 
-            // Get user challenge statistics
             $query = "SELECT 
                         COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as challenges_completed,
                         COUNT(ca.id) as total_attempts,
@@ -612,11 +591,9 @@ class ChallengeController {
             
             $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Calculate success rate
             $successRate = $stats['total_attempts'] > 0 ? 
                 round(($stats['challenges_completed'] / $stats['total_attempts']) * 100, 1) : 0;
 
-            // Get user rank position
             $rankQuery = "SELECT COUNT(*) + 1 as rank_position
                           FROM (
                               SELECT u2.id, COALESCE(SUM(CASE WHEN ca2.completed = 1 THEN ca2.points ELSE 0 END), 0) as total_points
@@ -635,7 +612,6 @@ class ChallengeController {
             $rankResult = $stmt->fetch(PDO::FETCH_ASSOC);
             $rankPosition = $rankResult['rank_position'];
 
-            // Get recent activity for this user
             $activityQuery = "SELECT ca.challenge_id, ca.completed_at, c.title,
                                      CASE WHEN ca.completed = 1 THEN 'completed' ELSE 'attempted' END as activity_type
                               FROM challenge_attempts ca
@@ -650,7 +626,6 @@ class ChallengeController {
             
             $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Format activities for display
             $formattedActivities = [];
             foreach ($activities as $activity) {
                 $timeAgo = $this->getTimeAgo($activity['completed_at']);
@@ -706,7 +681,6 @@ class ChallengeController {
                 return;
             }
 
-            // Get user skill progress by category
             $query = "SELECT 
                         c.category as skill_name,
                         COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as completed_challenges,
@@ -724,7 +698,6 @@ class ChallengeController {
             
             $skills = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Get total challenges per category for percentage calculation
             $totalQuery = "SELECT category, COUNT(*) as total_category_challenges
                            FROM challenges
                            GROUP BY category";
@@ -734,20 +707,17 @@ class ChallengeController {
             
             $totals = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Create lookup array for totals
             $totalLookup = [];
             foreach ($totals as $total) {
                 $totalLookup[$total['category']] = $total['total_category_challenges'];
             }
 
-            // Format skills with progress percentages
             $formattedSkills = [];
             foreach ($skills as $skill) {
                 $totalChallenges = $totalLookup[$skill['skill_name']] ?? 1;
                 $progressPercentage = $totalChallenges > 0 ? 
                     round(($skill['completed_challenges'] / $totalChallenges) * 100, 1) : 0;
                 
-                // Calculate skill level based on progress and points
                 $skillLevel = $this->calculateSkillLevel($progressPercentage, $skill['points_earned']);
                 
                 $formattedSkills[] = [
@@ -771,7 +741,6 @@ class ChallengeController {
     }
 
     private function calculateSkillLevel($progressPercentage, $pointsEarned) {
-        // Calculate skill level based on progress and points
         if ($progressPercentage >= 90 && $pointsEarned >= 1000) {
             return 'Expert';
         } elseif ($progressPercentage >= 70 && $pointsEarned >= 500) {
@@ -793,7 +762,6 @@ class ChallengeController {
                 return;
             }
 
-            // Get JSON data from request body
             $input = json_decode(file_get_contents('php://input'), true);
             
             if (!$input) {
@@ -801,7 +769,6 @@ class ChallengeController {
                 return;
             }
 
-            // Validate and sanitize input
             $username = trim($input['username'] ?? '');
             $displayName = trim($input['displayName'] ?? '');
             $email = trim($input['email'] ?? '');
@@ -809,7 +776,6 @@ class ChallengeController {
             $location = trim($input['location'] ?? '');
             $website = trim($input['website'] ?? '');
 
-            // Basic validation
             if (empty($username)) {
                 $this->sendResponse(['success' => false, 'message' => 'Username is required'], 400);
                 return;
@@ -820,7 +786,6 @@ class ChallengeController {
                 return;
             }
 
-            // Check if username is already taken by another user
             $checkQuery = "SELECT id FROM users WHERE username = :username AND id != :user_id";
             $stmt = $this->db->prepare($checkQuery);
             $stmt->bindParam(':username', $username);
@@ -832,7 +797,6 @@ class ChallengeController {
                 return;
             }
 
-            // Check if email is already taken by another user
             $checkQuery = "SELECT id FROM users WHERE email = :email AND id != :user_id";
             $stmt = $this->db->prepare($checkQuery);
             $stmt->bindParam(':email', $email);
@@ -844,7 +808,6 @@ class ChallengeController {
                 return;
             }
 
-            // Update user information
             $updateQuery = "UPDATE users SET username = :username, email = :email, bio = :bio, location = :location, website = :website WHERE id = :user_id";
             $stmt = $this->db->prepare($updateQuery);
             $stmt->bindParam(':username', $username);
@@ -855,12 +818,10 @@ class ChallengeController {
             $stmt->bindParam(':user_id', $userId);
             $stmt->execute();
 
-            // Handle password change if provided
             if (!empty($input['currentPassword']) && !empty($input['newPassword'])) {
                 $currentPassword = $input['currentPassword'];
                 $newPassword = $input['newPassword'];
                 
-                // Verify current password
                 $passwordQuery = "SELECT password FROM users WHERE id = :user_id";
                 $stmt = $this->db->prepare($passwordQuery);
                 $stmt->bindParam(':user_id', $userId);
@@ -873,7 +834,6 @@ class ChallengeController {
                     return;
                 }
                 
-                // Update password
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $passwordUpdateQuery = "UPDATE users SET password = :password WHERE id = :user_id";
                 $stmt = $this->db->prepare($passwordUpdateQuery);
@@ -936,7 +896,6 @@ class ChallengeController {
             $challengeId = $_GET['challenge_id'] ?? '';
             
             if (empty($challengeId)) {
-                // Get all attempts for user
                 $query = "SELECT ca.challenge_id, ca.attempt_count, ca.completed, c.title 
                           FROM challenge_attempts ca
                           JOIN challenges c ON ca.challenge_id = c.id
@@ -949,7 +908,6 @@ class ChallengeController {
                 $attempts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $this->sendResponse(['success' => true, 'attempts' => $attempts]);
             } else {
-                // Get attempts for specific challenge
                 $query = "SELECT ca.attempt_count, ca.completed, c.title 
                           FROM challenge_attempts ca
                           JOIN challenges c ON ca.challenge_id = c.id
@@ -977,14 +935,12 @@ class ChallengeController {
 
     private function getUserIdFromSession() {
         try {
-            // Check if session cookie exists
             if (!isset($_COOKIE['cybernest_session'])) {
                 return null;
             }
             
             $sessionToken = $_COOKIE['cybernest_session'];
             
-            // Validate session token and get user ID
             $query = "SELECT user_id FROM user_sessions 
                       WHERE session_token = :session_token 
                       AND expires_at > NOW() 
@@ -998,7 +954,6 @@ class ChallengeController {
             return $result ? $result['user_id'] : null;
             
         } catch (Exception $e) {
-            // Log error but don't expose details
             error_log("Session validation error: " . $e->getMessage());
             return null;
         }
@@ -1023,7 +978,6 @@ class ChallengeController {
             $existingAttempt = $this->getChallengeAttempt($userId, $challengeId);
             
             if ($existingAttempt) {
-                // Update existing attempt
                 $query = "UPDATE challenge_attempts 
                           SET attempt_count = attempt_count + 1,
                               completed = :completed,
@@ -1037,7 +991,6 @@ class ChallengeController {
                 $stmt->bindParam(':completed', $isCorrect, PDO::PARAM_BOOL);
                 $stmt->execute();
             } else {
-                // Create new attempt record
                 $points = $isCorrect ? $this->getChallengePoints($challengeId) : 0;
                 $query = "INSERT INTO challenge_attempts 
                           (user_id, challenge_id, completed, attempt_count, points, completed_at) 
@@ -1073,7 +1026,6 @@ class ChallengeController {
 
     private function updateUserStats($userId, $points) {
         try {
-            // Update user profile points and completed challenges
             $query = "UPDATE user_profiles 
                       SET points = points + :points,
                           challenges_completed = challenges_completed + 1,
@@ -1085,7 +1037,6 @@ class ChallengeController {
             $stmt->bindParam(':points', $points);
             $stmt->execute();
             
-            // Update user rank based on points
             $this->updateUserRank($userId);
             
         } catch (Exception $e) {
@@ -1095,7 +1046,6 @@ class ChallengeController {
 
     private function updateUserRank($userId) {
         try {
-            // Get user's current points
             $stmt = $this->db->prepare("SELECT points FROM user_profiles WHERE user_id = :user_id");
             $stmt->bindParam(':user_id', $userId);
             $stmt->execute();
@@ -1107,7 +1057,6 @@ class ChallengeController {
             
             $points = $userProfile['points'];
             
-            // Determine rank based on points
             $rank = 'Beginner';
             if ($points >= 10000) {
                 $rank = 'Elite';
@@ -1123,7 +1072,6 @@ class ChallengeController {
                 $rank = 'Novice';
             }
             
-            // Update user rank
             $stmt = $this->db->prepare("UPDATE user_profiles SET rank = :rank WHERE user_id = :user_id");
             $stmt->bindParam(':user_id', $userId);
             $stmt->bindParam(':rank', $rank);

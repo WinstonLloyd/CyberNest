@@ -1,8 +1,4 @@
 <?php
-/**
- * User Management Controller for CyberNest Admin
- */
-
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../config/database.php';
 
@@ -91,7 +87,6 @@ class UserController {
             
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Add computed fields
             foreach ($users as &$user) {
                 $user['status'] = $this->getUserStatus($user);
                 $user['avatar'] = $this->generateAvatar($user['display_name']);
@@ -153,13 +148,11 @@ class UserController {
         }
 
         try {
-            // Check if user exists
             if ($this->user->userExists($data['username'], $data['email'])) {
                 $this->sendResponse(['success' => false, 'message' => 'Username or email already exists'], 400);
                 return;
             }
 
-            // Create user
             $result = $this->user->register(
                 $data['username'],
                 $data['email'],
@@ -168,12 +161,10 @@ class UserController {
             );
 
             if ($result['success']) {
-                // Update role if specified
                 if (isset($data['role']) && $data['role'] !== 'user') {
                     $this->updateUserRole($result['user_id'], $data['role']);
                 }
 
-                // Update status if specified
                 if (isset($data['is_active']) && !$data['is_active']) {
                     $this->updateUserStatus($result['user_id'], false);
                 }
@@ -269,7 +260,6 @@ class UserController {
         }
 
         try {
-            // Don't allow deletion of admin users
             $checkQuery = "SELECT role FROM users WHERE id = :id LIMIT 1";
             $stmt = $this->db->prepare($checkQuery);
             $stmt->bindParam(':id', $userId);
@@ -282,7 +272,6 @@ class UserController {
                 return;
             }
 
-            // Delete user
             $query = "DELETE FROM users WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':id', $userId);
@@ -365,19 +354,15 @@ class UserController {
         try {
             $stats = [];
             
-            // Total users (excluding admins)
             $stmt = $this->db->query("SELECT COUNT(*) as total FROM users WHERE role != 'admin'");
             $stats['total_users'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
             
-            // Active users (excluding admins)
             $stmt = $this->db->query("SELECT COUNT(*) as active FROM users WHERE is_active = 1 AND role != 'admin'");
             $stats['active_users'] = $stmt->fetch(PDO::FETCH_ASSOC)['active'];
             
-            // Users by role (excluding admins)
             $stmt = $this->db->query("SELECT role, COUNT(*) as count FROM users WHERE role != 'admin' GROUP BY role");
             $stats['by_role'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Recent registrations (last 24 hours, excluding admins)
             $stmt = $this->db->query("SELECT COUNT(*) as recent FROM users WHERE created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR) AND role != 'admin'");
             $stats['recent_registrations'] = $stmt->fetch(PDO::FETCH_ASSOC)['recent'];
             
@@ -408,7 +393,6 @@ class UserController {
             return 'banned';
         }
         
-        // Check if user is online (has recent session)
         $query = "SELECT COUNT(*) as count FROM user_sessions 
                   WHERE user_id = :user_id AND expires_at > NOW() 
                   LIMIT 1";

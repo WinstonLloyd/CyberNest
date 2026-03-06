@@ -1,8 +1,4 @@
 <?php
-/**
- * Settings Management Controller for CyberNest Admin
- */
-
 require_once __DIR__ . '/../config/database.php';
 
 class SettingsController {
@@ -55,7 +51,6 @@ class SettingsController {
 
     private function getSiteName() {
         try {
-            // Get site name from admin username
             $query = "SELECT username FROM users WHERE role = 'admin' LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
@@ -66,7 +61,6 @@ class SettingsController {
                 $siteName = strtoupper($result['username']);
                 $this->sendResponse(['success' => true, 'siteName' => $siteName]);
             } else {
-                // Fallback to default if no admin found
                 $this->sendResponse(['success' => true, 'siteName' => 'CYBERNEST']);
             }
         } catch (Exception $e) {
@@ -78,7 +72,6 @@ class SettingsController {
         try {
             $settings = [];
             
-            // Get site name from admin username
             $query = "SELECT username, email FROM users WHERE role = 'admin' LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
@@ -93,7 +86,6 @@ class SettingsController {
                 $settings['adminEmail'] = 'admin@cybernest.com';
             }
             
-            // Add default settings
             $settings['defaultLanguage'] = 'en';
             $settings['timezone'] = 'UTC';
             $settings['sessionTimeout'] = 30;
@@ -125,16 +117,12 @@ class SettingsController {
         }
 
         try {
-            // Update admin email if provided
             if (isset($data['adminEmail'])) {
                 $query = "UPDATE users SET email = :email, updated_at = CURRENT_TIMESTAMP WHERE role = 'admin'";
                 $stmt = $this->db->prepare($query);
                 $stmt->bindParam(':email', $data['adminEmail']);
                 $stmt->execute();
             }
-
-            // Note: Other settings would be stored in a settings table in a real implementation
-            // For now, we'll just return success
             
             $this->sendResponse(['success' => true, 'message' => 'Settings saved successfully']);
         } catch (Exception $e) {
