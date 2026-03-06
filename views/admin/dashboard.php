@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="../../css/admin/dashboard.css">
 </head>
 <body>
-    <!-- Toggle Sidebar Button -->
     <button class="toggle-sidebar" id="toggleSidebar">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h3><i class="fas fa-shield-alt me-2"></i>CYBERNEST</h3>
@@ -298,7 +296,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -351,7 +348,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',

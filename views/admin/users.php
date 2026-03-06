@@ -602,7 +602,6 @@
     <script src="../../javascript/admin-dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Users specific functionality
         let allUsers = [];
         let filteredUsers = [];
 
@@ -610,7 +609,6 @@
             loadUsers();
             loadUserStats();
             
-            // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
@@ -618,7 +616,6 @@
                 });
             }
 
-            // Filter functionality
             const statusFilter = document.getElementById('statusFilter');
             
             if (statusFilter) {
@@ -628,7 +625,6 @@
             }
         });
 
-        // Load users from backend
         function loadUsers() {
             fetch('/backend/api/users.php?action=getAll')
                 .then(response => response.json())
@@ -664,7 +660,6 @@
                 });
         }
 
-        // Load user statistics
         function loadUserStats() {
             fetch('/backend/api/users.php?action=stats')
                 .then(response => response.json())
@@ -678,15 +673,13 @@
                 });
         }
 
-        // Update statistics display
         function updateUserStatsDisplay(stats) {
             document.getElementById('totalUsersCount').textContent = stats.total_users.toLocaleString();
             document.getElementById('activeUsersCount').textContent = stats.active_users.toLocaleString();
-            document.getElementById('onlineUsersCount').textContent = Math.floor(stats.active_users * 0.3).toLocaleString(); // Estimate online
+            document.getElementById('onlineUsersCount').textContent = Math.floor(stats.active_users * 0.3).toLocaleString();
             document.getElementById('newUsersCount').textContent = stats.recent_registrations.toLocaleString();
         }
 
-        // Update statistics display from loaded users
         function updateUserStats() {
             const totalUsers = allUsers.length;
             const activeUsers = allUsers.filter(u => u.status !== 'banned').length;
@@ -703,7 +696,6 @@
             document.getElementById('newUsersCount').textContent = newToday.toLocaleString();
         }
 
-        // Render users in the grid
         function renderUsers() {
             const usersGrid = document.getElementById('usersGrid');
             if (!usersGrid) return;
@@ -727,7 +719,6 @@
             });
         }
 
-        // Create user card HTML
         function createUserCard(user) {
             const card = document.createElement('div');
             card.className = 'user-card';
@@ -788,7 +779,6 @@
             return card;
         }
 
-        // Filter users based on search and filters
         function filterUsers() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
@@ -807,7 +797,6 @@
             renderUsers();
         }
 
-        // Refresh users
         window.refreshUsers = function() {
             const refreshBtn = event.target;
             refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
@@ -821,7 +810,6 @@
             }, 1000);
         };
 
-        // User actions
         window.viewUser = function(userId) {
             fetch(`/backend/api/users.php?action=getById&id=${userId}`)
                 .then(response => response.json())
@@ -866,7 +854,6 @@
         };
 
         window.editUser = function(userId) {
-            // This would open an edit modal - for now show a simple form
             Swal.fire({
                 title: 'Edit User',
                 html: `
@@ -910,7 +897,7 @@
                                 color: '#00ff00',
                                 border: '1px solid #00ff00'
                             });
-                            loadUsers(); // Reload users
+                            loadUsers();
                         } else {
                             Swal.fire({
                                 title: 'Error',
@@ -960,7 +947,7 @@
                                 color: '#00ff00',
                                 border: '1px solid #00ff00'
                             });
-                            loadUsers(); // Reload users
+                            loadUsers();
                         } else {
                             Swal.fire({
                                 title: 'Error',
@@ -1010,7 +997,7 @@
                                 color: '#00ff00',
                                 border: '1px solid #00ff00'
                             });
-                            loadUsers(); // Reload users
+                            loadUsers();
                         } else {
                             Swal.fire({
                                 title: 'Error',
@@ -1030,7 +1017,6 @@
             });
         };
 
-        // Save user (create new user)
         window.saveUser = function() {
             const form = document.getElementById('addUserForm');
             const username = document.getElementById('username').value;
@@ -1038,7 +1024,6 @@
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            // Validate passwords match
             if (password !== confirmPassword) {
                 Swal.fire({
                     title: 'Error',
@@ -1056,9 +1041,9 @@
                 username: username,
                 email: email,
                 password: password,
-                display_name: username, // Use username as display name
-                role: 'user', // Default role
-                is_active: true // Default active status
+                display_name: username,
+                role: 'user',
+                is_active: true
             };
 
             fetch('/backend/api/users.php?action=create', {
@@ -1085,7 +1070,7 @@
                         const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
                         modal.hide();
                         form.reset();
-                        loadUsers(); // Reload users
+                        loadUsers();
                     });
                 } else {
                     Swal.fire({
@@ -1113,7 +1098,6 @@
             });
         };
 
-        // Update statistics display
         function updateUserStats() {
             const totalUsers = allUsers.length;
             const activeUsers = allUsers.filter(u => u.status !== 'banned').length;
@@ -1131,7 +1115,6 @@
             if (statNumbers[3]) statNumbers[3].textContent = newToday.toLocaleString();
         }
 
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -1187,7 +1170,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',

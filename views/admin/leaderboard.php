@@ -790,9 +790,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
-        // Leaderboard specific functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
@@ -812,28 +810,23 @@
                 });
             }
 
-            // Filter functionality
             const timeFilter = document.getElementById('timeFilter');
             const challengeFilter = document.getElementById('challengeFilter');
             
             if (timeFilter) {
                 timeFilter.addEventListener('change', function() {
                     console.log('Time filter changed to:', this.value);
-                    // Add filtering logic here
                 });
             }
 
             if (challengeFilter) {
                 challengeFilter.addEventListener('change', function() {
                     console.log('Challenge filter changed to:', this.value);
-                    // Add filtering logic here
                 });
             }
 
-            // Refresh leaderboard
             window.refreshLeaderboard = function() {
                 console.log('Refreshing leaderboard...');
-                // Add refresh logic here
                 const refreshBtn = event.target;
                 refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
                 refreshBtn.disabled = true;
@@ -845,7 +838,6 @@
                 }, 2000);
             };
 
-            // Action buttons
             const actionButtons = document.querySelectorAll('.btn-action');
             actionButtons.forEach(btn => {
                 btn.addEventListener('click', function(e) {
@@ -876,27 +868,22 @@
                 });
             });
 
-            // Pagination
             const pageLinks = document.querySelectorAll('.page-link');
             pageLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const pageNumber = this.textContent;
                     
-                    // Remove active class from all links
                     pageLinks.forEach(l => l.classList.remove('active'));
                     
-                    // Add active class to clicked link
                     if (pageNumber !== '«' && pageNumber !== '»') {
                         this.classList.add('active');
                     }
                     
                     console.log('Loading page:', pageNumber);
-                    // Add pagination logic here
                 });
             });
 
-            // Simulate real-time updates
             setInterval(() => {
                 const scores = document.querySelectorAll('.score-display');
                 scores.forEach(score => {
@@ -907,7 +894,6 @@
                 });
             }, 10000);
         });
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -960,7 +946,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',

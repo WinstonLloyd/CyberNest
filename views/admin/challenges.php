@@ -595,19 +595,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
-        // Challenges functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load challenges from backend
             loadChallenges();
             loadChallengeStats();
             
-            // Initialize tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
-            // Add modal close event listener to reset editing mode
             const addChallengeModal = document.getElementById('addChallengeModal');
             addChallengeModal.addEventListener('hidden.bs.modal', function () {
                 const form = document.getElementById('addChallengeForm');
@@ -619,7 +615,6 @@
 
         let allChallenges = [];
 
-        // Load challenges from backend
         function loadChallenges(filters = {}) {
             const params = new URLSearchParams();
             
@@ -652,7 +647,6 @@
                 });
         }
 
-        // Load challenge statistics
         function loadChallengeStats() {
             fetch('/backend/api/challenges.php?action=stats')
                 .then(response => response.json())
@@ -666,7 +660,6 @@
                 });
         }
 
-        // Display challenges in the grid
         function displayChallenges(challenges) {
             const container = document.querySelector('.challenges-grid');
             
@@ -684,7 +677,6 @@
             container.innerHTML = challenges.map(challenge => createChallengeCard(challenge)).join('');
         }
 
-        // Create challenge card HTML
         function createChallengeCard(challenge) {
             const difficultyClass = `difficulty-${challenge.difficulty}`;
             const statusBadge = getStatusBadge(challenge.status);
@@ -741,7 +733,6 @@
             `;
         }
 
-        // Get status badge HTML
         function getStatusBadge(status) {
             const badges = {
                 'active': '<div class="badge bg-success">Active</div>',
@@ -751,7 +742,6 @@
             return badges[status] || '<div class="badge bg-secondary">Unknown</div>';
         }
 
-        // Get additional actions based on status
         function getAdditionalActions(challenge) {
             if (challenge.status === 'draft') {
                 return `<a href="#" class="btn-action" onclick="publishChallenge(${challenge.id})">
@@ -765,7 +755,6 @@
             return '';
         }
 
-        // Update stats display
         function updateStatsDisplay(stats) {
             const totalChallenges = stats.total_challenges || 0;
             const byDifficulty = stats.by_difficulty || [];
@@ -790,7 +779,6 @@
             `;
         }
 
-        // Refresh challenges
         window.refreshChallenges = function() {
             const refreshBtn = event.target;
             refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
@@ -805,7 +793,6 @@
             }, 1000);
         };
 
-        // Search functionality
         document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value;
             const filters = {
@@ -816,7 +803,6 @@
             loadChallenges(filters);
         });
 
-        // Filter functionality
         document.getElementById('difficultyFilter').addEventListener('change', function() {
             const filters = {
                 search: document.getElementById('searchInput').value,
@@ -883,7 +869,6 @@
                         const challenge = data.challenge;
                         const form = document.getElementById('addChallengeForm');
                         
-                        // Populate form fields
                         document.getElementById('challengeName').value = challenge.title;
                         document.getElementById('challengeDifficulty').value = challenge.difficulty;
                         document.getElementById('challengeDescription').value = challenge.description;
@@ -893,10 +878,8 @@
                         document.getElementById('challengeFlag').value = challenge.flag || '';
                         document.getElementById('challengeTags').value = challenge.tags || '';
                         
-                        // Set editing mode
                         form.dataset.editingId = challengeId;
                         
-                        // Change modal title
                         document.querySelector('#addChallengeModal .modal-title').textContent = 'Edit Challenge';
                         
                         const modal = new bootstrap.Modal(document.getElementById('addChallengeModal'));
@@ -1110,7 +1093,6 @@
             });
         };
 
-        // Save challenge
         window.saveChallenge = function() {
             const form = document.getElementById('addChallengeForm');
             if (!form.checkValidity()) {
@@ -1129,11 +1111,9 @@
                 tags: document.getElementById('challengeTags').value
             };
             
-            // Check if we're editing (has hidden id field) or creating new
             const isEditing = form.dataset.editingId;
             
             if (isEditing) {
-                // Update existing challenge
                 challengeData.id = parseInt(isEditing);
                 fetch('/backend/api/challenges.php?action=update', {
                     method: 'POST',
@@ -1150,7 +1130,6 @@
                         form.reset();
                         delete form.dataset.editingId;
                         
-                        // Update modal title back to "Add New Challenge"
                         document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
                         
                         Swal.fire({
@@ -1186,7 +1165,6 @@
                     });
                 });
             } else {
-                // Create new challenge
                 fetch('/backend/api/challenges.php?action=create', {
                     method: 'POST',
                     headers: {
@@ -1234,7 +1212,6 @@
                 });
             }
         };
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -1287,7 +1264,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',

@@ -277,9 +277,7 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Top Header -->
         <header class="top-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -305,16 +303,13 @@
             </div>
         </header>
 
-        <!-- Settings Content -->
         <div class="container-fluid">
-            <!-- Header -->
             <div class="settings-header">
                 <i class="fas fa-cog settings-icon"></i>
                 <h2 class="settings-title">CYBERNEST SETTINGS</h2>
                 <p class="settings-subtitle">Configure system preferences and administrative options</p>
             </div>
 
-            <!-- Settings Tabs -->
             <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
@@ -338,9 +333,7 @@
                 </li>
             </ul>
 
-            <!-- Tab Content -->
             <div class="tab-content" id="settingsTabContent">
-                <!-- General Settings -->
                 <div class="tab-pane fade show active" id="general" role="tabpanel">
                     <div class="settings-section">
                         <h4 class="section-title">System Configuration</h4>
@@ -397,7 +390,6 @@
                     </div>
                 </div>
 
-                <!-- Security Settings -->
                 <div class="tab-pane fade" id="security" role="tabpanel">
                     <div class="settings-section">
                         <h4 class="section-title">Security Configuration</h4>
@@ -446,7 +438,6 @@
                     </div>
                 </div>
 
-                <!-- Notifications Settings -->
                 <div class="tab-pane fade" id="notifications" role="tabpanel">
                     <div class="settings-section">
                         <h4 class="section-title">Notification Preferences</h4>
@@ -502,7 +493,6 @@
                     </div>
                 </div>
 
-                <!-- Appearance Settings -->
                 <div class="tab-pane fade" id="appearance" role="tabpanel">
                     <div class="settings-section">
                         <h4 class="section-title">Appearance Configuration</h4>
@@ -568,7 +558,6 @@
                 </div>
             </div>
 
-            <!-- Save Buttons -->
             <div class="d-flex justify-content-end gap-2">
                 <button class="btn btn-secondary-settings" onclick="resetSettings()">
                     <i class="fas fa-undo me-2"></i>Reset to Defaults
@@ -584,19 +573,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
-        // Settings functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load settings from backend
             loadSettings();
             
-            // Initialize tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
 
-        // Load settings from backend
         function loadSettings() {
             fetch('/backend/api/settings.php?action=getAll')
                 .then(response => response.json())
@@ -604,7 +589,6 @@
                     if (data.success) {
                         const settings = data.settings;
                         
-                        // Update site name
                         document.getElementById('siteName').value = settings.siteName;
                         document.getElementById('adminEmail').value = settings.adminEmail;
                         document.getElementById('defaultLanguage').value = settings.defaultLanguage;
@@ -618,16 +602,13 @@
                         document.getElementById('notificationEmail').value = settings.notificationEmail;
                         document.getElementById('notificationFrequency').value = settings.notificationFrequency;
                         
-                        // Update page title and header
                         document.title = settings.siteName + ' Admin - Settings';
                         
-                        // Update sidebar header
                         const sidebarHeader = document.querySelector('.sidebar-header h3');
                         if (sidebarHeader) {
                             sidebarHeader.innerHTML = '<i class="fas fa-shield-alt me-2"></i>' + settings.siteName;
                         }
                         
-                        // Update settings header
                         const settingsTitle = document.querySelector('.settings-title');
                         if (settingsTitle) {
                             settingsTitle.textContent = settings.siteName + ' SETTINGS';
@@ -639,12 +620,10 @@
                 });
         }
 
-        // Toggle switch functionality
         window.toggleSwitch = function(element) {
             element.classList.toggle('active');
         };
 
-        // Save settings
         window.saveSettings = function() {
             const settings = {
                 siteName: document.getElementById('siteName').value,
@@ -683,22 +662,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update page title and header with new site name
                     document.title = settings.siteName + ' Admin - Settings';
                     
-                    // Update sidebar header
                     const sidebarHeader = document.querySelector('.sidebar-header h3');
                     if (sidebarHeader) {
                         sidebarHeader.innerHTML = '<i class="fas fa-shield-alt me-2"></i>' + settings.siteName;
                     }
                     
-                    // Update settings header
                     const settingsTitle = document.querySelector('.settings-title');
                     if (settingsTitle) {
                         settingsTitle.textContent = settings.siteName + ' SETTINGS';
                     }
                     
-                    // Show success message
                     const alertDiv = document.createElement('div');
                     alertDiv.className = 'alert alert-success alert-dismissible fade show';
                     alertDiv.innerHTML = `
@@ -710,12 +685,10 @@
                     const container = document.querySelector('.container-fluid');
                     container.insertBefore(alertDiv, container.firstChild);
                     
-                    // Auto-dismiss after 3 seconds
                     setTimeout(() => {
                         alertDiv.remove();
                     }, 3000);
                 } else {
-                    // Show error message
                     const alertDiv = document.createElement('div');
                     alertDiv.className = 'alert alert-danger alert-dismissible fade show';
                     alertDiv.innerHTML = `
@@ -727,7 +700,6 @@
                     const container = document.querySelector('.container-fluid');
                     container.insertBefore(alertDiv, container.firstChild);
                     
-                    // Auto-dismiss after 3 seconds
                     setTimeout(() => {
                         alertDiv.remove();
                     }, 3000);
@@ -736,7 +708,6 @@
             .catch(error => {
                 console.error('Error saving settings:', error);
                 
-                // Show error message
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'alert alert-danger alert-dismissible fade show';
                 alertDiv.innerHTML = `
@@ -748,25 +719,20 @@
                 const container = document.querySelector('.container-fluid');
                 container.insertBefore(alertDiv, container.firstChild);
                 
-                // Auto-dismiss after 3 seconds
                 setTimeout(() => {
                     alertDiv.remove();
                 }, 3000);
             });
         };
 
-        // Reset settings
         window.resetSettings = function() {
             if (confirm('Are you sure you want to reset all settings to their database values?')) {
-                // Reload settings from database
                 loadSettings();
                 
-                // Reset toggle switches to default states
                 document.querySelectorAll('.toggle-switch').forEach(toggle => {
                     toggle.classList.remove('active');
                 });
                 
-                // Set default active states
                 document.getElementById('userRegistration').classList.add('active');
                 document.getElementById('twoFactorAuth').classList.add('active');
                 document.getElementById('failedLoginLockout').classList.add('active');
@@ -775,7 +741,6 @@
                 document.getElementById('maintenanceNotifications').classList.add('active');
                 document.getElementById('animations').classList.add('active');
                 
-                // Show success message
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'alert alert-info alert-dismissible fade show';
                 alertDiv.innerHTML = `
@@ -787,13 +752,11 @@
                 const container = document.querySelector('.container-fluid');
                 container.insertBefore(alertDiv, container.firstChild);
                 
-                // Auto-dismiss after 3 seconds
                 setTimeout(() => {
                     alertDiv.remove();
                 }, 3000);
             }
         };
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -846,7 +809,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',
