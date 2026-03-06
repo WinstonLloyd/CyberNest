@@ -296,6 +296,9 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .avatar-info {
@@ -514,7 +517,7 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            JD
+                            CN
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -570,7 +573,7 @@
                 
                 <div class="avatar-upload">
                     <div class="avatar-preview" id="avatarPreview">
-                        JD
+                        CN
                     </div>
                     <div class="avatar-info">
                         <div class="form-group">
@@ -585,20 +588,20 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" value="JohnDoe" placeholder="Enter username">
+                            <input type="text" class="form-control" id="username" value="Username" placeholder="Enter username">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Display Name</label>
-                            <input type="text" class="form-control" id="displayName" value="John Doe" placeholder="Enter display name">
+                            <input type="text" class="form-control" id="displayName" value="Display Name" placeholder="Enter display name">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" value="john.doe@example.com" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" value="CyberNest@gmail.com" placeholder="Enter email">
                 </div>
 
                 <div class="form-group">
@@ -613,7 +616,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Website</label>
-                    <input type="url" class="form-control" id="website" value="https://johndoe.dev" placeholder="Enter website URL">
+                    <input type="url" class="form-control" id="website" value="https://cybernest.dev" placeholder="Enter website URL">
                 </div>
             </div>
 
@@ -985,12 +988,12 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('username').value = 'JohnDoe';
-                    document.getElementById('displayName').value = 'John Doe';
-                    document.getElementById('email').value = 'john.doe@example.com';
+                    document.getElementById('username').value = 'Username';
+                    document.getElementById('displayName').value = 'Display Name';
+                    document.getElementById('email').value = 'CyberNest@gmail.com';
                     document.getElementById('bio').value = 'Cybersecurity enthusiast and ethical hacker. Always learning and exploring new security challenges.';
                     document.getElementById('location').value = 'San Francisco, CA';
-                    document.getElementById('website').value = 'https://johndoe.dev';
+                    document.getElementById('website').value = 'https://cybernest.dev';
                     
                     const toggles = document.querySelectorAll('.toggle-switch');
                     toggles.forEach(toggle => {
@@ -1180,16 +1183,28 @@
         }
 
         function populateProfileForm(profile) {
+            console.log('Profile data loaded:', profile); // Debug
+            console.log('Profile picture:', profile.profile_picture); // Debug
+            
             document.getElementById('username').value = profile.username || '';
-            document.getElementById('displayName').value = profile.username || '';
+            document.getElementById('displayName').value = profile.display_name || profile.username;
             document.getElementById('email').value = profile.email || '';
             document.getElementById('bio').value = profile.bio || '';
             document.getElementById('location').value = profile.location || '';
             document.getElementById('website').value = profile.website || '';
             
             const avatarPreview = document.getElementById('avatarPreview');
-            const initials = getInitials(profile.username);
-            avatarPreview.textContent = initials;
+            console.log('Avatar preview element:', avatarPreview); // Debug
+            
+            // Display profile picture if it exists
+            if (profile.profile_picture && profile.profile_picture !== '') {
+                console.log('Setting profile picture:', profile.profile_picture); // Debug
+                avatarPreview.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
+            } else {
+                console.log('No profile picture, using initials'); // Debug
+                const initials = getInitials(profile.username);
+                avatarPreview.textContent = initials;
+            }
         }
 
         function updateSettingsStats(profile) {
@@ -1238,6 +1253,77 @@
                 confirmPassword: document.getElementById('confirmPassword').value
             };
 
+            // Check if there's a profile picture to upload
+            const avatarInput = document.getElementById('avatarInput');
+            const hasNewAvatar = avatarInput.files.length > 0;
+
+            if (hasNewAvatar) {
+                // If there's a new avatar, upload it first
+                const formData = new FormData();
+                formData.append('profile_picture', avatarInput.files[0]);
+
+                // Show loading
+                Swal.fire({
+                    title: 'Uploading Profile Picture...',
+                    text: 'Please wait while we upload your profile picture',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                fetch('/backend/api/users.php?action=uploadProfilePicture', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Profile picture uploaded successfully, now save other settings
+                        saveProfileData(profileData, securityData);
+                    } else {
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Upload Failed',
+                            text: data.message || 'Failed to upload profile picture',
+                            confirmButtonColor: '#dc3545',
+                            background: '#1a1a1a',
+                            color: '#dc3545',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.close();
+                    console.error('Profile picture upload error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Upload Error',
+                        text: 'Network error occurred while uploading profile picture',
+                        confirmButtonColor: '#dc3545',
+                        background: '#1a1a1a',
+                        color: '#dc3545',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            } else {
+                // No new avatar, just save profile data
+                saveProfileData(profileData, securityData);
+            }
+        }
+
+        function saveProfileData(profileData, securityData) {
+            // Show loading
+            Swal.fire({
+                title: 'Saving...',
+                text: 'Please wait while we save your settings',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             fetch('/backend/api/challenges.php?action=updateUserSettings', {
                 method: 'POST',
                 headers: {
@@ -1250,6 +1336,8 @@
             })
             .then(response => response.json())
             .then(data => {
+                Swal.close();
+                
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
@@ -1291,6 +1379,7 @@
                 });
             });
         }
+
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',

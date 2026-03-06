@@ -563,7 +563,7 @@ class ChallengeController {
                 return;
             }
 
-            $query = "SELECT u.username, u.email, u.created_at, u.bio, u.location, u.website
+            $query = "SELECT u.username, u.email, u.created_at, u.bio, u.location, u.website, u.display_name, u.profile_picture
                       FROM users u
                       WHERE u.id = :user_id
                       LIMIT 1";

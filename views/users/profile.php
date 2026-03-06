@@ -707,7 +707,7 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            JD
+                            CN
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -735,11 +735,11 @@
         <div class="profile-header">
             <div class="profile-info">
                 <div class="profile-avatar">
-                    JD
+                    CN
                 </div>
                 <div class="profile-details">
-                    <h2 class="profile-name">John Doe</h2>
-                    <div class="profile-username">@johndoe</div>
+                    <h2 class="profile-name">Username</h2>
+                    <div class="profile-username">@username</div>
                     <p class="profile-bio">Cybersecurity enthusiast and ethical hacker. Always learning and exploring new security challenges. Passionate about making the digital world a safer place.</p>
                     <div class="profile-meta">
                         <div class="meta-item">
@@ -752,7 +752,7 @@
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-link"></i>
-                            <span>https://johndoe.dev</span>
+                            <span>https://cybernest.dev</span>
                         </div>
                     </div>
                     <div class="profile-actions">
@@ -1065,7 +1065,7 @@
             
             if (navigator.share) {
                 navigator.share({
-                    title: 'John Doe - CyberNest Profile',
+                    title: 'CN - CyberNest Profile',
                     text: 'Check out my cybersecurity achievements and progress!',
                     url: profileUrl
                 });

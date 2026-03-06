@@ -109,6 +109,7 @@ class Database {
                     bio TEXT,
                     location VARCHAR(255),
                     website VARCHAR(255),
+                    profile_picture VARCHAR(255) DEFAULT NULL,
                     role ENUM('admin', 'user') DEFAULT 'user' NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -117,6 +118,12 @@ class Database {
                 )";
                 
                 $conn->exec($sql);
+                
+                // Add profile_picture column if it doesn't exist (for existing databases)
+                $column_check = $conn->query("SHOW COLUMNS FROM users LIKE 'profile_picture'");
+                if ($column_check->rowCount() == 0) {
+                    $conn->exec("ALTER TABLE users ADD COLUMN profile_picture VARCHAR(255) DEFAULT NULL AFTER website");
+                }
                 
                 // Create user profiles table for statistics
                 $sql = "CREATE TABLE user_profiles (

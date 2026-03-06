@@ -531,7 +531,7 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            JD
+                            CN
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
