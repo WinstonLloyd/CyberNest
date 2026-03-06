@@ -517,14 +517,16 @@ class ChallengeController {
         try {
             $limit = $_GET['limit'] ?? 5;
             
-            $query = "SELECT u.username, up.points, up.challenges_completed, 
+            // Query to get points from challenge_attempts table
+            $query = "SELECT u.username, 
+                             COALESCE(SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END), 0) as points,
+                             COALESCE(COUNT(CASE WHEN ca.completed = 1 THEN 1 END), 0) as challenges_completed,
                              MAX(ca.completed_at) as last_activity
-                      FROM user_profiles up
-                      JOIN users u ON up.user_id = u.id
+                      FROM users u
                       LEFT JOIN challenge_attempts ca ON u.id = ca.user_id
-                      WHERE up.points > 0
-                      GROUP BY u.id, u.username, up.points, up.challenges_completed
-                      ORDER BY up.points DESC
+                      GROUP BY u.id, u.username
+                      HAVING points > 0
+                      ORDER BY points DESC, challenges_completed DESC
                       LIMIT :limit";
             
             $stmt = $this->db->prepare($query);

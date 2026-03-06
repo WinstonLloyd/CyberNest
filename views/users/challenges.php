@@ -538,17 +538,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="../terminal.html">
+                        <a class="nav-link nav-link-custom" target="_blank" href="../terminal.html">
                             <i class="fas fa-terminal me-2"></i>Terminal
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="leaderboard.html">
+                        <a class="nav-link nav-link-custom" href="leaderboard.php">
                             <i class="fas fa-chart-line me-2"></i>Leaderboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="profile.html">
+                        <a class="nav-link nav-link-custom" href="profile.php">
                             <i class="fas fa-user me-2"></i>Profile
                         </a>
                     </li>
@@ -559,8 +559,8 @@
                             JD
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>

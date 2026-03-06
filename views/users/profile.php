@@ -679,27 +679,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="home.html">
+                        <a class="nav-link nav-link-custom" href="home.php">
                             <i class="fas fa-home me-2"></i>Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="challenges.html">
+                        <a class="nav-link nav-link-custom" href="challenges.php">
                             <i class="fas fa-trophy me-2"></i>Challenges
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="leaderboard.html">
+                        <a class="nav-link nav-link-custom" href="leaderboard.php">
                             <i class="fas fa-chart-line me-2"></i>Leaderboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="profile.html">
+                        <a class="nav-link nav-link-custom active" href="profile.php">
                             <i class="fas fa-user me-2"></i>Profile
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="settings.html">
+                        <a class="nav-link nav-link-custom" href="settings.php">
                             <i class="fas fa-cog me-2"></i>Settings
                         </a>
                     </li>
@@ -710,8 +710,8 @@
                             JD
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="../index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
