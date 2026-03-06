@@ -74,13 +74,25 @@ class UserController {
     private function getAllUsers() {
         try {
             $query = "SELECT u.id, u.username, u.email, u.display_name, u.role, u.is_active, u.created_at, u.last_login,
-                             COALESCE(up.points, 0) as points,
-                             COALESCE(up.challenges_completed, 0) as challenges_completed,
-                             COALESCE(up.rank, 'N/A') as rank
+                             COALESCE(user_points.total_points, 0) as points,
+                             COALESCE(user_points.completed_challenges, 0) as challenges_completed,
+                             CASE 
+                                 WHEN COALESCE(user_points.total_points, 0) >= 1000 THEN 'Expert'
+                                 WHEN COALESCE(user_points.total_points, 0) >= 500 THEN 'Advanced'
+                                 WHEN COALESCE(user_points.total_points, 0) >= 100 THEN 'Intermediate'
+                                 ELSE 'Beginner'
+                             END as rank
                       FROM users u
-                      LEFT JOIN user_profiles up ON u.id = up.user_id
+                      LEFT JOIN (
+                          SELECT 
+                              ca.user_id,
+                              SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END) as total_points,
+                              COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as completed_challenges
+                          FROM challenge_attempts ca
+                          GROUP BY ca.user_id
+                      ) user_points ON u.id = user_points.user_id
                       WHERE u.role != 'admin'
-                      ORDER BY u.created_at DESC";
+                      ORDER BY points DESC, u.created_at DESC";
             
             $stmt = $this->db->prepare($query);
             $stmt->execute();
@@ -108,11 +120,23 @@ class UserController {
 
         try {
             $query = "SELECT u.id, u.username, u.email, u.display_name, u.role, u.is_active, u.created_at, u.last_login,
-                             COALESCE(up.points, 0) as points,
-                             COALESCE(up.challenges_completed, 0) as challenges_completed,
-                             COALESCE(up.rank, 'N/A') as rank
+                             COALESCE(user_points.total_points, 0) as points,
+                             COALESCE(user_points.completed_challenges, 0) as challenges_completed,
+                             CASE 
+                                 WHEN COALESCE(user_points.total_points, 0) >= 1000 THEN 'Expert'
+                                 WHEN COALESCE(user_points.total_points, 0) >= 500 THEN 'Advanced'
+                                 WHEN COALESCE(user_points.total_points, 0) >= 100 THEN 'Intermediate'
+                                 ELSE 'Beginner'
+                             END as rank
                       FROM users u
-                      LEFT JOIN user_profiles up ON u.id = up.user_id
+                      LEFT JOIN (
+                          SELECT 
+                              ca.user_id,
+                              SUM(CASE WHEN ca.completed = 1 THEN ca.points ELSE 0 END) as total_points,
+                              COUNT(CASE WHEN ca.completed = 1 THEN 1 END) as completed_challenges
+                          FROM challenge_attempts ca
+                          GROUP BY ca.user_id
+                      ) user_points ON u.id = user_points.user_id
                       WHERE u.id = :id 
                       LIMIT 1";
             

@@ -1203,7 +1203,7 @@
         }
 
         function updateProfileHeader(profile) {
-            const avatar = document.querySelector('.profile-avatar, .user-avatar-nav');
+            const avatar = document.querySelector('.profile-avatar');
             if (avatar) {
                 const initials = getInitials(profile.username);
                 avatar.textContent = initials;

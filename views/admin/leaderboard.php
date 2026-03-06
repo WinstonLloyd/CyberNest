@@ -343,12 +343,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="users.php">
-                        <i class="fas fa-users"></i>
-                        Users
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="challenges.php">
                         <i class="fas fa-trophy"></i>
                         Challenges
@@ -358,6 +352,12 @@
                     <a class="nav-link active" href="leaderboard.php">
                         <i class="fas fa-chart-line"></i>
                         Leaderboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="users.php">
+                        <i class="fas fa-users"></i>
+                        Users
                     </a>
                 </li>
                 <li class="nav-item">
@@ -416,19 +416,19 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">1,234</div>
+                    <div class="stat-number" id="totalPlayersCount">0</div>
                     <div class="stat-label">Total Players</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">892</div>
+                    <div class="stat-number" id="activeTodayCount">0</div>
                     <div class="stat-label">Active Today</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">45</div>
+                    <div class="stat-number" id="totalChallengesCount">0</div>
                     <div class="stat-label">Challenges</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">156K</div>
+                    <div class="stat-number" id="totalPointsCount">0</div>
                     <div class="stat-label">Total Points</div>
                 </div>
             </div>
@@ -476,289 +476,15 @@
                             <th>Level</th>
                             <th>Score</th>
                             <th>Challenges</th>
-                    <th>Win Rate</th>
+                            <th>Win Rate</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="leaderboardBody">
                         <tr>
-                            <td>
-                                <div class="rank-badge rank-1">1</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">JD</div>
-                                    <div class="user-details">
-                                        <h5>JohnDoe</h5>
-                                        <small>Level 42</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Expert</span>
-                            </td>
-                            <td>
-                                <div class="score-display">15,420</div>
-                            </td>
-                            <td>89</td>
-                            <td>87.5%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-2">2</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">JS</div>
-                                    <div class="user-details">
-                                        <h5>JaneSmith</h5>
-                                        <small>Level 38</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Expert</span>
-                            </td>
-                            <td>
-                                <div class="score-display">14,890</div>
-                            </td>
-                            <td>76</td>
-                            <td>82.4%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-3">3</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">BJ</div>
-                                    <div class="user-details">
-                                        <h5>BobJohnson</h5>
-                                        <small>Level 35</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Intermediate</span>
-                            </td>
-                            <td>
-                                <div class="score-display">12,450</div>
-                            </td>
-                            <td>68</td>
-                            <td>79.4%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">4</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">AW</div>
-                                    <div class="user-details">
-                                        <h5>AliceWalker</h5>
-                                        <small>Level 32</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Intermediate</span>
-                            </td>
-                            <td>
-                                <div class="score-display">10,230</div>
-                            </td>
-                            <td>55</td>
-                            <td>76.4%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">5</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">CM</div>
-                                    <div class="user-details">
-                                        <h5>CharlieMiller</h5>
-                                        <small>Level 28</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">8,920</div>
-                            </td>
-                            <td>42</td>
-                            <td>73.8%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">6</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">DB</div>
-                                    <div class="user-details">
-                                        <h5>DianaBrown</h5>
-                                        <small>Level 25</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">7,650</div>
-                            </td>
-                            <td>38</td>
-                            <td>71.1%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">7</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">EG</div>
-                                    <div class="user-details">
-                                        <h5>EveGreen</h5>
-                                        <small>Level 22</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">6,890</div>
-                            </td>
-                            <td>35</td>
-                            <td>68.6%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">8</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">FH</div>
-                                    <div class="user-details">
-                                        <h5>FrankHarris</h5>
-                                        <small>Level 20</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">5,430</div>
-                            </td>
-                            <td>32</td>
-                            <td>65.6%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">9</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">GI</div>
-                                    <div class="user-details">
-                                        <h5>GraceIvy</h5>
-                                        <small>Level 18</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">4,210</div>
-                            </td>
-                            <td>28</td>
-                            <td>62.9%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="rank-badge rank-other">10</div>
-                            </td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">HK</div>
-                                    <div class="user-details">
-                                        <h5>HenryKing</h5>
-                                        <small>Level 15</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge">Beginner</span>
-                            </td>
-                            <td>
-                                <div class="score-display">3,890</div>
-                            </td>
-                            <td>25</td>
-                            <td>60.0%</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn-action">View</a>
-                                    <a href="#" class="btn-action">Edit</a>
-                                </div>
+                            <td colspan="7" class="text-center py-5">
+                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                <p>Loading leaderboard data...</p>
                             </td>
                         </tr>
                     </tbody>
@@ -790,110 +516,326 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../javascript/admin-dashboard.js"></script>
     <script>
+        let allLeaderboardData = [];
+        let filteredLeaderboardData = [];
+
         document.addEventListener('DOMContentLoaded', function() {
+            loadLeaderboardData();
+            loadLeaderboardStats();
+            
+            // Setup event listeners
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const rows = document.querySelectorAll('#leaderboardBody tr');
-                    
-                    rows.forEach(row => {
-                        const playerName = row.querySelector('.user-details h5').textContent.toLowerCase();
-                        const playerEmail = row.querySelector('.user-details small').textContent.toLowerCase();
-                        
-                        if (playerName.includes(searchTerm) || playerEmail.includes(searchTerm)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                });
+                searchInput.addEventListener('input', filterLeaderboard);
             }
 
             const timeFilter = document.getElementById('timeFilter');
-            const challengeFilter = document.getElementById('challengeFilter');
-            
             if (timeFilter) {
-                timeFilter.addEventListener('change', function() {
-                    console.log('Time filter changed to:', this.value);
-                });
+                timeFilter.addEventListener('change', filterLeaderboard);
             }
 
+            const challengeFilter = document.getElementById('challengeFilter');
             if (challengeFilter) {
-                challengeFilter.addEventListener('change', function() {
-                    console.log('Challenge filter changed to:', this.value);
+                challengeFilter.addEventListener('change', filterLeaderboard);
+            }
+        });
+
+        function loadLeaderboardData() {
+            fetch('/backend/api/users.php?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allLeaderboardData = data.users.sort((a, b) => b.points - a.points);
+                        filteredLeaderboardData = [...allLeaderboardData];
+                        renderLeaderboard();
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to load leaderboard data: ' + data.message,
+                            icon: 'error',
+                            confirmButtonColor: '#00ff00',
+                            background: '#1a1a1a',
+                            color: '#00ff00'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading leaderboard:', error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to load leaderboard data',
+                        icon: 'error',
+                        confirmButtonColor: '#00ff00',
+                        background: '#1a1a1a',
+                        color: '#00ff00'
+                    });
                 });
+        }
+
+        function loadLeaderboardStats() {
+            fetch('/backend/api/users.php?action=stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalPlayersCount').textContent = data.stats.total_users.toLocaleString();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading total players:', error);
+                });
+
+            fetch('/backend/api/users.php?action=getAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const users = data.users;
+                        const activeToday = users.filter(u => {
+                            const lastLogin = new Date(u.last_login);
+                            const today = new Date();
+                            return lastLogin.toDateString() === today.toDateString();
+                        }).length;
+                        const totalChallenges = users.reduce((sum, u) => sum + (u.challenges_completed || 0), 0);
+                        const totalPoints = users.reduce((sum, u) => sum + (u.points || 0), 0);
+                        
+                        document.getElementById('activeTodayCount').textContent = activeToday.toLocaleString();
+                        document.getElementById('totalChallengesCount').textContent = totalChallenges.toLocaleString();
+                        document.getElementById('totalPointsCount').textContent = totalPoints > 1000 ? 
+                            (totalPoints / 1000).toFixed(1) + 'K' : 
+                            totalPoints.toLocaleString();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading user stats:', error);
+                });
+        }
+
+        function renderLeaderboard() {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            if (!leaderboardBody) return;
+
+            leaderboardBody.innerHTML = '';
+
+            if (filteredLeaderboardData.length === 0) {
+                leaderboardBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <i class="fas fa-users fa-2x mb-3"></i>
+                            <p>No players found</p>
+                            <small>Try adjusting your filters</small>
+                        </td>
+                    </tr>
+                `;
+                return;
             }
 
-            window.refreshLeaderboard = function() {
-                console.log('Refreshing leaderboard...');
-                const refreshBtn = event.target;
-                refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
-                refreshBtn.disabled = true;
-                
-                setTimeout(() => {
-                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
-                    refreshBtn.disabled = false;
-                    console.log('Leaderboard refreshed');
-                }, 2000);
-            };
+            filteredLeaderboardData.forEach((user, index) => {
+                const row = createLeaderboardRow(user, index + 1);
+                leaderboardBody.appendChild(row);
+            });
+        }
 
-            const actionButtons = document.querySelectorAll('.btn-action');
-            actionButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const action = this.textContent.toLowerCase();
-                    const userRow = this.closest('tr');
-                    const userName = userRow.querySelector('.user-details h5').textContent;
+        function createLeaderboardRow(user, rank) {
+            const row = document.createElement('tr');
+            
+            const rankClass = rank === 1 ? 'rank-1' : 
+                              rank === 2 ? 'rank-2' : 
+                              rank === 3 ? 'rank-3' : 'rank-other';
+            
+            const avatar = generateAvatar(user.display_name);
+            const winRate = user.challenges_completed > 0 ? 
+                ((user.challenges_completed / (user.challenges_completed + 5)) * 100).toFixed(1) : '0.0';
+
+            row.innerHTML = `
+                <td>
+                    <div class="rank-badge ${rankClass}">${rank}</div>
+                </td>
+                <td>
+                    <div class="user-info">
+                        <div class="user-avatar">${avatar}</div>
+                        <div class="user-details">
+                            <h5>${user.display_name}</h5>
+                            <small>${user.rank}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="level-badge">${user.rank}</span>
+                </td>
+                <td>
+                    <div class="score-display">${(user.points || 0).toLocaleString()}</div>
+                </td>
+                <td>${user.challenges_completed || 0}</td>
+                <td>${winRate}%</td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-action" onclick="viewPlayer(${user.id})">View</a>
+                        <a href="#" class="btn-action" onclick="editPlayer(${user.id})">Edit</a>
+                    </div>
+                </td>
+            `;
+
+            return row;
+        }
+
+        function generateAvatar(displayName) {
+            const names = displayName.split(' ');
+            let initials = '';
+            
+            names.forEach(name => {
+                if (name) {
+                    initials += name.charAt(0).toUpperCase();
+                }
+            });
+            
+            return initials.substring(0, 2);
+        }
+
+        function filterLeaderboard() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const timeFilter = document.getElementById('timeFilter').value;
+            const challengeFilter = document.getElementById('challengeFilter').value;
+
+            filteredLeaderboardData = allLeaderboardData.filter(user => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    user.display_name.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.username.toLowerCase().includes(searchTerm);
+
+                // Time filter
+                let matchesTime = true;
+                if (timeFilter !== 'all') {
+                    const createdDate = new Date(user.created_at);
+                    const today = new Date();
                     
-                    if (action === 'view') {
-                        console.log('Viewing user:', userName);
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'User Profile',
-                            text: `Viewing profile for: ${userName}`,
-                            confirmButtonColor: '#00ff00',
-                            confirmButtonText: 'OK'
-                        });
-                    } else if (action === 'edit') {
-                        console.log('Editing user:', userName);
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Edit User',
-                            text: `Editing profile for: ${userName}`,
-                            confirmButtonColor: '#00ff00',
-                            confirmButtonText: 'OK'
+                    switch(timeFilter) {
+                        case 'today':
+                            matchesTime = createdDate.toDateString() === today.toDateString();
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesTime = createdDate >= weekAgo;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            matchesTime = createdDate >= monthAgo;
+                            break;
+                    }
+                }
+
+                // Challenge filter
+                const matchesChallenge = challengeFilter === 'all' || user.rank === challengeFilter;
+
+                return matchesSearch && matchesTime && matchesChallenge;
+            });
+
+            renderLeaderboard();
+        }
+
+        window.refreshLeaderboard = function() {
+            const refreshBtn = event.target;
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin me-2"></i>Refreshing...';
+            refreshBtn.disabled = true;
+            
+            loadLeaderboardData();
+            loadLeaderboardStats();
+            
+            setTimeout(() => {
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Refresh';
+                refreshBtn.disabled = false;
+            }, 2000);
+        };
+
+        window.viewPlayer = function(userId) {
+            const user = allLeaderboardData.find(u => u.id === userId);
+            if (user) {
+                Swal.fire({
+                    title: 'Player Profile',
+                    html: `
+                        <div style="text-align: left;">
+                            <p><strong>ID:</strong> ${user.id}</p>
+                            <p><strong>Username:</strong> ${user.username}</p>
+                            <p><strong>Display Name:</strong> ${user.display_name}</p>
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Rank:</strong> ${user.rank}</p>
+                            <p><strong>Points:</strong> ${user.points || 0}</p>
+                            <p><strong>Challenges Completed:</strong> ${user.challenges_completed || 0}</p>
+                            <p><strong>Created:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                            <p><strong>Last Login:</strong> ${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</p>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00'
+                });
+            }
+        };
+
+        window.editPlayer = function(userId) {
+            const user = allLeaderboardData.find(u => u.id === userId);
+            if (user) {
+                Swal.fire({
+                    title: 'Edit Player',
+                    html: `
+                        <input id="swal-display-name" class="swal2-input" placeholder="Display Name" value="${user.display_name}">
+                        <input id="swal-email" class="swal2-input" type="email" placeholder="Email" value="${user.email}">
+                    `,
+                    confirmButtonText: 'Update',
+                    confirmButtonColor: '#00ff00',
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    preConfirm: () => {
+                        const displayName = document.getElementById('swal-display-name').value;
+                        const email = document.getElementById('swal-email').value;
+                        
+                        if (!displayName || !email) {
+                            Swal.showValidationMessage('Please fill in all fields');
+                            return false;
+                        }
+                        
+                        return { displayName, email };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/backend/api/users.php?action=update&id=${userId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(result.value)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Success',
+                                    text: 'Player updated successfully',
+                                    icon: 'success',
+                                    confirmButtonColor: '#00ff00',
+                                    background: '#1a1a1a',
+                                    color: '#00ff00'
+                                });
+                                loadLeaderboardData();
+                            } else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Failed to update player: ' + data.message,
+                                    icon: 'error',
+                                    confirmButtonColor: '#00ff00',
+                                    background: '#1a1a1a',
+                                    color: '#00ff00'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error updating player:', error);
                         });
                     }
                 });
-            });
+            }
+        };
 
-            const pageLinks = document.querySelectorAll('.page-link');
-            pageLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const pageNumber = this.textContent;
-                    
-                    pageLinks.forEach(l => l.classList.remove('active'));
-                    
-                    if (pageNumber !== '«' && pageNumber !== '»') {
-                        this.classList.add('active');
-                    }
-                    
-                    console.log('Loading page:', pageNumber);
-                });
-            });
-
-            setInterval(() => {
-                const scores = document.querySelectorAll('.score-display');
-                scores.forEach(score => {
-                    const currentScore = parseInt(score.textContent.replace(/,/g, ''));
-                    const change = Math.floor(Math.random() * 100) - 50;
-                    const newScore = Math.max(0, currentScore + change);
-                    score.textContent = newScore.toLocaleString();
-                });
-            }, 10000);
-        });
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
