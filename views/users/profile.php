@@ -713,7 +713,7 @@
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
                             <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1203,7 +1203,7 @@
         }
 
         function updateProfileHeader(profile) {
-            const avatar = document.querySelector('.profile-avatar');
+            const avatar = document.querySelector('.profile-avatar, .user-avatar-nav');
             if (avatar) {
                 const initials = getInitials(profile.username);
                 avatar.textContent = initials;
@@ -1304,6 +1304,72 @@
                 if (!document.hidden) {
                     loadUserProfile();
                     loadUserSkills();
+                }
+            });
+        }
+        function logout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00ff00',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel',
+                background: '#1a1a1a',
+                color: '#00ff00',
+                border: '1px solid #00ff00'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/backend/logout.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Logout Successful',
+                                text: 'You have been logged out successfully.',
+                                icon: 'success',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '../../index.php';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Logout Failed',
+                                text: 'Logout failed: ' + data.message,
+                                icon: 'error',
+                                confirmButtonColor: '#00ff00',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                border: '1px solid #00ff00'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        Swal.fire({
+                            title: 'Redirecting',
+                            text: 'Logging out...',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            border: '1px solid #00ff00'
+                        }).then(() => {
+                            window.location.href = '../../index.php';
+                        });
+                    });
                 }
             });
         }

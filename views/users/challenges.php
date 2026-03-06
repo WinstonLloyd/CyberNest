@@ -1328,7 +1328,8 @@
                                 confirmButtonColor: '#00ff00',
                                 background: '#1a1a1a',
                                 color: '#00ff00',
-                                border: '1px solid #00ff00'
+                                timer: 2000,
+                                showConfirmButton: false
                             }).then(() => {
                                 window.location.href = '../../index.php';
                             });
