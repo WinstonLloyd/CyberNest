@@ -607,7 +607,7 @@
                 <p class="feature-description">
                     Practice on realistic cybersecurity challenges that mirror actual threats and vulnerabilities found in the wild.
                 </p>
-                <a href="challenges.html" class="feature-link">
+                <a href="challenges.php" class="feature-link">
                     Explore Challenges <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -619,7 +619,7 @@
                 <p class="feature-description">
                     Track your progress, earn points, and level up your skills as you complete increasingly difficult challenges.
                 </p>
-                <a href="profile.html" class="feature-link">
+                <a href="profile.php" class="feature-link">
                     View Progress <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -631,7 +631,7 @@
                 <p class="feature-description">
                     Compete with other hackers worldwide, climb the leaderboard, and prove your cybersecurity expertise.
                 </p>
-                <a href="leaderboard.html" class="feature-link">
+                <a href="leaderboard.php" class="feature-link">
                     View Leaderboard <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
