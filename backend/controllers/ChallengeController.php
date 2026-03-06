@@ -100,8 +100,13 @@ class ChallengeController {
 
     private function getUserChallenges() {
         try {
-            // For now, we'll use a hardcoded user ID (in a real app, this would come from session/auth)
-            $userId = 1; // This should be replaced with actual user authentication
+            // Get actual user ID from session
+            $userId = $this->getUserIdFromSession();
+            
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
             
             $filters = [];
             
@@ -255,8 +260,13 @@ class ChallengeController {
             $challengeId = $data['challenge_id'];
             $submittedFlag = $data['flag'];
             
-            // For now, we'll use a hardcoded user ID (in a real app, this would come from session/auth)
-            $userId = 1; // This should be replaced with actual user authentication
+            // Get actual user ID from session
+            $userId = $this->getUserIdFromSession();
+            
+            if (!$userId) {
+                $this->sendResponse(['success' => false, 'message' => 'User not authenticated'], 401);
+                return;
+            }
 
             // Get challenge details to compare flag
             $challenge = $this->challenge->getChallengeById($challengeId);
@@ -353,6 +363,35 @@ class ChallengeController {
         }
     }
 
+    private function getUserIdFromSession() {
+        try {
+            // Check if session cookie exists
+            if (!isset($_COOKIE['cybernest_session'])) {
+                return null;
+            }
+            
+            $sessionToken = $_COOKIE['cybernest_session'];
+            
+            // Validate session token and get user ID
+            $query = "SELECT user_id FROM user_sessions 
+                      WHERE session_token = :session_token 
+                      AND expires_at > NOW() 
+                      LIMIT 1";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':session_token', $sessionToken);
+            $stmt->execute();
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['user_id'] : null;
+            
+        } catch (Exception $e) {
+            // Log error but don't expose details
+            error_log("Session validation error: " . $e->getMessage());
+            return null;
+        }
+    }
+
     private function getChallengeAttempt($userId, $challengeId) {
         try {
             $query = "SELECT * FROM challenge_attempts WHERE user_id = :user_id AND challenge_id = :challenge_id LIMIT 1";
@@ -427,11 +466,7 @@ class ChallengeController {
                       SET points = points + :points,
                           challenges_completed = challenges_completed + 1,
                           updated_at = NOW()
-                      WHERE user_id = :user_id
-                      ON DUPLICATE KEY UPDATE 
-                          points = points + :points,
-                          challenges_completed = challenges_completed + 1,
-                          updated_at = NOW()";
+                      WHERE user_id = :user_id";
             
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':user_id', $userId);

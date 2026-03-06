@@ -551,10 +551,10 @@
             <h1 class="hero-title">WELCOME TO CYBERNEST</h1>
             <p class="hero-subtitle">Master the art of cybersecurity through hands-on challenges</p>
             <div class="hero-buttons">
-                <a href="challenges.html" class="btn-hero btn-hero-primary">
+                <a href="challenges.php" class="btn-hero btn-hero-primary">
                     <i class="fas fa-play me-2"></i>Start Hacking
                 </a>
-                <a href="leaderboard.html" class="btn-hero btn-hero-secondary">
+                <a href="leaderboard.php" class="btn-hero btn-hero-secondary">
                     <i class="fas fa-chart-line me-2"></i>View Rankings
                 </a>
             </div>
