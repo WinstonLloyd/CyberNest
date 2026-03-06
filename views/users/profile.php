@@ -948,14 +948,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Profile functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load user profile data
             loadUserProfile();
             loadUserSkills();
             startRealTimeUpdates();
             
-            // Animate progress bars on scroll
             const observerOptions = {
                 threshold: 0.5,
                 rootMargin: '0px'
@@ -975,7 +972,6 @@
                 observer.observe(progressSection);
             }
 
-            // Animate stats on scroll
             const statsObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -990,7 +986,6 @@
                 statsObserver.observe(statsGrid);
             }
 
-            // Add hover effects to achievement badges
             const achievementBadges = document.querySelectorAll('.achievement-badge');
             achievementBadges.forEach(badge => {
                 badge.addEventListener('mouseenter', function() {
@@ -1002,7 +997,6 @@
                 });
             });
 
-            // Add click handlers to activity items
             const activityItems = document.querySelectorAll('.activity-item');
             activityItems.forEach(item => {
                 item.addEventListener('click', function() {
@@ -1076,7 +1070,6 @@
                     url: profileUrl
                 });
             } else {
-                // Fallback for browsers that don't support Web Share API
                 const dummy = document.createElement('input');
                 document.body.appendChild(dummy);
                 dummy.value = profileUrl;
@@ -1097,7 +1090,6 @@
             }
         }
 
-        // Simulate real-time updates
         setInterval(() => {
             const activities = document.querySelectorAll('.activity-time');
             activities.forEach(activity => {
@@ -1114,9 +1106,8 @@
                     activity.textContent = (days + 1) + ' days ago';
                 }
             });
-        }, 60000); // Update every minute
+        }, 60000);
 
-        // Backend data loading functions
         function loadUserProfile() {
             fetch('/backend/api/challenges.php?action=getUserProfile')
                 .then(response => response.json())
@@ -1125,13 +1116,11 @@
                         displayUserProfile(data.profile);
                     } else {
                         console.error('Failed to load user profile:', data.message);
-                        // Show error message
                         showError('Failed to load profile data. Please try again.');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading user profile:', error);
-                    // Show error message
                     showError('Network error loading profile data.');
                 });
         }
@@ -1144,7 +1133,6 @@
                         displayUserSkills(data.skills);
                     } else {
                         console.error('Failed to load user skills:', data.message);
-                        // Show error message
                         const container = document.getElementById('skillsProgressContainer');
                         if (container) {
                             container.innerHTML = `
@@ -1158,7 +1146,6 @@
                 })
                 .catch(error => {
                     console.error('Error loading user skills:', error);
-                    // Show error message
                     const container = document.getElementById('skillsProgressContainer');
                     if (container) {
                         container.innerHTML = `
@@ -1202,44 +1189,36 @@
                 </div>
             `).join('');
 
-            // Trigger animation for the newly added progress bars
             setTimeout(() => {
                 animateProgressBars();
             }, 100);
         }
 
         function displayUserProfile(profile) {
-            // Update profile header
             updateProfileHeader(profile);
             
-            // Update statistics
             updateStatistics(profile);
             
-            // Update recent activity
             updateRecentActivity(profile.recent_activities);
         }
 
         function updateProfileHeader(profile) {
-            // Update avatar with user initials
             const avatar = document.querySelector('.profile-avatar');
             if (avatar) {
                 const initials = getInitials(profile.username);
                 avatar.textContent = initials;
             }
 
-            // Update name and username
             const nameElement = document.querySelector('.profile-name');
             const usernameElement = document.querySelector('.profile-username');
             if (nameElement) nameElement.textContent = profile.username;
             if (usernameElement) usernameElement.textContent = '@' + profile.username.toLowerCase();
 
-            // Update bio
             const bioElement = document.querySelector('.profile-bio');
             if (bioElement) {
                 bioElement.textContent = profile.bio || 'Cybersecurity enthusiast and ethical hacker.';
             }
 
-            // Update meta information
             const locationElement = document.querySelector('.meta-item:nth-child(1) span');
             const websiteElement = document.querySelector('.meta-item:nth-child(3) span');
             
@@ -1248,7 +1227,6 @@
         }
 
         function updateStatistics(profile) {
-            // Update stat cards with real data
             updateStatCard('userChallengesCompleted', profile.challenges_completed);
             updateStatCard('userPointsEarned', profile.points_earned);
             updateStatCard('userSuccessRate', profile.success_rate, '%');
@@ -1260,7 +1238,6 @@
             if (element) {
                 element.textContent = value.toLocaleString() + suffix;
                 
-                // Add animation for the update
                 element.style.transition = 'all 0.5s ease';
                 element.style.transform = 'scale(1.1)';
                 element.style.color = '#00ff00';
@@ -1318,13 +1295,11 @@
         }
 
         function startRealTimeUpdates() {
-            // Update every 30 seconds
             setInterval(() => {
                 loadUserProfile();
                 loadUserSkills();
             }, 30000);
 
-            // Also update when page becomes visible again
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     loadUserProfile();

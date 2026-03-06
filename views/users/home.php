@@ -667,17 +667,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Home page functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load real-time data
             loadPlatformStats();
             loadRecentActivity();
             loadTopHackers();
             
-            // Start real-time updates
             startRealTimeUpdates();
             
-            // Animate stats on scroll
             const observerOptions = {
                 threshold: 0.5,
                 rootMargin: '0px'
@@ -717,7 +713,6 @@
                 });
             }
 
-            // Add smooth scroll behavior
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -731,7 +726,6 @@
                 });
             });
 
-            // Add parallax effect to hero section
             window.addEventListener('scroll', () => {
                 const scrolled = window.pageYOffset;
                 const heroSection = document.querySelector('.hero-section');
@@ -740,7 +734,6 @@
                 }
             });
 
-            // Simulate real-time updates
             setInterval(() => {
                 const activityTimes = document.querySelectorAll('.activity-time');
                 activityTimes.forEach((time, index) => {
@@ -748,9 +741,8 @@
                         time.textContent = 'Just now';
                     }
                 });
-            }, 60000); // Update every minute
+            }, 60000);
 
-            // Add hover effects to cards
             const cards = document.querySelectorAll('.stat-card, .feature-card, .leaderboard-item, .activity-item');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
@@ -762,14 +754,12 @@
                 });
             });
 
-            // Initialize tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
 
-        // Real-time data loading functions
         function loadPlatformStats() {
             fetch('/backend/api/challenges.php?action=getPlatformStats')
                 .then(response => response.json())
@@ -825,7 +815,6 @@
                 const oldValue = element.textContent;
                 element.textContent = value.toLocaleString();
                 
-                // Add animation for the update
                 element.style.transition = 'all 0.5s ease';
                 element.style.transform = 'scale(1.1)';
                 element.style.color = '#00ff00';
@@ -895,14 +884,12 @@
         }
 
         function startRealTimeUpdates() {
-            // Update every 30 seconds
             setInterval(() => {
                 loadPlatformStats();
                 loadRecentActivity();
                 loadTopHackers();
             }, 30000);
 
-            // Also update when page becomes visible again
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     loadPlatformStats();
@@ -912,7 +899,6 @@
             });
         }
 
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -962,7 +948,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',

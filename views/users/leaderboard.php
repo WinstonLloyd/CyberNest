@@ -721,14 +721,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Leaderboard functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load real-time data
             loadPlatformStats();
             loadLeaderboard();
             startRealTimeUpdates();
             
-            // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
@@ -746,7 +743,6 @@
                 });
             }
 
-            // Filter functionality
             const rankFilter = document.getElementById('rankFilter');
             const levelFilter = document.getElementById('levelFilter');
             const timeFilter = document.getElementById('timeFilter');
@@ -760,7 +756,6 @@
                 rows.forEach(row => {
                     let show = true;
                     
-                    // Apply rank filter
                     if (rank !== 'all') {
                         const rankNum = parseInt(row.querySelector('.rank-badge').textContent);
                         if (rank === '1-10' && rankNum > 10) show = false;
@@ -769,7 +764,6 @@
                         if (rank === '1-100' && rankNum > 100) show = false;
                     }
                     
-                    // Apply level filter
                     if (level !== 'all') {
                         const badge = row.querySelector('.achievement-badge');
                         if (!badge || !badge.textContent.toLowerCase().includes(level)) {
@@ -785,7 +779,6 @@
             if (levelFilter) levelFilter.addEventListener('change', applyFilters);
             if (timeFilter) timeFilter.addEventListener('change', applyFilters);
 
-            // Animate stats on scroll
             const observerOptions = {
                 threshold: 0.5,
                 rootMargin: '0px'
@@ -825,7 +818,6 @@
                 });
             }
 
-            // Add hover effects to table rows
             const tableRows = document.querySelectorAll('.leaderboard-table tbody tr');
             tableRows.forEach(row => {
                 row.addEventListener('mouseenter', function() {
@@ -837,21 +829,19 @@
                 });
             });
 
-            // Simulate real-time updates
             setInterval(() => {
                 const pointsCells = document.querySelectorAll('.points-cell');
                 pointsCells.forEach((cell, index) => {
-                    if (index < 3) { // Only update top 3
+                    if (index < 3) {
                         const currentPoints = parseInt(cell.textContent.replace(',', ''));
                         const change = Math.floor(Math.random() * 10) - 5;
                         const newPoints = Math.max(0, currentPoints + change);
                         cell.textContent = newPoints.toLocaleString();
                     }
                 });
-            }, 30000); // Update every 30 seconds
+            }, 30000);
         });
 
-        // Backend data loading functions
         function loadPlatformStats() {
             fetch('/backend/api/challenges.php?action=getPlatformStats')
                 .then(response => response.json())
@@ -879,7 +869,6 @@
                         displayLeaderboard(data.hackers);
                     } else {
                         console.error('Failed to load leaderboard:', data.message);
-                        // Show error message
                         const tbody = document.getElementById('leaderboardTableBody');
                         if (tbody) {
                             tbody.innerHTML = `
@@ -895,7 +884,6 @@
                 })
                 .catch(error => {
                     console.error('Error loading leaderboard:', error);
-                    // Show error message
                     const tbody = document.getElementById('leaderboardTableBody');
                     if (tbody) {
                         tbody.innerHTML = `
@@ -915,7 +903,6 @@
             if (element) {
                 element.textContent = value.toLocaleString();
                 
-                // Add animation for the update
                 element.style.transition = 'all 0.5s ease';
                 element.style.transform = 'scale(1.1)';
                 element.style.color = '#00ff00';
@@ -1003,13 +990,11 @@
         }
 
         function startRealTimeUpdates() {
-            // Update every 30 seconds
             setInterval(() => {
                 loadPlatformStats();
                 loadLeaderboard();
             }, 30000);
 
-            // Also update when page becomes visible again
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     loadPlatformStats();
@@ -1018,14 +1003,12 @@
             });
         }
 
-        // Pagination functionality
         window.changePage = function(page) {
             console.log('Changing to page:', page);
             const buttons = document.querySelectorAll('.page-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             
             if (page === 'prev' || page === 'next') {
-                // Handle prev/next navigation
                 const activeBtn = document.querySelector('.page-btn.active');
                 const currentPage = parseInt(activeBtn.textContent);
                 const newPage = page === 'prev' ? Math.max(1, currentPage - 1) : Math.min(5, currentPage + 1);

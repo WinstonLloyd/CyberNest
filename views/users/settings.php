@@ -907,29 +907,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function switchTab(tabName) {
-            // Hide all tabs
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.classList.remove('active'));
             
-            // Remove active class from all buttons
             const buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             
-            // Show selected tab
             document.getElementById(tabName + '-tab').classList.add('active');
             
-            // Add active class to clicked button
             event.target.classList.add('active');
         }
 
-        // Toggle switch functionality
         function toggleSwitch(element) {
             element.classList.toggle('active');
         }
 
-        // Save settings functionality
         function saveSettings() {
-            // Collect all form data
             const settings = {
                 profile: {
                     username: document.getElementById('username').value,
@@ -965,10 +958,8 @@
                 }
             };
 
-            // Save to localStorage (in a real app, this would be sent to a server)
             localStorage.setItem('cybernest-settings', JSON.stringify(settings));
             
-            // Show success message
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -980,7 +971,6 @@
             });
         }
 
-        // Reset settings functionality
         function resetSettings() {
             Swal.fire({
                 title: 'Reset Settings?',
@@ -995,7 +985,6 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Reset form fields
                     document.getElementById('username').value = 'JohnDoe';
                     document.getElementById('displayName').value = 'John Doe';
                     document.getElementById('email').value = 'john.doe@example.com';
@@ -1003,7 +992,6 @@
                     document.getElementById('location').value = 'San Francisco, CA';
                     document.getElementById('website').value = 'https://johndoe.dev';
                     
-                    // Reset toggles
                     const toggles = document.querySelectorAll('.toggle-switch');
                     toggles.forEach(toggle => {
                         if (toggle.id.includes('Toggle') && 
@@ -1014,7 +1002,6 @@
                         }
                     });
                     
-                    // Reset selects
                     document.getElementById('colorTheme').value = 'green';
                     document.getElementById('fontSize').value = 'medium';
                     document.getElementById('language').value = 'en';
@@ -1032,7 +1019,6 @@
             });
         }
 
-        // Export data functionality
         function exportData() {
             const userData = {
                 profile: {
@@ -1073,7 +1059,6 @@
             });
         }
 
-        // Confirm account deletion
         function confirmDeleteAccount() {
             Swal.fire({
                 title: 'Delete Account?',
@@ -1110,14 +1095,12 @@
                                 color: '#00ff00',
                                 confirmButtonText: 'OK'
                             });
-                            // In a real app, this would send a request to the server
                         }
                     });
                 }
             });
         }
 
-        // Avatar upload functionality
         document.getElementById('avatarInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file && file.type.startsWith('image/')) {
@@ -1130,18 +1113,14 @@
             }
         });
 
-        // Load user data and settings on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Load user profile data
             loadUserProfile();
             loadUserStats();
             
-            // Load saved settings from localStorage for non-profile settings
             const savedSettings = localStorage.getItem('cybernest-settings');
             if (savedSettings) {
                 const settings = JSON.parse(savedSettings);
                 
-                // Apply saved toggle states
                 if (settings.security && settings.security.twoFactor) {
                     document.getElementById('twoFactorToggle').classList.add('active');
                 }
@@ -1170,7 +1149,6 @@
             }
         });
 
-        // Backend data loading functions
         function loadUserProfile() {
             fetch('/backend/api/challenges.php?action=getUserProfile')
                 .then(response => response.json())
@@ -1202,7 +1180,6 @@
         }
 
         function populateProfileForm(profile) {
-            // Update form fields with real user data
             document.getElementById('username').value = profile.username || '';
             document.getElementById('displayName').value = profile.username || '';
             document.getElementById('email').value = profile.email || '';
@@ -1210,14 +1187,12 @@
             document.getElementById('location').value = profile.location || '';
             document.getElementById('website').value = profile.website || '';
             
-            // Update avatar with user initials
             const avatarPreview = document.getElementById('avatarPreview');
             const initials = getInitials(profile.username);
             avatarPreview.textContent = initials;
         }
 
         function updateSettingsStats(profile) {
-            // Update statistics with real data
             updateStatCard('settingsChallengesCompleted', profile.challenges_completed);
             updateStatCard('settingsPointsEarned', profile.points_earned);
             updateStatCard('settingsSuccessRate', profile.success_rate, '%');
@@ -1229,7 +1204,6 @@
             if (element) {
                 element.textContent = value.toLocaleString() + suffix;
                 
-                // Add animation for the update
                 element.style.transition = 'all 0.5s ease';
                 element.style.transform = 'scale(1.1)';
                 element.style.color = '#00ff00';
@@ -1248,9 +1222,7 @@
                 .substring(0, 2);
         }
 
-        // Update saveSettings function to use backend
         function saveSettings() {
-            // Collect profile data
             const profileData = {
                 username: document.getElementById('username').value,
                 displayName: document.getElementById('displayName').value,
@@ -1260,14 +1232,12 @@
                 website: document.getElementById('website').value
             };
 
-            // Collect security data (password change)
             const securityData = {
                 currentPassword: document.getElementById('currentPassword').value,
                 newPassword: document.getElementById('newPassword').value,
                 confirmPassword: document.getElementById('confirmPassword').value
             };
 
-            // Send to backend
             fetch('/backend/api/challenges.php?action=updateUserSettings', {
                 method: 'POST',
                 headers: {
@@ -1291,12 +1261,10 @@
                         confirmButtonText: 'OK'
                     });
                     
-                    // Clear password fields
                     document.getElementById('currentPassword').value = '';
                     document.getElementById('newPassword').value = '';
                     document.getElementById('confirmPassword').value = '';
                     
-                    // Reload user data to reflect changes
                     loadUserProfile();
                 } else {
                     Swal.fire({

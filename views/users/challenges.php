@@ -684,18 +684,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Challenges functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Load challenges from backend
             loadChallenges();
-            
-            // Load user total points from backend
             loadUserTotalPoints();
-            
-            // Start real-time polling for attempt updates
             startRealTimeUpdates();
             
-            // Search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
@@ -716,7 +709,6 @@
                 });
             }
 
-            // Filter functionality
             const difficultyFilter = document.getElementById('difficultyFilter');
             const categoryFilter = document.getElementById('categoryFilter');
             const statusFilter = document.getElementById('statusFilter');
@@ -730,17 +722,14 @@
                 cards.forEach(card => {
                     let show = true;
                     
-                    // Apply difficulty filter
                     if (difficulty !== 'all' && card.dataset.difficulty !== difficulty) {
                         show = false;
                     }
                     
-                    // Apply category filter
                     if (category !== 'all' && card.dataset.category !== category) {
                         show = false;
                     }
                     
-                    // Apply status filter
                     if (status !== 'all' && card.dataset.status !== status) {
                         show = false;
                     }
@@ -753,7 +742,6 @@
             if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
             if (statusFilter) statusFilter.addEventListener('change', applyFilters);
 
-            // Animate stats on scroll
             const observerOptions = {
                 threshold: 0.5,
                 rootMargin: '0px'
@@ -794,7 +782,6 @@
             }
         });
 
-        // Load challenges from backend
         function loadChallenges() {
             fetch('/backend/api/challenges.php?action=getUserChallenges')
                 .then(response => response.json())
@@ -813,13 +800,11 @@
                 });
         }
 
-        // Load user total points from backend
         function loadUserTotalPoints() {
             fetch('/backend/api/challenges.php?action=getUserTotalPoints')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Update the Points Earned stat card using specific ID
                         const pointsDisplay = document.getElementById('totalPointsDisplay');
                         if (pointsDisplay) {
                             pointsDisplay.textContent = data.total_points.toLocaleString();
@@ -833,7 +818,6 @@
                 });
         }
 
-        // Display challenges in the grid
         function displayChallenges(challenges) {
             const container = document.getElementById('challengesGrid');
             
@@ -850,22 +834,18 @@
             
             container.innerHTML = challenges.map(challenge => createChallengeCard(challenge)).join('');
             
-            // Add click handlers to newly created challenge cards
             addChallengeCardHandlers();
         }
 
-        // Create challenge card HTML
         function createChallengeCard(challenge) {
             const difficultyClass = `difficulty-${challenge.difficulty}`;
             const statusBadge = getStatusBadge(challenge.status);
             const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
-            
-            // Determine user status
+
             let userStatusClass = '';
             let userStatusText = '';
             let userStatusIcon = '';
             
-            // For inactive challenges, always show Unavailable
             if (challenge.status === 'inactive') {
                 userStatusClass = 'status-inactive';
                 userStatusText = 'Unavailable';
@@ -922,7 +902,6 @@
             `;
         }
 
-        // Get status badge HTML
         function getStatusBadge(status) {
             const badges = {
                 'active': 'Available',
@@ -932,7 +911,6 @@
             return badges[status] || 'Unknown';
         }
 
-        // Update stats based on challenges
         function updateStats(challenges) {
             const totalChallenges = challenges.length;
             const activeChallenges = challenges.filter(c => c.status === 'active').length;
@@ -940,7 +918,6 @@
             const attemptedChallenges = challenges.filter(c => c.user_attempts > 0 && c.user_completed == 0).length;
             const earnedPoints = challenges.filter(c => c.user_completed == 1).reduce((sum, c) => sum + c.points, 0);
             
-            // Update stat cards
             const statCards = document.querySelectorAll('.stat-card');
             if (statCards.length >= 4) {
                 statCards[0].querySelector('.stat-number').textContent = totalChallenges;
@@ -950,7 +927,6 @@
             }
         }
 
-        // Add click handlers to challenge cards
         function addChallengeCardHandlers() {
             const challengeCards = document.querySelectorAll('.challenge-card');
             challengeCards.forEach(card => {
@@ -1000,13 +976,11 @@
                         return;
                     }
                     
-                    // Challenge is active and user hasn't completed it
                     showFlagModal(title, difficulty, challengeId);
                 });
             });
         }
 
-        // Function to show flag submission modal
         function showFlagModal(challengeTitle, difficulty, challengeId) {
             const modalHtml = `
                 <div class="modal fade" id="flagModal" tabindex="-1">
@@ -1042,26 +1016,21 @@
                 </div>
             `;
             
-            // Remove existing modal if any
             const existingModal = document.getElementById('flagModal');
             if (existingModal) {
                 existingModal.remove();
             }
             
-            // Add modal to body
             document.body.insertAdjacentHTML('beforeend', modalHtml);
             
-            // Show modal
             const modal = new bootstrap.Modal(document.getElementById('flagModal'));
             modal.show();
             
-            // Focus on input
             setTimeout(() => {
                 document.getElementById('flagInput').focus();
             }, 500);
         }
 
-        // Function to submit flag
         window.submitFlag = function(challengeId) {
             const flagInput = document.getElementById('flagInput');
             const flag = flagInput.value.trim();
@@ -1079,7 +1048,6 @@
                 return;
             }
             
-            // Submit flag to backend
             fetch('/backend/api/challenges.php?action=submitFlag', {
                 method: 'POST',
                 headers: {
@@ -1120,11 +1088,8 @@
                             color: '#00ff00',
                             border: '1px solid #00ff00'
                         }).then(() => {
-                            // Reload challenges to update status
                             loadChallenges();
-                            // Reload user total points to update display
                             loadUserTotalPoints();
-                            // Trigger immediate real-time update
                             updateRealTimeAttempts();
                         });
                     } else {
@@ -1137,7 +1102,6 @@
                             color: '#00ff00',
                             border: '1px solid #00ff00'
                         }).then(() => {
-                            // Trigger immediate real-time update for incorrect attempts too
                             updateRealTimeAttempts();
                         });
                     }
@@ -1167,7 +1131,6 @@
             });
         };
 
-        // Show error message
         function showError(message) {
             const container = document.getElementById('challengesGrid');
             container.innerHTML = `
@@ -1179,14 +1142,12 @@
             `;
         }
 
-        // Pagination functionality
         window.changePage = function(page) {
             console.log('Changing to page:', page);
             const buttons = document.querySelectorAll('.page-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             
             if (page === 'prev' || page === 'next') {
-                // Handle prev/next navigation
                 const activeBtn = document.querySelector('.page-btn.active');
                 const currentPage = parseInt(activeBtn.textContent);
                 const newPage = page === 'prev' ? Math.max(1, currentPage - 1) : Math.min(5, currentPage + 1);
@@ -1196,15 +1157,12 @@
             }
         };
 
-        // Real-time updates functionality
         let realTimeInterval;
         let lastAttemptCounts = {};
         
         function startRealTimeUpdates() {
-            // Update every 5 seconds
             realTimeInterval = setInterval(updateRealTimeAttempts, 5000);
             
-            // Also update immediately when page becomes visible again
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     updateRealTimeAttempts();
@@ -1221,17 +1179,13 @@
                             const challengeId = attempt.challenge_id;
                             const newCount = attempt.attempt_count;
                             
-                            // Check if this is a new attempt (count increased)
                             if (lastAttemptCounts[challengeId] !== undefined && 
                                 lastAttemptCounts[challengeId] < newCount) {
-                                // Show visual feedback for the updated attempt
                                 showAttemptUpdate(challengeId, newCount, attempt.completed);
                             }
                             
-                            // Update the stored count
                             lastAttemptCounts[challengeId] = newCount;
                             
-                            // Update the UI
                             updateChallengeAttemptCount(challengeId, newCount, attempt.completed);
                         });
                     }
@@ -1249,7 +1203,6 @@
                     const oldCount = parseInt(yourAttemptsElement.textContent);
                     yourAttemptsElement.textContent = attemptCount;
                     
-                    // Add animation for the update
                     yourAttemptsElement.style.transition = 'all 0.3s ease';
                     yourAttemptsElement.style.transform = 'scale(1.2)';
                     yourAttemptsElement.style.color = '#00ff00';
@@ -1260,7 +1213,6 @@
                     }, 300);
                 }
                 
-                // Update status if completed
                 if (completed) {
                     const statusElement = challengeCard.querySelector('.challenge-status');
                     if (statusElement) {
@@ -1268,7 +1220,6 @@
                         statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Completed';
                     }
                     
-                    // Update data attribute
                     challengeCard.dataset.userCompleted = '1';
                 }
             }
@@ -1277,7 +1228,6 @@
         function showAttemptUpdate(challengeId, newCount, completed) {
             const challengeCard = document.querySelector(`[data-id="${challengeId}"]`);
             if (challengeCard) {
-                // Create a notification element
                 const notification = document.createElement('div');
                 notification.style.cssText = `
                     position: absolute;
@@ -1304,7 +1254,6 @@
                 challengeCard.style.position = 'relative';
                 challengeCard.appendChild(notification);
                 
-                // Remove notification after 3 seconds
                 setTimeout(() => {
                     notification.style.animation = 'slideOutRight 0.3s ease';
                     setTimeout(() => {
@@ -1316,7 +1265,6 @@
             }
         }
         
-        // Add CSS animations for notifications
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideInRight {
@@ -1343,14 +1291,12 @@
         `;
         document.head.appendChild(style);
         
-        // Clean up interval when page is unloaded
         window.addEventListener('beforeunload', function() {
             if (realTimeInterval) {
                 clearInterval(realTimeInterval);
             }
         });
 
-        // Logout function
         function logout() {
             Swal.fire({
                 title: 'Logout Confirmation',
@@ -1400,7 +1346,6 @@
                     })
                     .catch(error => {
                         console.error('Logout error:', error);
-                        // Still redirect on error
                         Swal.fire({
                             title: 'Redirecting',
                             text: 'Logging out...',
