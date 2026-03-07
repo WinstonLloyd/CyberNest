@@ -6,6 +6,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+        
         .terminal {
             background: #0a0a0a;
             color: #00ff00;
@@ -20,6 +26,7 @@
             position: relative;
             overflow: hidden;
         }
+        
         .terminal::before {
             content: '';
             position: absolute;
@@ -34,6 +41,7 @@
             animation: terminal-scan 3s linear infinite;
             pointer-events: none;
         }
+        
         .terminal::after {
             content: '';
             position: absolute;
@@ -49,6 +57,7 @@
             animation: terminal-scan-vertical 2s linear infinite;
             pointer-events: none;
         }
+        
         .terminal-input {
             background: transparent;
             border: none;
@@ -57,15 +66,77 @@
             outline: none;
             padding: 8px;
             border-radius: 4px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
+        
         .terminal-output {
             white-space: pre-wrap;
             word-wrap: break-word;
             padding: 10px;
-            background: rgba(0, 255, 0, 0.1);
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 4px;
             margin: 10px 0;
+            border: 1px solid #00ff00;
         }
+        
+        /* Terminal output scrollbar styling */
+        .terminal-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .terminal-output::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .terminal-output::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        .terminal-output::-moz-scrollbar {
+            width: 8px;
+        }
+        
+        .terminal-output::-moz-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .terminal-output::-moz-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .terminal-output::-moz-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        .terminal-output::-ms-overflow-style {
+            scrollbar-width: 8px;
+        }
+        
+        .terminal-output::-ms-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .terminal-output::-ms-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .terminal-output::-ms-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
         .command-history {
             max-height: 400px;
             overflow-y: auto;
@@ -73,14 +144,18 @@
             background: rgba(0, 0, 0, 0.8);
             border-radius: 8px;
             margin: 10px 0;
+            border: 1px solid #00ff00;
         }
+        
         .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         .btn-terminal {
             background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
             border: 1px solid #00ff00;
@@ -92,32 +167,43 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
+        
         .btn-terminal:hover {
             background: linear-gradient(135deg, #00ff00 0%, #00dd00 100%);
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 255, 0, 0.5);
             color: #000000;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
+        
         .btn-terminal:active {
             transform: translateY(0);
             box-shadow: 0 2px 10px rgba(0, 255, 0, 0.3);
             color: #000000;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
+        
         .command-line {
             display: flex;
             align-items: center;
             margin: 5px 0;
         }
+        
         .command-prompt {
             color: #00ff00;
             margin-right: 10px;
             font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
+        
         .command-text {
             color: #00ff00;
             flex: 1;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
+        
         .cursor {
             display: inline-block;
             width: 10px;
@@ -125,18 +211,22 @@
             background: #00ff00;
             animation: blink 1s infinite;
         }
+        
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
+        
         @keyframes terminal-scan {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(100%); }
         }
+        
         @keyframes terminal-scan-vertical {
             0% { height: 0%; }
             100% { height: 100%; }
         }
+        
         .status-dot {
             width: 8px;
             height: 8px;
@@ -144,16 +234,172 @@
             display: inline-block;
             margin: 0 2px;
         }
+        
+        /* Scrollbar styling */
+        .command-history::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .command-history::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .command-history::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .command-history::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        .command-history::-moz-scrollbar {
+            width: 8px;
+        }
+        
+        .command-history::-moz-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .command-history::-moz-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .command-history::-moz-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        .command-history::-ms-overflow-style {
+            scrollbar-width: 8px;
+        }
+        
+        .command-history::-ms-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        .command-history::-ms-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        .command-history::-ms-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        /* Hacker theme overrides */
+        .bg-dark {
+            background: #000 !important;
+        }
+        
+        .text-white {
+            color: #00ff00 !important;
+        }
+        
+        .text-success {
+            color: #00ff00 !important;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+        }
+        
+        .text-muted {
+            color: #00ff00 !important;
+            opacity: 0.7 !important;
+        }
+        
+        .bg-black {
+            background: #0a0a0a !important;
+            border: 1px solid #00ff00 !important;
+        }
+        
+        .border-success {
+            border-color: #00ff00 !important;
+        }
+        
+        .btn-outline-success {
+            background: transparent !important;
+            border: 1px solid #00ff00 !important;
+            color: #00ff00 !important;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+        }
+        
+        .btn-outline-success:hover {
+            background: rgba(0, 255, 0, 0.1) !important;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5) !important;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+        }
+        
+        .btn-outline-danger {
+            background: transparent !important;
+            border: 1px solid #ff0000 !important;
+            color: #ff0000 !important;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5) !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: rgba(255, 0, 0, 0.1) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5) !important;
+        }
+        
+        .bg-secondary {
+            background: rgba(0, 20, 0, 0.9) !important;
+            border-bottom: 1px solid #00ff00 !important;
+        }
+        
+        .text-light {
+            color: #00ff00 !important;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+        }
+        
+        /* Glitch effects for headers */
+        .display-4 {
+            animation: glitch 2s infinite !important;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8) !important;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
+            25% { text-shadow: -2px 0 10px rgba(255, 0, 0, 0.8); }
+            50% { text-shadow: 2px 0 10px rgba(0, 255, 0, 0.8); }
+            75% { text-shadow: 0 0 10px rgba(0, 255, 255, 0, 0.8); }
+        }
+        
+        /* Matrix rain background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 0, 0.03) 2px,
+                    transparent 4px
+                );
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.1;
+        }
     </style>
 </head>
 <body class="bg-dark text-white min-vh-100">
     <div class="container-fluid p-4">
-        <header class="text-center mb-5">
+        <!-- <header class="text-center mb-5">
             <h1 class="display-4 fw-bold text-success mb-3">
                 <i class="fas fa-terminal me-3"></i>CYBERTERMINAL
             </h1>
             <p class="text-muted fs-5">Execute Linux commands from your browser</p>
-        </header>
+        </header> -->
 
         <main class="row">
             <div class="col-lg-8">

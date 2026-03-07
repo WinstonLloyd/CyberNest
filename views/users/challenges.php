@@ -386,6 +386,105 @@
             border: 1px solid #6c757d;
         }
 
+        .floating-terminal-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), #00cc00);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-bg);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.4);
+            text-decoration: none;
+        }
+
+        .floating-terminal-btn:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 255, 0, 0.6);
+            background: linear-gradient(135deg, #00ff00, var(--primary-color));
+        }
+
+        .floating-terminal-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes terminal-pulse {
+            0% { box-shadow: 0 5px 20px rgba(0, 255, 0, 0.4); }
+            50% { box-shadow: 0 5px 30px rgba(0, 255, 0, 0.8); }
+            100% { box-shadow: 0 5px 20px rgba(0, 255, 0, 0.4); }
+        }
+
+        .floating-terminal-btn {
+            animation: terminal-pulse 2s infinite;
+        }
+
+        /* Terminal modal scrollbar styling */
+        #terminalModal iframe::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #terminalModal iframe::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        #terminalModal iframe::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        #terminalModal iframe::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        #terminalModal iframe::-moz-scrollbar {
+            width: 8px;
+        }
+        
+        #terminalModal iframe::-moz-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        #terminalModal iframe::-moz-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        #terminalModal iframe::-moz-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        #terminalModal iframe::-ms-overflow-style {
+            scrollbar-width: 8px;
+        }
+        
+        #terminalModal iframe::-ms-scrollbar-track {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+        
+        #terminalModal iframe::-ms-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+        }
+        
+        #terminalModal iframe::-ms-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+
         .navbar-custom {
             background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
             border-bottom: 2px solid var(--primary-color);
@@ -443,38 +542,6 @@
         .user-avatar-nav:hover {
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .pagination-custom {
-            display: flex;
-            gap: 5px;
-        }
-
-        .page-btn {
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .page-btn:hover {
-            background: rgba(0, 255, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .page-btn.active {
-            background: var(--primary-color);
-            color: var(--darker-bg);
         }
 
         .real-time-indicator {
@@ -615,7 +682,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" target="_blank" href="../terminal.html">
+                        <a class="nav-link nav-link-custom" target="_blank" href="../terminals.html">
                             <i class="fas fa-terminal me-2"></i>Terminal
                         </a>
                     </li>
@@ -731,7 +798,6 @@
         </div>
     </section>
 
-    <!-- Challenges Section -->
     <section class="challenges-section container">
         <div class="challenges-grid" id="challengesGrid">
             <!-- Challenges will be loaded dynamically from backend -->
@@ -741,23 +807,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Pagination -->
-    <div class="pagination-container container">
-        <div class="pagination-custom">
-            <button class="page-btn" onclick="changePage('prev')">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="page-btn active" onclick="changePage(1)">1</button>
-            <button class="page-btn" onclick="changePage(2)">2</button>
-            <button class="page-btn" onclick="changePage(3)">3</button>
-            <button class="page-btn" onclick="changePage(4)">4</button>
-            <button class="page-btn" onclick="changePage(5)">5</button>
-            <button class="page-btn" onclick="changePage('next')">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -919,7 +968,6 @@
             const statusBadge = getStatusBadge(challenge.status);
             const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
             
-            // Build file download HTML if file exists
             let fileDownloadHtml = '';
             if (challenge.file_path && challenge.original_filename) {
                 fileDownloadHtml = `
@@ -1235,20 +1283,6 @@
             `;
         }
 
-        window.changePage = function(page) {
-            const buttons = document.querySelectorAll('.page-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            if (page === 'prev' || page === 'next') {
-                const activeBtn = document.querySelector('.page-btn.active');
-                const currentPage = parseInt(activeBtn.textContent);
-                const newPage = page === 'prev' ? Math.max(1, currentPage - 1) : Math.min(5, currentPage + 1);
-                buttons[newPage - 1].classList.add('active');
-            } else {
-                buttons[page - 1].classList.add('active');
-            }
-        };
-
         let realTimeInterval;
         let lastAttemptCounts = {};
         
@@ -1455,6 +1489,34 @@
                 }
             });
         }
+        
+        function openTerminalModal() {
+            const terminalModal = document.getElementById('terminalModal');
+            const modal = new bootstrap.Modal(terminalModal);
+            modal.show();
+        }
     </script>
+    
+    <!-- Floating Terminal Button -->
+    <button class="floating-terminal-btn" title="Open Terminal" onclick="openTerminalModal()">
+        <i class="fas fa-terminal"></i>
+    </button>
+    
+    <!-- Terminal Modal -->
+    <div class="modal fade" id="terminalModal" tabindex="-1" aria-labelledby="terminalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-success">
+                <div class="modal-header bg-black border-success">
+                    <h5 class="modal-title text-success" id="terminalModalLabel">
+                        <i class="fas fa-terminal me-2"></i>Terminal
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0" style="height: 600px;">
+                    <iframe src="../terminals.html" style="width: 100%; height: 100%; border: none; border-radius: 0 0 0.375rem 0.375rem;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

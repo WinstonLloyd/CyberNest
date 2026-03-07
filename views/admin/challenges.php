@@ -391,7 +391,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="../terminal.html">
+                    <a class="nav-link" target="_blank" href="../terminals.html">
                         <i class="fas fa-terminal"></i>
                         Terminal
                     </a>
