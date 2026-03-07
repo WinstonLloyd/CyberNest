@@ -1,0 +1,189 @@
+.settings-container {
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(0, 255, 0, 0.02) 100%);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.settings-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.settings-title {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    margin-bottom: 8px;
+}
+.settings-subtitle {
+    color: var(--muted-text);
+    font-size: 0.9rem;
+}
+.settings-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.settings-tabs {
+    margin-bottom: 30px;
+}
+.nav-tabs .nav-link {
+    color: var(--light-text);
+    border: 1px solid var(--primary-color);
+    background: rgba(0, 0, 0, 0.8);
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+.nav-tabs .nav-link:hover {
+    background: rgba(0, 255, 0, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.nav-tabs .nav-link.active {
+    background: rgba(0, 255, 0, 0.2);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.settings-section {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+}
+.form-control, .form-select {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.form-control:focus, .form-select:focus {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    color: var(--primary-color);
+}
+.form-label {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.form-text {
+    color: var(--muted-text);
+    font-size: 0.85rem;
+}
+.btn-settings {
+    background: var(--primary-color);
+    color: var(--darker-bg);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-settings:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+}
+.btn-secondary-settings {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-secondary-settings:hover {
+    background: rgba(0, 255, 0, 0.1);
+    transform: translateY(-2px);
+}
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--primary-color);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.toggle-switch.active {
+    background: var(--primary-color);
+}
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+}
+.toggle-switch.active::after {
+    left: 32px;
+}
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+.setting-item:last-child {
+    border-bottom: none;
+}
+.setting-info h5 {
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+.setting-info p {
+    color: var(--muted-text);
+    font-size: 0.85rem;
+    margin: 0;
+}
+.alert-settings {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+@media (max-width: 768px) {
+    .settings-title {
+        font-size: 2rem;
+    }
+    
+    .nav-tabs {
+        flex-direction: column;
+    }
+    
+    .nav-tabs .nav-link {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
