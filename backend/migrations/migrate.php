@@ -10,7 +10,7 @@ try {
     $database = new Database();
     $db = $database->getConnection();
     
-    echo "Starting migration: Adding file upload support for OSINT challenges...\n";
+    echo "Starting migration...\n";
     
     // Read migration SQL
     $migrationFile = __DIR__ . '/database.sql';
@@ -35,8 +35,6 @@ try {
     $db->commit();
     
     echo "Migration completed successfully!\n";
-    echo "Added columns: file_path, original_filename, file_size\n";
-    echo "OSINT challenges can now have file uploads!\n";
     
 } catch (Exception $e) {
     if (isset($db) && $db->inTransaction()) {
