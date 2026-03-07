@@ -867,23 +867,62 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        const challenge = data.challenge;
+                        
+                        let fileDisplay = '';
+                        if (challenge.file_path && challenge.original_filename) {
+                            const fileExtension = challenge.original_filename.split('.').pop().toLowerCase();
+                            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+                            
+                            if (imageExtensions.includes(fileExtension)) {
+                                fileDisplay = `
+                                    <div style="margin-bottom: 20px;">
+                                        <p><strong>Challenge File:</strong></p>
+                                        <img src="/${challenge.file_path}" alt="${challenge.original_filename}" 
+                                             style="max-width: 100%; max-height: 300px; border: 1px solid #28a745; border-radius: 8px;" />
+                                        <p><small class="text-muted">Filename: ${challenge.original_filename}</small></p>
+                                    </div>
+                                `;
+                            } else {
+                                fileDisplay = `
+                                    <div style="margin-bottom: 20px;">
+                                        <p><strong>Challenge File:</strong></p>
+                                        <div style="border: 1px solid #28a745; border-radius: 8px; padding: 15px; background: rgba(40, 167, 69, 0.1);">
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <i class="fas fa-file fa-2x text-success"></i>
+                                                <div>
+                                                    <p style="margin: 0;"><strong>${challenge.original_filename}</strong></p>
+                                                    <a href="/${challenge.file_path}" download="${challenge.original_filename}" 
+                                                       class="btn btn-success btn-sm" style="margin-top: 5px;">
+                                                        <i class="fas fa-download me-2"></i>Download File
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+                        
                         Swal.fire({
-                            title: data.challenge.title,
+                            title: challenge.title,
                             html: `
                                 <div style="text-align: left;">
-                                    <p><strong>Description:</strong><br>${data.challenge.description}</p>
-                                    <p><strong>Difficulty:</strong> ${data.challenge.difficulty}</p>
-                                    <p><strong>Points:</strong> ${data.challenge.points}</p>
-                                    <p><strong>Category:</strong> ${data.challenge.category}</p>
-                                    <p><strong>Status:</strong> ${data.challenge.status}</p>
-                                    <p><strong>Flag:</strong> <code>${data.challenge.flag || 'Not set'}</code></p>
+                                    ${fileDisplay}
+                                    <p><strong>Description:</strong><br>${challenge.description}</p>
+                                    <p><strong>Difficulty:</strong> ${challenge.difficulty}</p>
+                                    <p><strong>Points:</strong> ${challenge.points}</p>
+                                    <p><strong>Category:</strong> ${challenge.category}</p>
+                                    <p><strong>Status:</strong> ${challenge.status}</p>
+                                    <p><strong>Flag:</strong> <code>${challenge.flag || 'Not set'}</code></p>
                                 </div>
                             `,
                             icon: 'info',
                             confirmButtonColor: '#28a745',
                             background: '#1a1a1a',
                             color: '#00ff00',
-                            confirmButtonText: 'Close'
+                            confirmButtonText: 'Close',
+                            width: fileDisplay ? '800px' : '600px'
                         });
                     }
                 })
