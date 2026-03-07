@@ -1,9 +1,4 @@
 <?php
-/**
- * Database Migration Script
- * Adds file upload support for OSINT challenges
- */
-
 require_once __DIR__ . '/../config/database.php';
 
 try {
@@ -12,7 +7,6 @@ try {
     
     echo "Starting migration...\n";
     
-    // Read migration SQL
     $migrationFile = __DIR__ . '/database.sql';
     if (!file_exists($migrationFile)) {
         throw new Exception("Migration file not found: $migrationFile");
@@ -20,7 +14,6 @@ try {
     
     $sql = file_get_contents($migrationFile);
     
-    // Split SQL into individual statements
     $statements = array_filter(array_map('trim', explode(';', $sql)));
     
     $db->beginTransaction();
