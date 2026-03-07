@@ -105,6 +105,10 @@ class ChallengeController {
         try {
             $filters = [];
             
+            if (!empty($_GET['category'])) {
+                $filters['category'] = $_GET['category'];
+            }
+            
             if (!empty($_GET['difficulty'])) {
                 $filters['difficulty'] = $_GET['difficulty'];
             }
@@ -304,6 +308,8 @@ class ChallengeController {
         }
 
         try {
+            $existing_challenge = $this->challenge->getChallengeById($data['id']);
+            
             $challenge_data = [
                 'title' => $data['title'],
                 'description' => $data['description'],
@@ -335,6 +341,23 @@ class ChallengeController {
                 
                 $challenge_data['file_path'] = $file_path;
                 $challenge_data['original_filename'] = $file['name'];
+                
+                // Delete old file if it exists
+                if ($existing_challenge && !empty($existing_challenge['file_path'])) {
+                    $old_file_path = __DIR__ . '/../../' . $existing_challenge['file_path'];
+                    if (file_exists($old_file_path)) {
+                        if (!unlink($old_file_path)) {
+                            error_log('Failed to delete old file: ' . $old_file_path);
+                            // Continue with update even if old file deletion fails
+                        }
+                    }
+                }
+            } else {
+                // No new file uploaded, keep existing file data
+                if ($existing_challenge) {
+                    $challenge_data['file_path'] = $existing_challenge['file_path'] ?? null;
+                    $challenge_data['original_filename'] = $existing_challenge['original_filename'] ?? null;
+                }
             }
 
             $success = $this->challenge->updateChallenge($data['id'], $challenge_data);
@@ -441,6 +464,17 @@ class ChallengeController {
         }
 
         try {
+            $challenge = $this->challenge->getChallengeById($id);
+            
+            if ($challenge && !empty($challenge['file_path'])) {
+                $file_path = __DIR__ . '/../../' . $challenge['file_path'];
+                if (file_exists($file_path)) {
+                    if (!unlink($file_path)) {
+                        error_log('Failed to delete file: ' . $file_path);
+                    }
+                }
+            }
+            
             $success = $this->challenge->deleteChallenge($id);
             
             if ($success) {

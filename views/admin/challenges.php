@@ -475,13 +475,24 @@
             <!-- Filter Section -->
             <div class="filter-section">
                 <div class="row align-items-center">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="search-box">
                             <input type="text" id="searchInput" placeholder="Search challenges...">
                             <i class="fas fa-search"></i>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <select class="filter-select" id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="web">Web Security</option>
+                            <option value="binary">Binary Exploitation</option>
+                            <option value="crypto">Cryptography</option>
+                            <option value="forensics">Digital Forensics</option>
+                            <option value="reverse">Reverse Engineering</option>
+                            <option value="osint">OSINT</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
                         <select class="filter-select" id="difficultyFilter">
                             <option value="all">All Difficulties</option>
                             <option value="beginner">Beginner</option>
@@ -489,7 +500,7 @@
                             <option value="expert">Expert</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select class="filter-select" id="statusFilter">
                             <option value="all">All Status</option>
                             <option value="active">Active</option>
@@ -497,7 +508,7 @@
                             <option value="draft">Draft</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <button class="btn btn-success w-100" onclick="refreshChallenges()">
                             <i class="fas fa-sync-alt me-2"></i>Refresh
                         </button>
@@ -505,7 +516,6 @@
                 </div>
             </div>
 
-            <!-- Challenges List -->
             <div class="challenges-container">
                 <div class="challenges-grid">
                     <!-- Challenges will be loaded dynamically here -->
@@ -561,7 +571,8 @@
                                     <option value="binary">Binary Exploitation</option>
                                     <option value="crypto">Cryptography</option>
                                     <option value="forensics">Digital Forensics</option>
-                                    <option value="osint">Osint</option>
+                                    <option value="reverse">Reverse Engineering</option>
+                                    <option value="osint">OSINT</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -621,25 +632,37 @@
         let allChallenges = [];
 
         function loadChallenges(filters = {}) {
+            console.log('Loading challenges with filters:', filters);
+            
             const params = new URLSearchParams();
+            
+            if (filters.category && filters.category !== 'all') {
+                params.append('category', filters.category);
+                console.log('Adding category filter:', filters.category);
+            }
             
             if (filters.difficulty && filters.difficulty !== 'all') {
                 params.append('difficulty', filters.difficulty);
+                console.log('Adding difficulty filter:', filters.difficulty);
             }
             
             if (filters.status && filters.status !== 'all') {
                 params.append('status', filters.status);
+                console.log('Adding status filter:', filters.status);
             }
             
             if (filters.search) {
                 params.append('search', filters.search);
+                console.log('Adding search filter:', filters.search);
             }
             
             const url = '/backend/api/challenges.php?action=getAll' + (params.toString() ? '&' + params.toString() : '');
+            console.log('API URL:', url);
             
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('API Response:', data);
                     if (data.success) {
                         allChallenges = data.challenges;
                         displayChallenges(data.challenges);
@@ -802,6 +825,17 @@
             const searchTerm = this.value;
             const filters = {
                 search: searchTerm,
+                category: document.getElementById('categoryFilter').value,
+                difficulty: document.getElementById('difficultyFilter').value,
+                status: document.getElementById('statusFilter').value
+            };
+            loadChallenges(filters);
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            const filters = {
+                search: document.getElementById('searchInput').value,
+                category: this.value,
                 difficulty: document.getElementById('difficultyFilter').value,
                 status: document.getElementById('statusFilter').value
             };
@@ -811,6 +845,7 @@
         document.getElementById('difficultyFilter').addEventListener('change', function() {
             const filters = {
                 search: document.getElementById('searchInput').value,
+                category: document.getElementById('categoryFilter').value,
                 difficulty: this.value,
                 status: document.getElementById('statusFilter').value
             };
@@ -820,6 +855,7 @@
         document.getElementById('statusFilter').addEventListener('change', function() {
             const filters = {
                 search: document.getElementById('searchInput').value,
+                category: document.getElementById('categoryFilter').value,
                 difficulty: document.getElementById('difficultyFilter').value,
                 status: this.value
             };

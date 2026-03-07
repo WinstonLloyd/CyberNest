@@ -19,6 +19,11 @@ class Challenge {
             $where_clauses = [];
             $params = [];
             
+            if (!empty($filters['category'])) {
+                $where_clauses[] = "c.category = :category";
+                $params[':category'] = $filters['category'];
+            }
+            
             if (!empty($filters['difficulty'])) {
                 $where_clauses[] = "c.difficulty = :difficulty";
                 $params[':difficulty'] = $filters['difficulty'];
