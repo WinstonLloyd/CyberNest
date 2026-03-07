@@ -210,7 +210,13 @@ class ChallengeController {
             return;
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        
+        if (strpos($contentType, 'application/json') !== false) {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } else {
+            $data = json_decode($_POST['challengeData'] ?? '[]', true);
+        }
 
         if (!$data) {
             $this->sendResponse(['success' => false, 'message' => 'Invalid data'], 400);
@@ -237,12 +243,36 @@ class ChallengeController {
                 'tags' => $data['tags'] ?? ''
             ];
 
+            $file_path = null;
+            if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['file'];
+                $upload_dir = __DIR__ . '/../../uploads/challenges/';
+                
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                
+                $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $file_name = 'challenge_' . time() . '_' . uniqid() . '.' . $file_extension;
+                $file_path = 'uploads/challenges/' . $file_name;
+                
+                if (!move_uploaded_file($file['tmp_name'], $upload_dir . $file_name)) {
+                    error_log('Failed to move uploaded file from: ' . $file['tmp_name'] . ' to: ' . $upload_dir . $file_name);
+                    $this->sendResponse(['success' => false, 'message' => 'Failed to upload file'], 500);
+                    return;
+                }
+                
+                $challenge_data['file_path'] = $file_path;
+                $challenge_data['original_filename'] = $file['name'];
+            }
+
             $challenge_id = $this->challenge->createChallenge($challenge_data);
             
             $this->sendResponse([
                 'success' => true, 
                 'message' => 'Challenge created successfully',
-                'challenge_id' => $challenge_id
+                'challenge_id' => $challenge_id,
+                'file_uploaded' => $file_path ? true : false
             ]);
         } catch (Exception $e) {
             $this->sendResponse(['success' => false, 'message' => 'Failed to create challenge: ' . $e->getMessage()], 500);
@@ -255,7 +285,13 @@ class ChallengeController {
             return;
         }
 
-        $data = json_decode(file_get_contents('php://input'), true);
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        
+        if (strpos($contentType, 'application/json') !== false) {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } else {
+            $data = json_decode($_POST['challengeData'] ?? '[]', true);
+        }
 
         if (!$data) {
             $this->sendResponse(['success' => false, 'message' => 'Invalid data'], 400);
@@ -279,10 +315,36 @@ class ChallengeController {
                 'tags' => $data['tags'] ?? ''
             ];
 
+            $file_path = null;
+            if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['file'];
+                $upload_dir = __DIR__ . '/../../uploads/challenges/';
+                
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                
+                $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $file_name = 'challenge_' . time() . '_' . uniqid() . '.' . $file_extension;
+                $file_path = 'uploads/challenges/' . $file_name;
+                
+                if (!move_uploaded_file($file['tmp_name'], $upload_dir . $file_name)) {
+                    $this->sendResponse(['success' => false, 'message' => 'Failed to upload file'], 500);
+                    return;
+                }
+                
+                $challenge_data['file_path'] = $file_path;
+                $challenge_data['original_filename'] = $file['name'];
+            }
+
             $success = $this->challenge->updateChallenge($data['id'], $challenge_data);
             
             if ($success) {
-                $this->sendResponse(['success' => true, 'message' => 'Challenge updated successfully']);
+                $this->sendResponse([
+                    'success' => true, 
+                    'message' => 'Challenge updated successfully',
+                    'file_uploaded' => $file_path ? true : false
+                ]);
             } else {
                 $this->sendResponse(['success' => false, 'message' => 'Failed to update challenge'], 500);
             }
@@ -956,7 +1018,6 @@ class ChallengeController {
             return $result ? $result['user_id'] : null;
             
         } catch (Exception $e) {
-            error_log("Session validation error: " . $e->getMessage());
             return null;
         }
     }

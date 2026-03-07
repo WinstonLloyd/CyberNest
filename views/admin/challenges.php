@@ -561,6 +561,7 @@
                                     <option value="binary">Binary Exploitation</option>
                                     <option value="crypto">Cryptography</option>
                                     <option value="forensics">Digital Forensics</option>
+                                    <option value="osint">Osint</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -580,6 +581,11 @@
                         <div class="mb-3">
                             <label class="form-label">Tags (comma-separated)</label>
                             <input type="text" class="form-control" id="challengeTags" placeholder="xss, sql-injection, web">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Challenge File</label>
+                            <input type="file" class="form-control" id="challengeFile" accept=".zip,.tar,.tar.gz,.txt,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.bmp,.webp,.svg">
+                            <small class="text-muted">Upload challenge files (optional). Supported formats: ZIP, TAR, TXT, PDF, DOC, DOCX, JPG, PNG, GIF, BMP, WEBP, SVG</small>
                         </div>
                     </form>
                 </div>
@@ -1097,6 +1103,9 @@
                 return;
             }
             
+            const fileInput = document.getElementById('challengeFile');
+            const file = fileInput.files[0];
+            
             const challengeData = {
                 title: document.getElementById('challengeName').value,
                 difficulty: document.getElementById('challengeDifficulty').value,
@@ -1112,62 +1121,119 @@
             
             if (isEditing) {
                 challengeData.id = parseInt(isEditing);
-                fetch('/backend/api/challenges.php?action=update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(challengeData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
-                        modal.hide();
-                        form.reset();
-                        delete form.dataset.editingId;
-                        
-                        document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
-                        
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Updated!',
-                            text: 'Challenge updated successfully!',
-                            background: '#1a1a1a',
-                            color: '#00ff00',
-                            confirmButtonColor: '#28a745'
-                        });
-                        loadChallenges();
-                        loadChallengeStats();
-                    } else {
+                
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('challengeData', JSON.stringify(challengeData));
+                    formData.append('file', file);
+                    
+                    fetch('/backend/api/challenges.php?action=update', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
+                            modal.hide();
+                            form.reset();
+                            delete form.dataset.editingId;
+                            
+                            document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Updated!',
+                                text: 'Challenge updated successfully!',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                confirmButtonColor: '#28a745'
+                            });
+                            loadChallenges();
+                            loadChallengeStats();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: 'Failed to update challenge: ' + data.message,
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating challenge:', error);
                         Swal.fire({
                             icon: 'error',
-                            title: 'Update Failed',
-                            text: 'Failed to update challenge: ' + data.message,
+                            title: 'Error',
+                            text: 'Failed to update challenge. Please try again.',
                             background: '#1a1a1a',
                             color: '#00ff00',
                             confirmButtonColor: '#dc3545'
                         });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating challenge:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to update challenge. Please try again.',
-                        background: '#1a1a1a',
-                        color: '#00ff00',
-                        confirmButtonColor: '#dc3545'
                     });
-                });
+                } else {
+                    fetch('/backend/api/challenges.php?action=update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(challengeData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addChallengeModal'));
+                            modal.hide();
+                            form.reset();
+                            delete form.dataset.editingId;
+                            
+                            document.querySelector('#addChallengeModal .modal-title').textContent = 'Add New Challenge';
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Updated!',
+                                text: 'Challenge updated successfully!',
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                confirmButtonColor: '#28a745'
+                            });
+                            loadChallenges();
+                            loadChallengeStats();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: 'Failed to update challenge: ' + data.message,
+                                background: '#1a1a1a',
+                                color: '#00ff00',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating challenge:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update challenge. Please try again.',
+                            background: '#1a1a1a',
+                            color: '#00ff00',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    });
+                }
             } else {
+                const formData = new FormData();
+                formData.append('challengeData', JSON.stringify(challengeData));
+                if (file) {
+                    formData.append('file', file);
+                }
+                
                 fetch('/backend/api/challenges.php?action=create', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(challengeData)
+                    body: formData
                 })
                 .then(response => response.json())
                 .then(data => {

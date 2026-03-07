@@ -72,8 +72,8 @@ class Challenge {
 
     public function createChallenge($data) {
         try {
-            $query = "INSERT INTO challenges (title, description, difficulty, points, category, status, flag, tags, created_at) 
-                      VALUES (:title, :description, :difficulty, :points, :category, :status, :flag, :tags, NOW())";
+            $query = "INSERT INTO challenges (title, description, difficulty, points, category, status, flag, tags, file_path, original_filename, created_at) 
+                      VALUES (:title, :description, :difficulty, :points, :category, :status, :flag, :tags, :file_path, :original_filename, NOW())";
             
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':title', $data['title']);
@@ -84,6 +84,11 @@ class Challenge {
             $stmt->bindParam(':status', $data['status']);
             $stmt->bindParam(':flag', $data['flag']);
             $stmt->bindParam(':tags', $data['tags']);
+            
+            $file_path = $data['file_path'] ?? null;
+            $original_filename = $data['original_filename'] ?? null;
+            $stmt->bindParam(':file_path', $file_path);
+            $stmt->bindParam(':original_filename', $original_filename);
             
             $stmt->execute();
             return $this->conn->lastInsertId();
@@ -97,7 +102,7 @@ class Challenge {
             $query = "UPDATE challenges 
                       SET title = :title, description = :description, difficulty = :difficulty, 
                           points = :points, category = :category, status = :status, flag = :flag, tags = :tags,
-                          updated_at = NOW()
+                          file_path = :file_path, original_filename = :original_filename, updated_at = NOW()
                       WHERE id = :id";
             
             $stmt = $this->conn->prepare($query);
@@ -110,6 +115,11 @@ class Challenge {
             $stmt->bindParam(':status', $data['status']);
             $stmt->bindParam(':flag', $data['flag']);
             $stmt->bindParam(':tags', $data['tags']);
+            
+            $file_path = $data['file_path'] ?? null;
+            $original_filename = $data['original_filename'] ?? null;
+            $stmt->bindParam(':file_path', $file_path);
+            $stmt->bindParam(':original_filename', $original_filename);
             
             return $stmt->execute();
         } catch (Exception $e) {
