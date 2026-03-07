@@ -477,6 +477,83 @@
             color: var(--darker-bg);
         }
 
+        .real-time-indicator {
+            animation: pulse 2s infinite;
+        }
+
+        .challenge-file {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            color: var(--primary-color);
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .file-download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: var(--dark-bg);
+            border: none;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .file-download-btn:hover {
+            background: #00cc00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .stats-section .container {
+                padding: 0 15px;
+            }
+
+            .stat-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .filter-section .container {
+                padding: 0 15px;
+            }
+
+            .filter-groups {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .file-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -635,11 +712,11 @@
                 <select class="filter-select" id="categoryFilter">
                     <option value="all">All Categories</option>
                     <option value="web">Web Security</option>
+                    <option value="binary">Binary Exploitation</option>
                     <option value="crypto">Cryptography</option>
-                    <option value="reverse">Reverse Engineering</option>
                     <option value="forensics">Digital Forensics</option>
-                    <option value="network">Network Security</option>
-                    <option value="mobile">Mobile Security</option>
+                    <option value="reverse">Reverse Engineering</option>
+                    <option value="osint">OSINT</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -841,6 +918,19 @@
             const difficultyClass = `difficulty-${challenge.difficulty}`;
             const statusBadge = getStatusBadge(challenge.status);
             const tags = challenge.tags ? challenge.tags.split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('') : '';
+            
+            // Build file download HTML if file exists
+            let fileDownloadHtml = '';
+            if (challenge.file_path && challenge.original_filename) {
+                fileDownloadHtml = `
+                    <div class="challenge-file">
+                        <a href="/${challenge.file_path}" download="${challenge.original_filename}" 
+                           class="btn btn-sm btn-success file-download-btn">
+                            <i class="fas fa-download me-1"></i>Download
+                        </a>
+                    </div>
+                `;
+            }
 
             let userStatusClass = '';
             let userStatusText = '';
@@ -877,6 +967,9 @@
                         <span class="difficulty-badge ${difficultyClass}">${challenge.difficulty}</span>
                     </div>
                     <p class="challenge-description">${challenge.description}</p>
+                    
+                    ${fileDownloadHtml}
+                    
                     <div class="challenge-stats">
                         <div class="stat-item">
                             <div class="stat-value">${challenge.attempts || 0}</div>
