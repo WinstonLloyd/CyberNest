@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/admin/dashboard.css">
     <link rel="stylesheet" href="../../css/users/leaderboard.css">
+    <style>
+        .user-avatar-nav img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -45,7 +53,7 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            CN
+                            <img src="/uploads/default/default.jpg" alt="Default Profile Picture">
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>

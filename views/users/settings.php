@@ -427,6 +427,13 @@
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
         }
 
+        .user-avatar-nav img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
         .alert-cyber {
             background: rgba(0, 255, 0, 0.1);
             border: 1px solid var(--primary-color);
@@ -517,7 +524,6 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            CN
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -573,7 +579,7 @@
                 
                 <div class="avatar-upload">
                     <div class="avatar-preview" id="avatarPreview">
-                        CN
+                        <img src="/uploads/default/default.jpg" alt="Default Profile Picture">
                     </div>
                     <div class="avatar-info">
                         <div class="form-group">
@@ -1196,8 +1202,17 @@
             if (profile.profile_picture && profile.profile_picture !== '') {
                 avatarPreview.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
             } else {
-                const initials = getInitials(profile.username);
-                avatarPreview.textContent = initials;
+                avatarPreview.innerHTML = `<img src="/uploads/default/default.jpg" alt="Default Profile Picture">`;
+            }
+
+            // Update navigation avatar
+            const navAvatar = document.querySelector('.user-avatar-nav');
+            if (navAvatar) {
+                if (profile.profile_picture && profile.profile_picture !== '') {
+                    navAvatar.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
+                } else {
+                    navAvatar.innerHTML = `<img src="/uploads/default/default.jpg" alt="Default Profile Picture">`;
+                }
             }
         }
 

@@ -623,6 +623,13 @@
             transition: all 0.3s ease;
         }
 
+        .user-avatar-nav img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
         .user-avatar-nav:hover {
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
@@ -707,7 +714,6 @@
                 <div class="navbar-nav">
                     <div class="nav-item dropdown user-dropdown">
                         <div class="user-avatar-nav" data-bs-toggle="dropdown">
-                            CN
                         </div>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
@@ -735,7 +741,7 @@
         <div class="profile-header">
             <div class="profile-info">
                 <div class="profile-avatar">
-                    CN
+                    <img src="/uploads/default/default.jpg" alt="Default Profile Picture">
                 </div>
                 <div class="profile-details">
                     <h2 class="profile-name">Username</h2>
@@ -1204,8 +1210,20 @@
         function updateProfileHeader(profile) {
             const avatar = document.querySelector('.profile-avatar');
             if (avatar) {
-                const initials = getInitials(profile.username);
-                avatar.textContent = initials;
+                if (profile.profile_picture && profile.profile_picture !== '') {
+                    avatar.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
+                } else {
+                    avatar.innerHTML = `<img src="/uploads/default/default.jpg" alt="Default Profile Picture">`;
+                }
+            }
+
+            const navAvatar = document.querySelector('.user-avatar-nav');
+            if (navAvatar) {
+                if (profile.profile_picture && profile.profile_picture !== '') {
+                    navAvatar.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
+                } else {
+                    navAvatar.innerHTML = `<img src="/uploads/default/default.jpg" alt="Default Profile Picture">`;
+                }
             }
 
             const nameElement = document.querySelector('.profile-name');

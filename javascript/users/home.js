@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    loadUserProfile();
     loadPlatformStats();
     loadRecentActivity();
     loadTopHackers();
@@ -82,6 +83,40 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
+
+function loadUserProfile() {
+    fetch('/backend/api/challenges.php?action=getUserProfile')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateNavigationAvatar(data.profile);
+            } else {
+                console.error('Failed to load user profile:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading user profile:', error);
+        });
+}
+
+function updateNavigationAvatar(profile) {
+    const navAvatar = document.querySelector('.user-avatar-nav');
+    if (navAvatar) {
+        if (profile.profile_picture && profile.profile_picture !== '') {
+            navAvatar.innerHTML = `<img src="${profile.profile_picture}" alt="Profile Picture">`;
+        } else {
+            navAvatar.innerHTML = `<img src="/uploads/default/default.jpg" alt="Default Profile Picture">`;
+        }
+    }
+}
+
+function getInitials(username) {
+    return username.split(' ')
+        .map(word => word.charAt(0).toUpperCase())
+        .join('')
+        .substring(0, 2);
+}
+
 function loadPlatformStats() {
     fetch('/backend/api/challenges.php?action=getPlatformStats')
         .then(response => response.json())
@@ -197,12 +232,14 @@ function displayTopHackers(hackers) {
 }
 function startRealTimeUpdates() {
     setInterval(() => {
+        loadUserProfile();
         loadPlatformStats();
         loadRecentActivity();
         loadTopHackers();
     }, 30000);
     document.addEventListener('visibilitychange', function() {
         if (!document.hidden) {
+            loadUserProfile();
             loadPlatformStats();
             loadRecentActivity();
             loadTopHackers();

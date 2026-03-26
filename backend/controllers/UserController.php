@@ -18,6 +18,7 @@ class UserController {
     }
 
     public function handleRequest() {
+        ob_clean();
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -469,9 +470,14 @@ class UserController {
     }
 
     private function uploadProfilePicture() {
+        ob_clean();
         try {
             if (!isset($_FILES['profile_picture']) || $_FILES['profile_picture']['error'] !== UPLOAD_ERR_OK) {
-                $this->sendResponse(['success' => false, 'message' => 'No file uploaded or upload error'], 400);
+                $error_msg = 'No file uploaded or upload error';
+                if (isset($_FILES['profile_picture'])) {
+                    $error_msg .= ' (Error code: ' . $_FILES['profile_picture']['error'] . ')';
+                }
+                $this->sendResponse(['success' => false, 'message' => $error_msg], 400);
                 return;
             }
 
@@ -550,7 +556,9 @@ class UserController {
     }
 
     private function sendResponse($data, $http_code = 200) {
+        ob_clean();
         http_response_code($http_code);
+        header('Content-Type: application/json');
         echo json_encode($data);
         exit;
     }

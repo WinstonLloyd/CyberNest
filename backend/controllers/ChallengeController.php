@@ -22,6 +22,7 @@ class ChallengeController {
     }
 
     public function handleRequest() {
+        ob_clean();
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -652,6 +653,7 @@ class ChallengeController {
     }
 
     private function getUserProfile() {
+        ob_clean();
         try {
             $userId = $this->getUserIdFromSession();
             if (!$userId) {
@@ -752,9 +754,11 @@ class ChallengeController {
                 'profile' => [
                     'username' => $user['username'],
                     'email' => $user['email'],
+                    'display_name' => $user['display_name'] ?? $user['username'],
                     'bio' => $user['bio'] ?? '',
                     'location' => $user['location'] ?? '',
                     'website' => $user['website'] ?? '',
+                    'profile_picture' => $user['profile_picture'] ?? '',
                     'rank' => 'Beginner',
                     'joined_date' => $user['created_at'],
                     'challenges_completed' => (int)$stats['challenges_completed'],
@@ -1223,7 +1227,9 @@ class ChallengeController {
     }
 
     private function sendResponse($data, $http_code = 200) {
+        ob_clean();
         http_response_code($http_code);
+        header('Content-Type: application/json');
         echo json_encode($data);
         exit;
     }

@@ -9,7 +9,6 @@ if (isset($_COOKIE['cybernest_session']) && !empty($_COOKIE['cybernest_session']
         $database = new Database();
         $db = $database->getConnection();
         
-        // Verify session token and get user role
         $query = "SELECT u.id, u.username, u.email, u.display_name, u.role 
                   FROM users u 
                   JOIN user_sessions s ON u.id = s.user_id 
@@ -25,7 +24,6 @@ if (isset($_COOKIE['cybernest_session']) && !empty($_COOKIE['cybernest_session']
         if ($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Redirect based on user role
             if ($user['role'] === 'admin') {
                 header('Location: views/admin/dashboard.php');
             } else {
@@ -34,7 +32,6 @@ if (isset($_COOKIE['cybernest_session']) && !empty($_COOKIE['cybernest_session']
             exit;
         }
     } catch (Exception $e) {
-        // Database or tables don't exist yet, continue to login page
     }
 }
 ?>
